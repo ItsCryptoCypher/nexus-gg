@@ -46,11 +46,13 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
       activeNavId="messages"
       rightSidebar={null}
       unreadMessages={data.unreadCount}
+      flush
     >
       <TopBar
         user={user}
         title="Messages"
-        subtitle="Chat with your Nexus friends."
+        subtitle="See your direct messages and group chats."
+        className="mb-4 shrink-0"
       />
       <MessagesHome
         meId={data.meId}

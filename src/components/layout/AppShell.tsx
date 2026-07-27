@@ -15,6 +15,8 @@ type AppShellProps = {
   user?: CurrentUser;
   /** Override Messages nav badge; omit to let the shell load unread count. */
   unreadMessages?: number;
+  /** Full-bleed main content (e.g. Messages three-panel layout). */
+  flush?: boolean;
 };
 
 export async function AppShell({
@@ -24,6 +26,7 @@ export async function AppShell({
   basePath,
   user = currentUser,
   unreadMessages,
+  flush = false,
 }: AppShellProps) {
   const unread =
     unreadMessages ??
@@ -39,14 +42,24 @@ export async function AppShell({
           unreadMessages={unread}
         />
       </div>
-      <main className="min-w-0 flex-1 overflow-y-auto scrollbar-thin">
+      <main
+        className={`min-w-0 flex-1 ${
+          flush ? "flex flex-col overflow-hidden" : "overflow-y-auto scrollbar-thin"
+        }`}
+      >
         <MobileNav
           activeNavId={activeNavId}
           basePath={basePath}
           user={user}
           unreadMessages={unread}
         />
-        <div className="mx-auto max-w-[1200px] px-4 py-5 pb-24 sm:px-6 lg:px-8 md:pb-5">
+        <div
+          className={
+            flush
+              ? "flex min-h-0 flex-1 flex-col px-3 pb-24 pt-4 sm:px-4 md:pb-4 md:pt-5 lg:px-6"
+              : "mx-auto max-w-[1200px] px-4 py-5 pb-24 sm:px-6 lg:px-8 md:pb-5"
+          }
+        >
           {children}
         </div>
       </main>

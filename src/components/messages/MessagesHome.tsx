@@ -4,6 +4,7 @@ import { useState } from "react";
 import { MessageSquarePlus } from "lucide-react";
 import { ChatThread } from "@/components/messages/ChatThread";
 import { ConversationList } from "@/components/messages/ConversationList";
+import { MessagesInfoPanel } from "@/components/messages/MessagesInfoPanel";
 import { NewMessagePicker } from "@/components/messages/NewMessagePicker";
 import { Button } from "@/components/ui/Button";
 import type {
@@ -26,36 +27,21 @@ export function MessagesHome({
   active,
 }: MessagesHomeProps) {
   const [picking, setPicking] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
 
   return (
-    <div className="flex h-[calc(100vh-12.5rem)] min-h-[420px] overflow-hidden rounded-2xl border border-border-subtle bg-surface md:h-[calc(100vh-8.5rem)] md:min-h-[480px]">
+    <div className="flex min-h-0 flex-1 overflow-hidden rounded-2xl border border-border-subtle bg-surface">
+      {/* Conversation list */}
       <section
-        className={`relative w-full flex-col border-r border-border-subtle md:flex md:w-[320px] md:shrink-0 ${
+        className={`relative w-full min-w-0 flex-col border-r border-border-subtle lg:flex lg:w-[320px] lg:shrink-0 xl:w-[340px] ${
           active ? "hidden" : "flex"
         }`}
       >
-        <div className="flex items-center justify-between gap-3 border-b border-border-subtle px-4 py-3">
-          <div>
-            <h2 className="text-sm font-semibold text-foreground">Inbox</h2>
-            <p className="text-[11px] text-muted">Message your Nexus friends</p>
-          </div>
-          <Button
-            type="button"
-            size="sm"
-            variant="outline"
-            onClick={() => setPicking(true)}
-            aria-label="Start a new message"
-          >
-            <MessageSquarePlus className="h-4 w-4" />
-            New
-          </Button>
-        </div>
-
         <ConversationList
           conversations={conversations}
           activeId={active?.id ?? null}
+          onCompose={() => setPicking(true)}
         />
-
         {picking ? (
           <NewMessagePicker
             friends={friends}
@@ -64,16 +50,26 @@ export function MessagesHome({
         ) : null}
       </section>
 
-      <section className="flex min-w-0 flex-1 flex-col">
+      {/* Chat thread */}
+      <section
+        className={`min-w-0 flex-1 flex-col ${
+          active ? "flex" : "hidden lg:flex"
+        }`}
+      >
         {active ? (
-          <ChatThread conversation={active} meId={meId} />
+          <ChatThread
+            conversation={active}
+            meId={meId}
+            infoOpen={infoOpen}
+            onToggleInfo={() => setInfoOpen((open) => !open)}
+          />
         ) : (
-          <div className="hidden flex-1 flex-col items-center justify-center gap-2 px-6 text-center md:flex">
+          <div className="flex flex-1 flex-col items-center justify-center gap-2 px-6 text-center">
             <p className="text-base font-semibold text-foreground">
               Select a conversation
             </p>
             <p className="max-w-sm text-sm text-muted">
-              Pick a friend from your inbox or start a new message to chat.
+              Pick someone from your inbox or start a new message.
             </p>
             <Button
               type="button"
@@ -86,6 +82,31 @@ export function MessagesHome({
           </div>
         )}
       </section>
+
+      {/* Right info panel — desktop always when active; tablet via toggle */}
+      {active ? (
+        <>
+          <section className="hidden w-[280px] shrink-0 xl:flex 2xl:w-[300px]">
+            <MessagesInfoPanel friend={active.friend} />
+          </section>
+          {infoOpen ? (
+            <div className="fixed inset-0 z-40 xl:hidden">
+              <button
+                type="button"
+                className="absolute inset-0 bg-black/60"
+                aria-label="Close details"
+                onClick={() => setInfoOpen(false)}
+              />
+              <div className="absolute inset-y-0 right-0 w-[min(100%,320px)] bg-surface shadow-2xl">
+                <MessagesInfoPanel
+                  friend={active.friend}
+                  onClose={() => setInfoOpen(false)}
+                />
+              </div>
+            </div>
+          ) : null}
+        </>
+      ) : null}
     </div>
   );
 }

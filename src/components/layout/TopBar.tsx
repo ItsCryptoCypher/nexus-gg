@@ -7,15 +7,19 @@ type TopBarProps = {
   title?: string;
   subtitle?: string;
   user?: CurrentUser;
+  className?: string;
 };
 
 export function TopBar({
   title = "Play Now",
   subtitle = "Jump into games with your friends. No waiting, just playing.",
   user = currentUser,
+  className = "",
 }: TopBarProps) {
   return (
-    <header className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <header
+      className={`mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between ${className}`}
+    >
       <div className="min-w-0">
         <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
           {title}
