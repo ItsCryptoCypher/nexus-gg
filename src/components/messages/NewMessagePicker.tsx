@@ -36,7 +36,7 @@ export function NewMessagePicker({ friends, onClose }: NewMessagePickerProps) {
   }
 
   return (
-    <div className="absolute inset-0 z-10 flex flex-col bg-surface">
+    <div className="absolute inset-0 z-10 flex flex-col bg-[#111018]">
       <div className="flex items-center justify-between gap-3 border-b border-border-subtle px-4 py-3">
         <p className="text-sm font-semibold text-foreground">New message</p>
         <button

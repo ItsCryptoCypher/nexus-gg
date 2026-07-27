@@ -3,7 +3,7 @@ import Image from "next/image";
 type AvatarProps = {
   src: string;
   alt: string;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
   status?: "online" | "offline" | "busy" | null;
   className?: string;
   ring?: boolean;
@@ -14,6 +14,7 @@ const sizeMap = {
   md: "h-10 w-10",
   lg: "h-12 w-12",
   xl: "h-14 w-14",
+  "2xl": "h-20 w-20",
 };
 
 const statusColor = {
@@ -40,8 +41,8 @@ export function Avatar({
         <Image
           src={src}
           alt={alt}
-          width={56}
-          height={56}
+          width={80}
+          height={80}
           className="h-full w-full object-cover"
         />
       </div>

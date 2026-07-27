@@ -56,7 +56,7 @@ export async function AppShell({
         <div
           className={
             flush
-              ? "flex min-h-0 flex-1 flex-col px-3 pb-24 pt-4 sm:px-4 md:pb-4 md:pt-5 lg:px-6"
+              ? "flex min-h-0 flex-1 flex-col px-3 pb-24 pt-3 sm:px-4 md:pb-4 md:pt-4 lg:px-5"
               : "mx-auto max-w-[1200px] px-4 py-5 pb-24 sm:px-6 lg:px-8 md:pb-5"
           }
         >

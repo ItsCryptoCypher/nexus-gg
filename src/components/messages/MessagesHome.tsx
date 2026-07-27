@@ -30,10 +30,10 @@ export function MessagesHome({
   const [infoOpen, setInfoOpen] = useState(false);
 
   return (
-    <div className="flex min-h-0 flex-1 overflow-hidden rounded-2xl border border-border-subtle bg-surface">
+    <div className="flex min-h-0 flex-1 overflow-hidden rounded-2xl border border-border-subtle bg-[#0c0b11]">
       {/* Conversation list */}
       <section
-        className={`relative w-full min-w-0 flex-col border-r border-border-subtle lg:flex lg:w-[320px] lg:shrink-0 xl:w-[340px] ${
+        className={`relative w-full min-w-0 flex-col border-r border-border-subtle bg-[#111018] lg:flex lg:w-[300px] lg:shrink-0 xl:w-[320px] ${
           active ? "hidden" : "flex"
         }`}
       >
@@ -52,7 +52,7 @@ export function MessagesHome({
 
       {/* Chat thread */}
       <section
-        className={`min-w-0 flex-1 flex-col ${
+        className={`min-w-0 flex-1 flex-col bg-[#0c0b11] ${
           active ? "flex" : "hidden lg:flex"
         }`}
       >
@@ -83,10 +83,10 @@ export function MessagesHome({
         )}
       </section>
 
-      {/* Right info panel — desktop always when active; tablet via toggle */}
+      {/* Right info panel */}
       {active ? (
         <>
-          <section className="hidden w-[280px] shrink-0 xl:flex 2xl:w-[300px]">
+          <section className="hidden w-[280px] shrink-0 border-l border-border-subtle bg-[#111018] xl:flex 2xl:w-[300px]">
             <MessagesInfoPanel friend={active.friend} />
           </section>
           {infoOpen ? (
@@ -97,7 +97,7 @@ export function MessagesHome({
                 aria-label="Close details"
                 onClick={() => setInfoOpen(false)}
               />
-              <div className="absolute inset-y-0 right-0 w-[min(100%,320px)] bg-surface shadow-2xl">
+              <div className="absolute inset-y-0 right-0 w-[min(100%,320px)] bg-[#111018] shadow-2xl">
                 <MessagesInfoPanel
                   friend={active.friend}
                   onClose={() => setInfoOpen(false)}

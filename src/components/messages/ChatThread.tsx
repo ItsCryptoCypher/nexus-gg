@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
+  Check,
   ChevronLeft,
   MoreVertical,
   PanelRight,
@@ -93,11 +94,11 @@ export function ChatThread({
   }, [conversation.id, meId]);
 
   return (
-    <div className="flex h-full min-h-0 flex-1 flex-col bg-surface">
-      <div className="flex items-center gap-3 border-b border-border-subtle px-3 py-3 sm:px-4">
+    <div className="flex h-full min-h-0 flex-1 flex-col">
+      <div className="flex items-center gap-3 border-b border-border-subtle px-4 py-3.5">
         <Link
           href="/messages"
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-hover hover:text-foreground lg:hidden"
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-white/[0.04] hover:text-foreground lg:hidden"
           aria-label="Back to inbox"
         >
           <ChevronLeft className="h-5 w-5" />
@@ -110,7 +111,7 @@ export function ChatThread({
         <div className="min-w-0 flex-1">
           <p className="flex items-center gap-1.5 truncate text-sm font-semibold text-foreground">
             {conversation.friend.username}
-            <Star className="hidden h-3.5 w-3.5 text-muted-dark sm:block" />
+            <Star className="h-3.5 w-3.5 shrink-0 fill-none text-muted-dark" />
           </p>
           <p className="truncate text-xs text-muted">Direct message</p>
         </div>
@@ -128,7 +129,7 @@ export function ChatThread({
             <button
               type="button"
               onClick={onToggleInfo}
-              className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-surface-hover hover:text-foreground xl:hidden ${
+              className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-white/[0.04] hover:text-foreground xl:hidden ${
                 infoOpen ? "bg-accent-soft text-accent" : ""
               }`}
               aria-label="Conversation details"
@@ -142,7 +143,7 @@ export function ChatThread({
         </div>
       </div>
 
-      <div className="flex-1 space-y-4 overflow-y-auto px-3 py-4 sm:px-5 scrollbar-thin">
+      <div className="flex-1 space-y-5 overflow-y-auto px-4 py-5 sm:px-6 scrollbar-thin">
         {messages.length === 0 ? (
           <div className="flex h-full min-h-[200px] items-center justify-center">
             <p className="text-sm text-muted">
@@ -156,9 +157,9 @@ export function ChatThread({
               !prev || !isSameDay(prev.createdAt, message.createdAt);
 
             return (
-              <div key={message.id}>
+              <div key={message.id} className="space-y-5">
                 {showDivider ? (
-                  <div className="mb-4 flex items-center gap-3">
+                  <div className="flex items-center gap-3 py-1">
                     <div className="h-px flex-1 bg-border-subtle" />
                     <span className="text-[11px] font-medium text-muted-dark">
                       {formatDayDivider(message.createdAt)}
@@ -168,24 +169,31 @@ export function ChatThread({
                 ) : null}
 
                 {message.mine ? (
-                  <div className="flex justify-end">
-                    <div className="max-w-[75%] rounded-2xl rounded-br-md bg-accent px-3.5 py-2.5 text-white shadow-[0_0_20px_rgba(124,58,237,0.2)]">
+                  <div className="flex flex-col items-end gap-1">
+                    <div className="flex items-baseline gap-2 px-1">
+                      <span className="text-xs font-semibold text-foreground">
+                        You
+                      </span>
+                      <span className="text-[10px] text-muted-dark">
+                        {formatMessageClock(message.createdAt)}
+                      </span>
+                    </div>
+                    <div className="max-w-[70%] rounded-2xl rounded-tr-md bg-accent px-4 py-2.5 text-white">
                       <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">
                         {message.body}
                       </p>
-                      <p className="mt-1 text-right text-[10px] text-white/70">
-                        {formatMessageClock(message.createdAt)}
-                      </p>
                     </div>
+                    <Check className="mr-1 h-3.5 w-3.5 text-accent" />
                   </div>
                 ) : (
-                  <div className="flex items-end gap-2.5">
+                  <div className="flex items-start gap-2.5">
                     <Avatar
                       src={conversation.friend.avatarUrl}
                       alt={conversation.friend.username}
                       size="sm"
+                      className="mt-5"
                     />
-                    <div className="min-w-0 max-w-[75%]">
+                    <div className="min-w-0 max-w-[70%]">
                       <div className="mb-1 flex items-baseline gap-2 px-1">
                         <span className="text-xs font-semibold text-foreground">
                           {conversation.friend.username}
@@ -194,7 +202,7 @@ export function ChatThread({
                           {formatMessageClock(message.createdAt)}
                         </span>
                       </div>
-                      <div className="rounded-2xl rounded-bl-md border border-border-subtle bg-surface-elevated px-3.5 py-2.5">
+                      <div className="rounded-2xl rounded-tl-md bg-[#1a1824] px-4 py-2.5">
                         <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-foreground">
                           {message.body}
                         </p>
@@ -236,7 +244,7 @@ function HeaderIconButton({
       type="button"
       disabled={disabled}
       aria-label={label}
-      className="hidden h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-surface-hover hover:text-foreground disabled:opacity-40 sm:flex"
+      className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-white/[0.04] hover:text-foreground disabled:cursor-default disabled:opacity-45"
     >
       {children}
     </button>

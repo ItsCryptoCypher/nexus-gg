@@ -52,7 +52,7 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
         user={user}
         title="Messages"
         subtitle="See your direct messages and group chats."
-        className="mb-4 shrink-0"
+        className="mb-3 shrink-0"
       />
       <MessagesHome
         meId={data.meId}

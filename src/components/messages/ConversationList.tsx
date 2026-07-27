@@ -32,20 +32,20 @@ export function ConversationList({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex items-center gap-2 border-b border-border-subtle px-3 py-3">
+      <div className="flex items-center gap-2.5 px-4 pb-3 pt-4">
         <div className="relative min-w-0 flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-dark" />
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search messages..."
-            className="h-10 w-full rounded-xl border border-border-subtle bg-background pl-9 pr-3 text-sm text-foreground outline-none placeholder:text-muted-dark focus:border-accent/50"
+            className="h-10 w-full rounded-xl border border-border-subtle bg-[#0c0b11] pl-9 pr-3 text-sm text-foreground outline-none placeholder:text-muted-dark focus:border-accent/40"
           />
         </div>
         <button
           type="button"
           onClick={onCompose}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-background text-muted transition-colors hover:bg-surface-hover hover:text-foreground"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent text-white shadow-[0_0_16px_rgba(124,58,237,0.35)] transition-colors hover:bg-accent-hover"
           aria-label="Compose message"
         >
           <PenSquare className="h-4 w-4" />
@@ -61,7 +61,7 @@ export function ConversationList({
           </p>
         </div>
       ) : (
-        <ul className="flex-1 space-y-1 overflow-y-auto p-2 scrollbar-thin">
+        <ul className="flex-1 space-y-1 overflow-y-auto px-2 pb-3 scrollbar-thin">
           {filtered.map((conversation) => {
             const active = conversation.id === activeId;
             return (
@@ -70,8 +70,8 @@ export function ConversationList({
                   href={`/messages?c=${conversation.id}`}
                   className={`flex items-center gap-3 rounded-xl px-3 py-3 transition-colors ${
                     active
-                      ? "border border-accent bg-accent-soft shadow-[0_0_20px_rgba(124,58,237,0.18)]"
-                      : "border border-transparent hover:bg-surface-hover"
+                      ? "bg-accent-soft ring-1 ring-accent"
+                      : "hover:bg-white/[0.03]"
                   }`}
                 >
                   <Avatar
@@ -82,8 +82,8 @@ export function ConversationList({
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
                       <p
-                        className={`truncate text-sm ${
-                          conversation.unread
+                        className={`truncate text-[13px] ${
+                          conversation.unread || active
                             ? "font-semibold text-foreground"
                             : "font-medium text-foreground"
                         }`}
@@ -94,12 +94,12 @@ export function ConversationList({
                         {formatConversationTime(conversation.lastMessageAt)}
                       </span>
                     </div>
-                    <div className="mt-0.5 flex items-center gap-2">
+                    <div className="mt-1 flex items-center gap-2">
                       <p
                         className={`truncate text-xs ${
                           conversation.unread
-                            ? "font-medium text-foreground"
-                            : "text-muted"
+                            ? "font-medium text-muted"
+                            : "text-muted-dark"
                         }`}
                       >
                         {conversation.lastMessagePreview || "No messages yet"}
