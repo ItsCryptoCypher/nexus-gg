@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import { LeftSidebar } from "@/components/layout/LeftSidebar";
+import { MobileNav } from "@/components/layout/MobileNav";
 import { RightSidebar } from "@/components/layout/RightSidebar";
-import type { CurrentUser } from "@/data/mock";
+import { currentUser, type CurrentUser } from "@/data/mock";
+import { getUnreadMessageCount } from "@/lib/messages/get-messages-page";
 
 type AppShellProps = {
   children: ReactNode;
@@ -11,18 +13,22 @@ type AppShellProps = {
   /** Use `/demo` for mock showcase routes that keep nav inside the demo. */
   basePath?: string;
   user?: CurrentUser;
-  /** Override Messages nav badge; omit to let the sidebar load unread count. */
+  /** Override Messages nav badge; omit to let the shell load unread count. */
   unreadMessages?: number;
 };
 
-export function AppShell({
+export async function AppShell({
   children,
   activeNavId = "play-now",
   rightSidebar,
   basePath,
-  user,
+  user = currentUser,
   unreadMessages,
 }: AppShellProps) {
+  const unread =
+    unreadMessages ??
+    (basePath === "/demo" ? 0 : await getUnreadMessageCount());
+
   return (
     <div className="flex h-screen overflow-hidden bg-background text-foreground">
       <div className="hidden md:block">
@@ -30,24 +36,17 @@ export function AppShell({
           activeNavId={activeNavId}
           basePath={basePath}
           user={user}
-          unreadMessages={unreadMessages}
+          unreadMessages={unread}
         />
       </div>
       <main className="min-w-0 flex-1 overflow-y-auto scrollbar-thin">
-        <div className="flex items-center gap-2.5 border-b border-border-subtle px-4 py-3 md:hidden">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent text-xs font-bold text-white">
-            N
-          </div>
-          <div className="min-w-0">
-            <span className="text-sm font-bold tracking-[0.08em]">NEXUS.GG</span>
-            {basePath === "/demo" ? (
-              <p className="text-[10px] font-medium tracking-wide text-accent">
-                Demo preview
-              </p>
-            ) : null}
-          </div>
-        </div>
-        <div className="mx-auto max-w-[1200px] px-4 py-5 sm:px-6 lg:px-8">
+        <MobileNav
+          activeNavId={activeNavId}
+          basePath={basePath}
+          user={user}
+          unreadMessages={unread}
+        />
+        <div className="mx-auto max-w-[1200px] px-4 py-5 pb-24 sm:px-6 lg:px-8 md:pb-5">
           {children}
         </div>
       </main>

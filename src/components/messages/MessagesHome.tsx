@@ -28,7 +28,7 @@ export function MessagesHome({
   const [picking, setPicking] = useState(false);
 
   return (
-    <div className="flex h-[calc(100vh-8.5rem)] min-h-[480px] overflow-hidden rounded-2xl border border-border-subtle bg-surface">
+    <div className="flex h-[calc(100vh-12.5rem)] min-h-[420px] overflow-hidden rounded-2xl border border-border-subtle bg-surface md:h-[calc(100vh-8.5rem)] md:min-h-[480px]">
       <section
         className={`relative w-full flex-col border-r border-border-subtle md:flex md:w-[320px] md:shrink-0 ${
           active ? "hidden" : "flex"
