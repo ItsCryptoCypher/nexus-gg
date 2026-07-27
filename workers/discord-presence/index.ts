@@ -55,6 +55,25 @@ async function upsertPresence(presence: Presence) {
   const status = presence.status ?? "offline";
   const activity = pickActivity(presence.activities);
 
+  const user =
+    presence.user ??
+    presence.member?.user ??
+    (await client.users.fetch(discordId).catch(() => null));
+
+  const displayName =
+    presence.member?.displayName ||
+    user?.globalName ||
+    user?.username ||
+    null;
+  const avatarUrl = user?.displayAvatarURL({ size: 128 }) ?? null;
+
+  if (!activity && presence.activities?.length) {
+    console.log(
+      `presence ${discordId}: unhandled activities`,
+      presence.activities.map((a) => ({ type: a.type, name: a.name })),
+    );
+  }
+
   const { data: profile } = await supabase
     .from("profiles")
     .select("id")
@@ -65,6 +84,8 @@ async function upsertPresence(presence: Presence) {
     {
       discord_id: discordId,
       user_id: profile?.id ?? null,
+      display_name: displayName,
+      avatar_url: avatarUrl,
       status,
       activity_name: activity?.name ?? null,
       activity_type: activity?.type ?? null,
@@ -81,7 +102,7 @@ async function upsertPresence(presence: Presence) {
   }
 
   const label = activity?.name ? `playing ${activity.name}` : status;
-  console.log(`presence ${discordId}: ${label}`);
+  console.log(`presence ${discordId}: ${label}${displayName ? ` (${displayName})` : ""}`);
 }
 
 async function syncGuildSnapshot() {

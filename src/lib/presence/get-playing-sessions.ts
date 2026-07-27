@@ -8,6 +8,8 @@ type PresenceRow = {
   discord_id: string;
   status: string;
   activity_name: string | null;
+  display_name: string | null;
+  avatar_url: string | null;
   updated_at: string;
 };
 
@@ -28,7 +30,9 @@ export async function getPlayingSessions(): Promise<PlayingSession[]> {
 
   const { data: presenceRows, error } = await supabase
     .from("player_presence")
-    .select("discord_id, status, activity_name, updated_at")
+    .select(
+      "discord_id, status, activity_name, display_name, avatar_url, updated_at",
+    )
     .neq("status", "offline")
     .order("updated_at", { ascending: false })
     .limit(24);
@@ -51,25 +55,27 @@ export async function getPlayingSessions(): Promise<PlayingSession[]> {
       .map((p) => [p.discord_id as string, p]),
   );
 
-  return rows
-    .map((row): PlayingSession | null => {
-      const profile = profileByDiscord.get(row.discord_id);
-      const username = profile?.display_name || `Player ${row.discord_id.slice(-4)}`;
-      const avatarUrl =
-        profile?.avatar_url ||
-        `https://cdn.discordapp.com/embed/avatars/${Number(row.discord_id) % 6}.png`;
-      const inGame = Boolean(row.activity_name);
+  return rows.map((row): PlayingSession => {
+    const profile = profileByDiscord.get(row.discord_id);
+    const username =
+      profile?.display_name ||
+      row.display_name ||
+      `Player ${row.discord_id.slice(-4)}`;
+    const avatarUrl =
+      profile?.avatar_url ||
+      row.avatar_url ||
+      `https://cdn.discordapp.com/embed/avatars/${Number(BigInt(row.discord_id) % 6n)}.png`;
+    const inGame = Boolean(row.activity_name);
 
-      return {
-        id: row.discord_id,
-        username,
-        avatarUrl,
-        gameTitle: row.activity_name || "Online on Discord",
-        coverUrl: FALLBACK_COVER,
-        platform: "discord",
-        status: inGame ? "in-game" : "looking",
-        action: inGame ? "join-game" : "invite",
-      };
-    })
-    .filter((s): s is PlayingSession => s != null);
+    return {
+      id: row.discord_id,
+      username,
+      avatarUrl,
+      gameTitle: row.activity_name || "Online on Discord",
+      coverUrl: FALLBACK_COVER,
+      platform: "discord",
+      status: inGame ? "in-game" : "looking",
+      action: inGame ? "join-game" : "invite",
+    };
+  });
 }
