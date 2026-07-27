@@ -5,6 +5,7 @@ import {
   Mail,
   PartyPopper,
   Radio,
+  UserPlus,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -18,6 +19,7 @@ const iconMap: Record<StatItem["icon"], LucideIcon> = {
   party: PartyPopper,
   radio: Radio,
   mail: Mail,
+  "user-plus": UserPlus,
 };
 
 const toneStyles: Record<

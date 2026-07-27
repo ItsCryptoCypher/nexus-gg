@@ -4,7 +4,7 @@ import { DiscordAuthButton } from "@/components/auth/DiscordAuthButton";
 import { signInWithEmail } from "@/app/auth/actions";
 
 type LoginPageProps = {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; next?: string }>;
 };
 
 export const metadata = {
@@ -12,8 +12,14 @@ export const metadata = {
   description: "Log in to Nexus.gg with Discord or email.",
 };
 
+function safeNext(path: string | undefined) {
+  if (!path || !path.startsWith("/") || path.startsWith("//")) return "/play";
+  return path;
+}
+
 export default async function LoginPage({ searchParams }: LoginPageProps) {
-  const { error } = await searchParams;
+  const { error, next } = await searchParams;
+  const nextPath = safeNext(next);
 
   return (
     <div className="relative flex min-h-svh items-center justify-center overflow-hidden bg-[#07060b] px-4 py-12">
@@ -49,6 +55,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
           <DiscordAuthButton
             label="Continue with Discord"
+            next={nextPath}
             className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-full bg-accent px-6 text-sm font-semibold text-white shadow-[0_0_28px_rgba(124,58,237,0.35)] transition-colors hover:bg-accent-hover"
           />
 
@@ -59,7 +66,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           </div>
 
           <form action={signInWithEmail} className="space-y-3">
-            <input type="hidden" name="next" value="/play" />
+            <input type="hidden" name="next" value={nextPath} />
             <label className="block">
               <span className="mb-1.5 block text-xs font-medium text-white/70">
                 Email

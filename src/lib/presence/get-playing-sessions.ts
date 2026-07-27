@@ -6,6 +6,11 @@ import { resolvePlayingPlatform } from "@/lib/presence/resolve-platform";
 const FALLBACK_COVER =
   "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=240&fit=crop";
 
+/** Company / system Discord accounts — hide from Who's Playing only. */
+const WHOS_PLAYING_EXCLUDED_DISCORD_IDS = new Set([
+  "1520508465926115329", // Apex Labs
+]);
+
 type PresenceRow = {
   discord_id: string;
   status: string;
@@ -46,7 +51,12 @@ export async function getPlayingSessions(): Promise<PlayingSession[]> {
     return [];
   }
 
-  const rows = presenceRows as PresenceRow[];
+  const rows = (presenceRows as PresenceRow[]).filter(
+    (row) => !WHOS_PLAYING_EXCLUDED_DISCORD_IDS.has(row.discord_id),
+  );
+  if (!rows.length) {
+    return [];
+  }
   const discordIds = rows.map((r) => r.discord_id);
 
   const { data: profiles } = await supabase

@@ -36,8 +36,78 @@ export type StatItem = {
   label: string;
   value: number;
   tone: "green" | "purple" | "blue" | "orange";
-  icon: "activity" | "gamepad" | "users" | "headset" | "party" | "radio" | "mail";
+  icon:
+    | "activity"
+    | "gamepad"
+    | "users"
+    | "headset"
+    | "party"
+    | "radio"
+    | "mail"
+    | "user-plus";
   hint?: string;
+};
+
+export type FriendPresence =
+  | "online"
+  | "in-game"
+  | "in-party"
+  | "away"
+  | "offline";
+
+export type NexusFriend = {
+  id: string;
+  username: string;
+  avatarUrl: string;
+  status: FriendPresence;
+  gameTitle: string | null;
+  gameIconUrl: string | null;
+  platforms: Platform[];
+};
+
+export type PlatformContact = {
+  id: string;
+  username: string;
+  avatarUrl: string;
+  sourcePlatform: Platform;
+  status: FriendPresence;
+  gameTitle: string | null;
+  mutualFriends: { id: string; username: string; avatarUrl: string }[];
+  mutualCount: number;
+  /** True when the signed-in user already sent a pending request. */
+  requestPending?: boolean;
+};
+
+export type SuggestedFriend = {
+  id: string;
+  username: string;
+  avatarUrl: string;
+  mutualCount: number;
+  recentGames: string;
+};
+
+export type FriendRequest = {
+  id: string;
+  /** Profile id of the requester (for navigation later). */
+  userId?: string;
+  username: string;
+  avatarUrl: string;
+  mutualCount: number;
+};
+
+export type OnlineFriend = {
+  id: string;
+  username: string;
+  avatarUrl: string;
+  gameTitle: string | null;
+  platform: Platform;
+};
+
+export type ImportedPlatform = {
+  id: string;
+  label: string;
+  platform: Platform;
+  connected: boolean;
 };
 
 export type PlayingSession = {
@@ -181,7 +251,7 @@ export const navGroups: NavGroup[] = [
     label: "MAIN",
     items: [
       { id: "play-now", label: "Play Now", icon: "zap", href: "/play" },
-      { id: "friends", label: "Friends", icon: "users", href: "#" },
+      { id: "friends", label: "Friends", icon: "users", href: "/friends" },
       { id: "parties", label: "Parties", icon: "party-popper", href: "/parties" },
       {
         id: "messages",
@@ -748,5 +818,259 @@ export const liveNowItems: LiveNowItem[] = [
     avatarUrl: "https://i.pravatar.cc/150?img=20",
     roomTitle: "Warzone Drop-In",
     viewers: 291,
+  },
+];
+
+export const friendStats: StatItem[] = [
+  {
+    id: "nexus-friends",
+    label: "Nexus Friends",
+    value: 32,
+    tone: "purple",
+    icon: "users",
+    hint: "Your inner circle",
+  },
+  {
+    id: "platform-contacts",
+    label: "Platform Contacts",
+    value: 84,
+    tone: "blue",
+    icon: "users",
+    hint: "From connected platforms",
+  },
+  {
+    id: "online-now",
+    label: "Online Now",
+    value: 14,
+    tone: "green",
+    icon: "activity",
+    hint: "Across all platforms",
+  },
+  {
+    id: "pending-requests",
+    label: "Pending Requests",
+    value: 6,
+    tone: "orange",
+    icon: "user-plus",
+    hint: "From friends & contacts",
+  },
+];
+
+export const nexusFriends: NexusFriend[] = [
+  {
+    id: "nf1",
+    username: "ChiefNova",
+    avatarUrl: "https://i.pravatar.cc/150?img=33",
+    status: "online",
+    gameTitle: "Apex Legends",
+    gameIconUrl: null,
+    platforms: ["xbox", "steam"],
+  },
+  {
+    id: "nf2",
+    username: "DriftKing",
+    avatarUrl: "https://i.pravatar.cc/150?img=15",
+    status: "in-game",
+    gameTitle: "Gran Turismo 7",
+    gameIconUrl: null,
+    platforms: ["playstation"],
+  },
+  {
+    id: "nf3",
+    username: "PixelQueen",
+    avatarUrl: "https://i.pravatar.cc/150?img=47",
+    status: "in-party",
+    gameTitle: "Minecraft",
+    gameIconUrl: null,
+    platforms: ["xbox", "playstation"],
+  },
+  {
+    id: "nf4",
+    username: "ShadowFox",
+    avatarUrl: "https://i.pravatar.cc/150?img=68",
+    status: "away",
+    gameTitle: null,
+    gameIconUrl: null,
+    platforms: ["steam", "discord"],
+  },
+  {
+    id: "nf5",
+    username: "NeonBlade",
+    avatarUrl: "https://i.pravatar.cc/150?img=26",
+    status: "in-game",
+    gameTitle: "Call of Duty",
+    gameIconUrl: null,
+    platforms: ["xbox", "steam", "playstation"],
+  },
+];
+
+export const platformContacts: PlatformContact[] = [
+  {
+    id: "pc1",
+    username: "xXSniperXx",
+    avatarUrl: "https://i.pravatar.cc/150?img=52",
+    sourcePlatform: "discord",
+    status: "online",
+    gameTitle: "Valorant",
+    mutualFriends: [
+      { id: "m1", username: "A", avatarUrl: "https://i.pravatar.cc/150?img=11" },
+      { id: "m2", username: "B", avatarUrl: "https://i.pravatar.cc/150?img=12" },
+      { id: "m3", username: "C", avatarUrl: "https://i.pravatar.cc/150?img=13" },
+    ],
+    mutualCount: 4,
+  },
+  {
+    id: "pc2",
+    username: "RacingRyan",
+    avatarUrl: "https://i.pravatar.cc/150?img=60",
+    sourcePlatform: "xbox",
+    status: "in-game",
+    gameTitle: "Forza Horizon 5",
+    mutualFriends: [
+      { id: "m4", username: "D", avatarUrl: "https://i.pravatar.cc/150?img=14" },
+      { id: "m5", username: "E", avatarUrl: "https://i.pravatar.cc/150?img=16" },
+    ],
+    mutualCount: 2,
+  },
+  {
+    id: "pc3",
+    username: "SteamSamurai",
+    avatarUrl: "https://i.pravatar.cc/150?img=13",
+    sourcePlatform: "steam",
+    status: "online",
+    gameTitle: "Counter-Strike 2",
+    mutualFriends: [
+      { id: "m6", username: "F", avatarUrl: "https://i.pravatar.cc/150?img=17" },
+      { id: "m7", username: "G", avatarUrl: "https://i.pravatar.cc/150?img=18" },
+      { id: "m8", username: "H", avatarUrl: "https://i.pravatar.cc/150?img=19" },
+    ],
+    mutualCount: 7,
+  },
+  {
+    id: "pc4",
+    username: "PSNProdigy",
+    avatarUrl: "https://i.pravatar.cc/150?img=57",
+    sourcePlatform: "playstation",
+    status: "away",
+    gameTitle: null,
+    mutualFriends: [
+      { id: "m9", username: "I", avatarUrl: "https://i.pravatar.cc/150?img=20" },
+    ],
+    mutualCount: 1,
+  },
+  {
+    id: "pc5",
+    username: "LobbyLegend",
+    avatarUrl: "https://i.pravatar.cc/150?img=36",
+    sourcePlatform: "discord",
+    status: "in-game",
+    gameTitle: "Fortnite",
+    mutualFriends: [
+      { id: "m10", username: "J", avatarUrl: "https://i.pravatar.cc/150?img=21" },
+      { id: "m11", username: "K", avatarUrl: "https://i.pravatar.cc/150?img=22" },
+    ],
+    mutualCount: 3,
+  },
+];
+
+export const suggestedFriends: SuggestedFriend[] = [
+  {
+    id: "sf1",
+    username: "AceViper",
+    avatarUrl: "https://i.pravatar.cc/150?img=11",
+    mutualCount: 5,
+    recentGames: "Apex · Warzone",
+  },
+  {
+    id: "sf2",
+    username: "QuietStorm",
+    avatarUrl: "https://i.pravatar.cc/150?img=44",
+    mutualCount: 3,
+    recentGames: "Fortnite · Rocket League",
+  },
+  {
+    id: "sf3",
+    username: "HexRunner",
+    avatarUrl: "https://i.pravatar.cc/150?img=20",
+    mutualCount: 8,
+    recentGames: "Valorant · CS2",
+  },
+  {
+    id: "sf4",
+    username: "MiraQuest",
+    avatarUrl: "https://i.pravatar.cc/150?img=16",
+    mutualCount: 2,
+    recentGames: "Minecraft · Stardew",
+  },
+];
+
+export const friendRequests: FriendRequest[] = [
+  {
+    id: "fr1",
+    username: "GamerGirl42",
+    avatarUrl: "https://i.pravatar.cc/150?img=45",
+    mutualCount: 3,
+  },
+  {
+    id: "fr2",
+    username: "RustyNuts",
+    avatarUrl: "https://i.pravatar.cc/150?img=59",
+    mutualCount: 1,
+  },
+  {
+    id: "fr3",
+    username: "NightHawk",
+    avatarUrl: "https://i.pravatar.cc/150?img=70",
+    mutualCount: 6,
+  },
+];
+
+export const onlineFriends: OnlineFriend[] = [
+  {
+    id: "of1",
+    username: "ChiefNova",
+    avatarUrl: "https://i.pravatar.cc/150?img=33",
+    gameTitle: "Apex Legends",
+    platform: "xbox",
+  },
+  {
+    id: "of2",
+    username: "DriftKing",
+    avatarUrl: "https://i.pravatar.cc/150?img=15",
+    gameTitle: "Gran Turismo 7",
+    platform: "playstation",
+  },
+  {
+    id: "of3",
+    username: "PixelQueen",
+    avatarUrl: "https://i.pravatar.cc/150?img=47",
+    gameTitle: "Minecraft",
+    platform: "xbox",
+  },
+  {
+    id: "of4",
+    username: "NeonBlade",
+    avatarUrl: "https://i.pravatar.cc/150?img=26",
+    gameTitle: "Call of Duty",
+    platform: "steam",
+  },
+  {
+    id: "of5",
+    username: "AceViper",
+    avatarUrl: "https://i.pravatar.cc/150?img=11",
+    gameTitle: null,
+    platform: "discord",
+  },
+];
+
+export const importedPlatforms: ImportedPlatform[] = [
+  { id: "ip1", label: "Discord", platform: "discord", connected: true },
+  { id: "ip2", label: "Xbox Live", platform: "xbox", connected: true },
+  { id: "ip3", label: "Steam", platform: "steam", connected: true },
+  {
+    id: "ip4",
+    label: "PlayStation Network",
+    platform: "playstation",
+    connected: true,
   },
 ];
