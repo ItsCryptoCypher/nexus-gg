@@ -134,16 +134,26 @@ export function SetupChecklist({ state, next }: SetupChecklistProps) {
             description={
               state.activityDetected
                 ? "We detected a live Playing status from Discord — you're set."
-                : "In Discord, turn on Activity Status so Nexus can see what you're playing."
+                : "Discord won’t let apps flip this for you — do it once in Activity Privacy (takes ~15 seconds)."
             }
           >
+            <ol className="mb-3 list-decimal space-y-1.5 pl-4 text-sm text-white/60">
+              <li>
+                Turn on <span className="text-white/85">Display current activity as a status message</span>
+              </li>
+              <li>
+                Under your server list on that same page, turn <span className="text-white/85">Nexus</span> on
+                (or use <span className="text-white/85">Toggle All On</span>)
+              </li>
+              <li>Launch a game once so Discord picks it up</li>
+            </ol>
             <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
               <a
                 href="discord://-/settings/activity-privacy"
                 className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
               >
                 <Radio className="h-4 w-4" />
-                Open Discord settings
+                Open Activity Privacy
               </a>
               <a
                 href="https://discord.com/settings/activity-privacy"
@@ -166,8 +176,8 @@ export function SetupChecklist({ state, next }: SetupChecklistProps) {
               ) : null}
             </div>
             <p className="mt-3 text-xs text-white/40">
-              Enable “Display current activity as a status message”, then launch
-              a game once so Discord picks it up.
+              Both toggles live on one Discord settings page — you shouldn&apos;t
+              need to dig through the server sidebar.
             </p>
           </StepRow>
 
