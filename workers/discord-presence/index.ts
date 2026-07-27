@@ -48,6 +48,13 @@ function pickActivity(activities: readonly Activity[] | undefined) {
   return playable ?? activities.find((a) => a.type !== ActivityType.Custom) ?? null;
 }
 
+/** Discord sends activity.platform (xbox / ps5 / desktop) but discord.js types omit it. */
+function getActivityPlatform(activity: Activity | null): string | null {
+  if (!activity) return null;
+  const withPlatform = activity as Activity & { platform?: string };
+  return typeof withPlatform.platform === "string" ? withPlatform.platform : null;
+}
+
 async function upsertPresence(presence: Presence) {
   const discordId = presence.userId;
   if (!discordId) return;
@@ -67,10 +74,16 @@ async function upsertPresence(presence: Presence) {
     null;
   const avatarUrl = user?.displayAvatarURL({ size: 128 }) ?? null;
 
+  const activityPlatform = getActivityPlatform(activity);
+
   if (!activity && presence.activities?.length) {
     console.log(
       `presence ${discordId}: unhandled activities`,
-      presence.activities.map((a) => ({ type: a.type, name: a.name })),
+      presence.activities.map((a) => ({
+        type: a.type,
+        name: a.name,
+        platform: getActivityPlatform(a),
+      })),
     );
   }
 
@@ -90,6 +103,7 @@ async function upsertPresence(presence: Presence) {
       activity_name: activity?.name ?? null,
       activity_type: activity?.type ?? null,
       activity_state: activity?.state ?? null,
+      activity_platform: activityPlatform,
       client_status: presence.clientStatus ?? null,
       updated_at: new Date().toISOString(),
     },
@@ -101,7 +115,9 @@ async function upsertPresence(presence: Presence) {
     return;
   }
 
-  const label = activity?.name ? `playing ${activity.name}` : status;
+  const label = activity?.name
+    ? `playing ${activity.name}${activityPlatform ? ` @ ${activityPlatform}` : ""}`
+    : status;
   console.log(`presence ${discordId}: ${label}${displayName ? ` (${displayName})` : ""}`);
 }
 
@@ -123,6 +139,7 @@ async function syncGuildSnapshot() {
           activity_name: null,
           activity_type: null,
           activity_state: null,
+          activity_platform: null,
           client_status: null,
           updated_at: new Date().toISOString(),
         },
