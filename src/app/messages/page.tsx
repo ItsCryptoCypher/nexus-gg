@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { AppShell } from "@/components/layout/AppShell";
 import { TopBar } from "@/components/layout/TopBar";
-import { MessagesHome } from "@/components/messages/MessagesHome";
+import { MessagesWorkspace } from "@/components/messages/MessagesWorkspace";
 import { getAppUser } from "@/lib/auth/get-app-user";
 import { getMessagesPageData } from "@/lib/messages/get-messages-page";
 import { createClient } from "@/lib/supabase/server";
@@ -35,7 +35,6 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
     redirect("/login?next=/messages");
   }
 
-  // Normalize ?with= into ?c= so refreshes stay on the conversation id.
   if (params.with && data.active && !params.c) {
     redirect(`/messages?c=${data.active.id}`);
   }
@@ -54,7 +53,7 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
         subtitle="See your direct messages and group chats."
         className="mb-3 shrink-0"
       />
-      <MessagesHome
+      <MessagesWorkspace
         meId={data.meId}
         conversations={data.conversations}
         friends={data.friends}
