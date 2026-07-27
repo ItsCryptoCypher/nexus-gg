@@ -6,10 +6,13 @@ import type { CurrentUser } from "@/data/mock";
 type AppShellProps = {
   children: ReactNode;
   activeNavId?: string;
-  rightSidebar?: ReactNode;
+  /** Pass `null` to hide the right sidebar (e.g. Messages). */
+  rightSidebar?: ReactNode | null;
   /** Use `/demo` for mock showcase routes that keep nav inside the demo. */
   basePath?: string;
   user?: CurrentUser;
+  /** Override Messages nav badge; omit to let the sidebar load unread count. */
+  unreadMessages?: number;
 };
 
 export function AppShell({
@@ -18,6 +21,7 @@ export function AppShell({
   rightSidebar,
   basePath,
   user,
+  unreadMessages,
 }: AppShellProps) {
   return (
     <div className="flex h-screen overflow-hidden bg-background text-foreground">
@@ -26,6 +30,7 @@ export function AppShell({
           activeNavId={activeNavId}
           basePath={basePath}
           user={user}
+          unreadMessages={unreadMessages}
         />
       </div>
       <main className="min-w-0 flex-1 overflow-y-auto scrollbar-thin">
@@ -46,7 +51,7 @@ export function AppShell({
           {children}
         </div>
       </main>
-      {rightSidebar ?? <RightSidebar />}
+      {rightSidebar === undefined ? <RightSidebar /> : rightSidebar}
     </div>
   );
 }

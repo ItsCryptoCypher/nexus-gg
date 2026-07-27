@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { MoreHorizontal } from "lucide-react";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
@@ -69,9 +70,12 @@ export function NexusFriendCard({ friend }: NexusFriendCardProps) {
       </div>
 
       <div className="mt-auto flex gap-2">
-        <Button variant="outline" size="sm" className="flex-1">
+        <Link
+          href={`/messages?with=${friend.id}`}
+          className="inline-flex h-8 flex-1 items-center justify-center gap-2 rounded-lg border border-border bg-transparent px-3 text-xs font-medium text-foreground transition-colors hover:bg-surface-hover"
+        >
           Message
-        </Button>
+        </Link>
         <Button variant="primary" size="sm" className="flex-1">
           Invite
         </Button>

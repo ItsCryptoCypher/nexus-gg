@@ -2,18 +2,37 @@ import { ConnectPlatforms } from "@/components/sidebar/ConnectPlatforms";
 import { NavSection } from "@/components/sidebar/NavSection";
 import { UserProfileCard } from "@/components/sidebar/UserProfileCard";
 import { currentUser, navGroups, type CurrentUser } from "@/data/mock";
+import { getUnreadMessageCount } from "@/lib/messages/get-messages-page";
 
 type LeftSidebarProps = {
   activeNavId?: string;
   basePath?: string;
   user?: CurrentUser;
+  unreadMessages?: number;
 };
 
-export function LeftSidebar({
+export async function LeftSidebar({
   activeNavId = "play-now",
   basePath,
   user = currentUser,
+  unreadMessages,
 }: LeftSidebarProps) {
+  const unread =
+    unreadMessages ??
+    (basePath === "/demo" ? 0 : await getUnreadMessageCount());
+
+  const groups = navGroups.map((group) => ({
+    ...group,
+    items: group.items.map((item) =>
+      item.id === "messages"
+        ? {
+            ...item,
+            badge: unread > 0 ? unread : undefined,
+          }
+        : item,
+    ),
+  }));
+
   return (
     <aside className="flex h-full w-[240px] shrink-0 flex-col border-r border-border-subtle bg-background">
       <div className="flex items-center gap-2.5 px-5 py-5">
@@ -33,7 +52,7 @@ export function LeftSidebar({
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 pb-4 scrollbar-thin">
-        {navGroups.map((group, index) => (
+        {groups.map((group, index) => (
           <div key={group.id}>
             {index > 0 ? (
               <div className="mx-3 mb-4 h-px bg-border-subtle" aria-hidden />
