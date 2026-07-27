@@ -19,15 +19,30 @@ export const metadata = {
     "Mock Parties showcase with placeholder data for demos and investor previews.",
 };
 
-/** Static mock showcase — keep for demos while /parties moves to real data. */
+/** Static mock showcase — keep for demos while /parties uses live Discord parties. */
 export default function DemoPartiesPage() {
+  const liveYourParty = {
+    ...yourParty,
+    isHost: true,
+    discordInviteUrl: "https://discord.gg/nexus-demo",
+    voiceReady: true,
+    memberCount: yourParty.members.length + yourParty.extraMembers,
+    inVoiceCount: 2,
+  };
+
+  const liveInvites = partyInvites.map((invite) => ({
+    ...invite,
+    partyId: invite.id,
+    hostId: "demo-host",
+  }));
+
   return (
     <AppShell
       basePath="/demo"
       activeNavId="parties"
       rightSidebar={
         <PartiesRightSidebar
-          invites={partyInvites}
+          invites={liveInvites}
           friends={friendsInParties}
           liveNow={liveNowItems}
         />
@@ -40,9 +55,10 @@ export default function DemoPartiesPage() {
       <PartiesTabs>
         <PartiesHome
           stats={partyStats}
-          yourParty={yourParty}
+          yourParty={liveYourParty}
           openParties={openParties}
           liveRooms={liveRooms}
+          friendOptions={[]}
         />
       </PartiesTabs>
     </AppShell>

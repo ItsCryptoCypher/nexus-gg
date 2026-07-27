@@ -45,11 +45,18 @@ export function OpenGameParties({ parties }: OpenGamePartiesProps) {
         </div>
       </div>
 
-      <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-thin">
-        {parties.map((party) => (
-          <OpenPartyCard key={party.id} party={party} />
-        ))}
-      </div>
+      {parties.length === 0 ? (
+        <p className="rounded-xl border border-border-subtle bg-surface px-4 py-6 text-sm text-muted">
+          Public open lobbies coming soon. For now, create a party and invite
+          Nexus friends.
+        </p>
+      ) : (
+        <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-thin">
+          {parties.map((party) => (
+            <OpenPartyCard key={party.id} party={party} />
+          ))}
+        </div>
+      )}
     </SectionCard>
   );
 }

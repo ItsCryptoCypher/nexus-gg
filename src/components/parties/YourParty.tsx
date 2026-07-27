@@ -1,17 +1,44 @@
+"use client";
+
 import Image from "next/image";
-import { ChevronDown, Mic, Pencil, UserPlus } from "lucide-react";
+import { useState, useTransition } from "react";
+import { ExternalLink, Mic, UserPlus } from "lucide-react";
+import {
+  endGameParty,
+  inviteFriendToParty,
+  leaveGameParty,
+} from "@/app/parties/actions";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { PlatformIcon } from "@/components/ui/PlatformIcon";
 import { SectionCard } from "@/components/ui/SectionCard";
-import type { YourParty as YourPartyData } from "@/data/mock";
+import type { LiveYourParty } from "@/lib/parties/get-parties-page";
+
+type FriendOption = { id: string; username: string; avatarUrl: string };
 
 type YourPartyProps = {
-  party: YourPartyData;
+  party: LiveYourParty | null;
+  friendOptions?: FriendOption[];
 };
 
-export function YourParty({ party }: YourPartyProps) {
+export function YourParty({ party, friendOptions = [] }: YourPartyProps) {
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  if (!party) {
+    return (
+      <SectionCard className="mb-6" padding="lg">
+        <h2 className="text-base font-semibold text-foreground">Your Party</h2>
+        <p className="mt-2 text-sm text-muted">
+          You&apos;re not in a party yet. Create one above — we&apos;ll spin up a
+          private Discord voice channel for cross-platform chat.
+        </p>
+      </SectionCard>
+    );
+  }
+
   return (
     <SectionCard className="mb-6" padding="lg">
       <div className="mb-4 flex items-center justify-between gap-3">
@@ -22,13 +49,6 @@ export function YourParty({ party }: YourPartyProps) {
             Live
           </span>
         </div>
-        <button
-          type="button"
-          className="inline-flex items-center gap-1 rounded-lg border border-border-subtle px-2.5 py-1.5 text-xs text-muted transition-colors hover:bg-surface-hover hover:text-foreground"
-        >
-          Party Actions
-          <ChevronDown className="h-3.5 w-3.5" />
-        </button>
       </div>
 
       <div className="flex flex-col gap-5 rounded-xl border border-border-subtle bg-surface-elevated p-4 lg:flex-row lg:items-stretch">
@@ -48,18 +68,9 @@ export function YourParty({ party }: YourPartyProps) {
 
         <div className="min-w-0 flex-1 space-y-4">
           <div>
-            <div className="flex items-center gap-2">
-              <h3 className="truncate text-lg font-semibold text-foreground">
-                {party.name}
-              </h3>
-              <button
-                type="button"
-                className="rounded-md p-1 text-muted transition-colors hover:bg-surface-hover hover:text-foreground"
-                aria-label="Edit party name"
-              >
-                <Pencil className="h-3.5 w-3.5" />
-              </button>
-            </div>
+            <h3 className="truncate text-lg font-semibold text-foreground">
+              {party.name}
+            </h3>
             <p className="mt-1 text-sm text-muted">{party.description}</p>
           </div>
 
@@ -100,11 +111,6 @@ export function YourParty({ party }: YourPartyProps) {
                     />
                   </div>
                 ))}
-                {party.extraMembers > 0 ? (
-                  <span className="-ml-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-surface text-[11px] font-semibold text-muted ring-2 ring-surface-elevated">
-                    +{party.extraMembers}
-                  </span>
-                ) : null}
               </div>
             </div>
 
@@ -127,24 +133,108 @@ export function YourParty({ party }: YourPartyProps) {
               </p>
             </div>
           </div>
+
+          {error ? <p className="text-xs text-red-400">{error}</p> : null}
+
+          {inviteOpen ? (
+            <div className="rounded-lg border border-border-subtle bg-surface p-3">
+              <p className="mb-2 text-xs font-medium text-muted">
+                Invite a Nexus friend
+              </p>
+              {friendOptions.length === 0 ? (
+                <p className="text-xs text-muted">
+                  Add Nexus friends first, then invite them here.
+                </p>
+              ) : (
+                <ul className="space-y-2">
+                  {friendOptions.map((friend) => (
+                    <li
+                      key={friend.id}
+                      className="flex items-center justify-between gap-2"
+                    >
+                      <div className="flex min-w-0 items-center gap-2">
+                        <Avatar
+                          src={friend.avatarUrl}
+                          alt={friend.username}
+                          size="sm"
+                        />
+                        <span className="truncate text-sm text-foreground">
+                          {friend.username}
+                        </span>
+                      </div>
+                      <Button
+                        size="sm"
+                        disabled={isPending}
+                        onClick={() => {
+                          setError(null);
+                          startTransition(async () => {
+                            const result = await inviteFriendToParty(
+                              party.id,
+                              friend.id,
+                            );
+                            if (!result.ok) setError(result.error);
+                            else setInviteOpen(false);
+                          });
+                        }}
+                      >
+                        Invite
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ) : null}
         </div>
 
-        <div className="flex shrink-0 flex-col gap-2 lg:w-40">
-          <Button size="sm" fullWidth>
-            <UserPlus className="h-3.5 w-3.5" />
-            Invite Friends
-          </Button>
-          <Button size="sm" variant="outline" fullWidth>
-            <Mic className="h-3.5 w-3.5" />
-            Start Voice
-          </Button>
+        <div className="flex shrink-0 flex-col gap-2 lg:w-44">
+          {party.isHost ? (
+            <Button
+              size="sm"
+              fullWidth
+              disabled={isPending}
+              onClick={() => setInviteOpen((v) => !v)}
+            >
+              <UserPlus className="h-3.5 w-3.5" />
+              Invite Friends
+            </Button>
+          ) : null}
+
+          {party.discordInviteUrl ? (
+            <a
+              href={party.discordInviteUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-8 w-full items-center justify-center gap-2 rounded-lg border border-border bg-transparent px-3 text-xs font-medium text-foreground transition-colors hover:bg-surface-hover"
+            >
+              <Mic className="h-3.5 w-3.5" />
+              Join party voice
+              <ExternalLink className="h-3 w-3 text-muted" />
+            </a>
+          ) : (
+            <Button size="sm" variant="outline" fullWidth disabled>
+              <Mic className="h-3.5 w-3.5" />
+              Voice setting up…
+            </Button>
+          )}
+
           <Button
             size="sm"
             variant="outline"
             fullWidth
+            disabled={isPending}
             className="border-red-500/40 text-red-400 hover:bg-red-500/10 hover:text-red-300"
+            onClick={() => {
+              setError(null);
+              startTransition(async () => {
+                const result = party.isHost
+                  ? await endGameParty(party.id)
+                  : await leaveGameParty(party.id);
+                if (!result.ok) setError(result.error);
+              });
+            }}
           >
-            Leave Party
+            {party.isHost ? "End Party" : "Leave Party"}
           </Button>
         </div>
       </div>

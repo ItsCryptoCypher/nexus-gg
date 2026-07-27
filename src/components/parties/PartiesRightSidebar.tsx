@@ -1,10 +1,11 @@
 import { FriendsInParties } from "@/components/parties/FriendsInParties";
 import { LiveNow } from "@/components/parties/LiveNow";
 import { PartyInvites } from "@/components/parties/PartyInvites";
-import type { FriendInParty, LiveNowItem, PartyInvite } from "@/data/mock";
+import type { FriendInParty, LiveNowItem } from "@/data/mock";
+import type { LivePartyInvite } from "@/lib/parties/get-parties-page";
 
 type PartiesRightSidebarProps = {
-  invites: PartyInvite[];
+  invites: LivePartyInvite[];
   friends: FriendInParty[];
   liveNow: LiveNowItem[];
 };

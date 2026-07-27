@@ -1,4 +1,5 @@
-import { Mic, Plus, Radio } from "lucide-react";
+import { Mic, Radio } from "lucide-react";
+import { CreatePartyPanel } from "@/components/parties/CreatePartyPanel";
 import { Button } from "@/components/ui/Button";
 import { SectionCard } from "@/components/ui/SectionCard";
 
@@ -10,14 +11,12 @@ export function QuickActions() {
           <div>
             <h2 className="text-lg font-semibold text-foreground">Create Party</h2>
             <p className="mt-1 max-w-sm text-sm text-muted">
-              Play together with friends and the community.
+              Start a game party. Discord hosts the private voice channel for PC
+              and console.
             </p>
           </div>
           <div>
-            <Button size="lg">
-              <Plus className="h-4 w-4" />
-              Create Party
-            </Button>
+            <CreatePartyPanel />
           </div>
         </div>
 
@@ -39,7 +38,7 @@ export function QuickActions() {
                 Start Live Room
               </h2>
               <p className="mt-1 max-w-sm text-sm text-muted">
-                Host a voice room and connect with the community.
+                Community rooms coming next — game parties ship first.
               </p>
             </div>
             <div className="relative hidden h-16 w-16 shrink-0 sm:block">
@@ -50,9 +49,9 @@ export function QuickActions() {
             </div>
           </div>
           <div>
-            <Button size="lg">
+            <Button size="lg" disabled>
               <Radio className="h-4 w-4" />
-              Start Live Room
+              Coming soon
             </Button>
           </div>
         </div>

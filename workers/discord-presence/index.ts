@@ -2,10 +2,12 @@ import { resolve } from "node:path";
 import dotenv from "dotenv";
 import {
   ActivityType,
+  ChannelType,
   Client,
   GatewayIntentBits,
   type Activity,
   type Presence,
+  type VoiceState,
 } from "discord.js";
 import { createClient } from "@supabase/supabase-js";
 
@@ -32,6 +34,7 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildPresences,
+    GatewayIntentBits.GuildVoiceStates,
   ],
 });
 
@@ -153,13 +156,111 @@ async function syncGuildSnapshot() {
   console.log(`Synced snapshot for ${guild.memberCount} members (${count} with presence)`);
 }
 
+async function setMemberInVoice(
+  discordUserId: string,
+  channelId: string | null,
+  inVoice: boolean,
+) {
+  if (!channelId) return;
+
+  const { data: party } = await supabase
+    .from("game_parties")
+    .select("id")
+    .eq("discord_channel_id", channelId)
+    .eq("status", "active")
+    .maybeSingle();
+
+  if (!party) return;
+
+  const { error } = await supabase
+    .from("game_party_members")
+    .update({
+      in_voice: inVoice,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("party_id", party.id)
+    .eq("discord_id", discordUserId)
+    .in("status", ["joined", "invited"]);
+
+  if (error) {
+    console.error("Failed to update in_voice", discordUserId, error.message);
+    return;
+  }
+
+  console.log(
+    `party voice ${discordUserId}: ${inVoice ? "joined" : "left"} ${channelId}`,
+  );
+}
+
+async function handleVoiceStateUpdate(oldState: VoiceState, newState: VoiceState) {
+  if (newState.guild.id !== guildId && oldState.guild.id !== guildId) return;
+  const userId = newState.id || oldState.id;
+  if (!userId) return;
+  if (newState.member?.user.bot || oldState.member?.user.bot) return;
+
+  const oldChannel = oldState.channelId;
+  const newChannel = newState.channelId;
+
+  if (oldChannel === newChannel) return;
+
+  if (oldChannel) {
+    await setMemberInVoice(userId, oldChannel, false);
+  }
+  if (newChannel) {
+    await setMemberInVoice(userId, newChannel, true);
+  }
+}
+
+/** Delete Discord VCs for ended parties; clear stale channel ids. */
+async function cleanupEndedPartyChannels() {
+  const { data: ended } = await supabase
+    .from("game_parties")
+    .select("id, discord_channel_id")
+    .eq("status", "ended")
+    .not("discord_channel_id", "is", null)
+    .limit(20);
+
+  if (!ended?.length) return;
+
+  const guild = await client.guilds.fetch(guildId!);
+
+  for (const party of ended) {
+    const channelId = party.discord_channel_id;
+    if (!channelId) continue;
+    try {
+      const channel = await guild.channels.fetch(channelId).catch(() => null);
+      if (channel && channel.type === ChannelType.GuildVoice) {
+        await channel.delete("Nexus party ended");
+        console.log(`Deleted ended party VC ${channelId}`);
+      }
+    } catch (err) {
+      console.error("Failed deleting party VC", channelId, err);
+    }
+
+    await supabase
+      .from("game_parties")
+      .update({
+        discord_channel_id: null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", party.id);
+  }
+}
+
 client.once("clientReady", async () => {
   console.log(`Logged in as ${client.user?.tag}`);
   try {
     await syncGuildSnapshot();
+    await cleanupEndedPartyChannels();
   } catch (err) {
     console.error("Initial sync failed", err);
   }
+
+  setInterval(() => {
+    cleanupEndedPartyChannels().catch((err) =>
+      console.error("Party cleanup failed", err),
+    );
+  }, 60_000);
 });
 
 client.on("presenceUpdate", async (_oldPresence, newPresence) => {
@@ -173,6 +274,10 @@ client.on("guildMemberAdd", async (member) => {
   if (member.presence) {
     await upsertPresence(member.presence);
   }
+});
+
+client.on("voiceStateUpdate", async (oldState, newState) => {
+  await handleVoiceStateUpdate(oldState, newState);
 });
 
 client.login(token);
