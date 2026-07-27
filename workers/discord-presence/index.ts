@@ -48,11 +48,27 @@ function pickActivity(activities: readonly Activity[] | undefined) {
   return playable ?? activities.find((a) => a.type !== ActivityType.Custom) ?? null;
 }
 
-/** Discord sends activity.platform (xbox / ps5 / desktop) but discord.js types omit it. */
+/** Discord may send activity.platform (xbox / ps5 / desktop); discord.js types omit it. */
 function getActivityPlatform(activity: Activity | null): string | null {
   if (!activity) return null;
-  const withPlatform = activity as Activity & { platform?: string };
-  return typeof withPlatform.platform === "string" ? withPlatform.platform : null;
+  const raw = activity as Activity & {
+    platform?: string;
+    // Some gateway payloads nest platform under flags / assets historically
+    details?: string | null;
+  };
+  if (typeof raw.platform === "string" && raw.platform.length > 0) {
+    return raw.platform;
+  }
+  // Fallback: inspect toJSON() in case discord.js hides undeclared fields
+  try {
+    const json = activity.toJSON() as { platform?: string };
+    if (typeof json.platform === "string" && json.platform.length > 0) {
+      return json.platform;
+    }
+  } catch {
+    /* ignore */
+  }
+  return null;
 }
 
 async function upsertPresence(presence: Presence) {
