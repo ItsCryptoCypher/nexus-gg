@@ -296,7 +296,6 @@ export const navGroups: NavGroup[] = [
       { id: "play-now", label: "Play Now", icon: "zap", href: "/play" },
       { id: "friends", label: "Friends", icon: "users", href: "/friends" },
       { id: "parties", label: "Parties", icon: "party-popper", href: "/parties" },
-      { id: "rooms", label: "Rooms", icon: "radio", href: "/rooms" },
       {
         id: "messages",
         label: "Messages",
@@ -310,6 +309,7 @@ export const navGroups: NavGroup[] = [
     id: "explore",
     label: "EXPLORE",
     items: [
+      { id: "rooms", label: "Rooms", icon: "radio", href: "/rooms" },
       { id: "game-hubs", label: "Game Hubs", icon: "layout-grid", href: "#" },
       { id: "events", label: "Events", icon: "calendar", href: "#" },
     ],
