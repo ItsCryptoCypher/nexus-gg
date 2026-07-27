@@ -12,7 +12,7 @@ type DiscordAuthButtonProps = {
 export function DiscordAuthButton({
   label = "Sign Up with Discord",
   className,
-  next = "/play",
+  next = "/setup",
 }: DiscordAuthButtonProps) {
   async function handleClick() {
     const supabase = createClient();
@@ -21,10 +21,10 @@ export function DiscordAuthButton({
       provider: "discord",
       options: {
         redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(next)}`,
-        // guilds.join lets us auto-add the user to the Nexus Discord server
-        scopes: "identify email guilds.join",
+        // guilds.join = Nexus server; connections = linked Steam/Xbox/PSN
+        scopes: "identify email guilds.join connections",
         queryParams: {
-          // Force re-consent when scopes change so existing users get guilds.join
+          // Force re-consent when scopes change (e.g. adding connections)
           prompt: "consent",
         },
       },

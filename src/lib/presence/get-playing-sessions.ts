@@ -64,7 +64,7 @@ export async function getPlayingSessions(): Promise<PlayingSession[]> {
     const avatarUrl =
       profile?.avatar_url ||
       row.avatar_url ||
-      `https://cdn.discordapp.com/embed/avatars/${Number(BigInt(row.discord_id) % 6n)}.png`;
+      `https://cdn.discordapp.com/embed/avatars/${Number(row.discord_id.slice(-2)) % 6}.png`;
     const inGame = Boolean(row.activity_name);
 
     return {
