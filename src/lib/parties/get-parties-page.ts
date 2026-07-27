@@ -1,7 +1,6 @@
 import type {
   FriendInParty,
   LiveNowItem,
-  LiveRoom,
   OpenParty,
   PartyInvite,
   StatItem,
@@ -29,7 +28,6 @@ export type PartiesPageData = {
   stats: StatItem[];
   yourParty: LiveYourParty | null;
   openParties: OpenParty[];
-  liveRooms: LiveRoom[];
   partyInvites: LivePartyInvite[];
   friendsInParties: FriendInParty[];
   liveNow: LiveNowItem[];
@@ -53,11 +51,11 @@ function emptyStats(): StatItem[] {
       icon: "users",
     },
     {
-      id: "live-rooms",
-      label: "Live Rooms",
+      id: "joinable-parties",
+      label: "Joinable Parties",
       value: 0,
       tone: "green",
-      icon: "radio",
+      icon: "users",
     },
     {
       id: "invites",
@@ -79,7 +77,6 @@ export async function getPartiesPageData(): Promise<PartiesPageData> {
       stats: emptyStats(),
       yourParty: null,
       openParties: [],
-      liveRooms: [],
       partyInvites: [],
       friendsInParties: [],
       liveNow: [],
@@ -246,7 +243,6 @@ export async function getPartiesPageData(): Promise<PartiesPageData> {
     stats,
     yourParty,
     openParties: [],
-    liveRooms: [],
     partyInvites,
     friendsInParties: [],
     liveNow: [],

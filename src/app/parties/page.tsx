@@ -11,7 +11,7 @@ import { createClient } from "@/lib/supabase/server";
 export const metadata = {
   title: "Nexus.gg — Parties",
   description:
-    "Create, join, and discover live game parties and rooms with friends and the community.",
+    "Create, join, and discover live game parties with friends and the community.",
 };
 
 export default async function PartiesPage() {
@@ -48,7 +48,6 @@ export default async function PartiesPage() {
           stats={parties.stats}
           yourParty={parties.yourParty}
           openParties={parties.openParties}
-          liveRooms={parties.liveRooms}
           friendOptions={parties.nexusFriendOptions}
         />
       </PartiesTabs>

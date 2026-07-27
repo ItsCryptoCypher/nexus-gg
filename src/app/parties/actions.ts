@@ -62,6 +62,191 @@ async function refreshChannelAccess(partyId: string, channelId: string) {
   });
 }
 
+/** End a party + delete VC using service role (for empty/orphan cleanup). */
+async function forceEndParty(partyId: string) {
+  const admin = createAdminClient();
+  const { data: party } = await admin
+    .from("game_parties")
+    .select("id, discord_channel_id, status")
+    .eq("id", partyId)
+    .maybeSingle();
+
+  if (!party || party.status === "ended") return;
+
+  const channelId = party.discord_channel_id as string | null;
+
+  await admin
+    .from("game_parties")
+    .update({
+      status: "ended",
+      ended_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", partyId);
+
+  await admin
+    .from("game_party_members")
+    .update({
+      status: "left",
+      in_voice: false,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("party_id", partyId)
+    .neq("status", "left");
+
+  if (channelId) {
+    try {
+      await deletePartyVoiceChannel(channelId);
+      await admin
+        .from("game_parties")
+        .update({
+          discord_channel_id: null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", partyId);
+    } catch (err) {
+      console.error("Failed to delete party VC", channelId, err);
+    }
+  }
+}
+
+async function endPartyIfNoJoinedMembers(partyId: string) {
+  const admin = createAdminClient();
+  const { count } = await admin
+    .from("game_party_members")
+    .select("user_id", { count: "exact", head: true })
+    .eq("party_id", partyId)
+    .eq("status", "joined");
+
+  if ((count ?? 0) === 0) {
+    await forceEndParty(partyId);
+  }
+}
+
+/**
+ * Leave a party. If the leaver is host and others remain, transfer host.
+ * If nobody remains joined, end the party and delete the VC.
+ */
+async function leavePartyMembership(partyId: string, userId: string) {
+  const admin = createAdminClient();
+  const { data: party } = await admin
+    .from("game_parties")
+    .select("id, host_id, status, discord_channel_id")
+    .eq("id", partyId)
+    .maybeSingle();
+
+  if (!party || party.status === "ended") return;
+
+  const isHost = party.host_id === userId;
+
+  if (isHost) {
+    const { data: nextHost } = await admin
+      .from("game_party_members")
+      .select("user_id")
+      .eq("party_id", partyId)
+      .eq("status", "joined")
+      .neq("user_id", userId)
+      .order("created_at", { ascending: true })
+      .limit(1)
+      .maybeSingle();
+
+    if (nextHost?.user_id) {
+      await admin
+        .from("game_parties")
+        .update({
+          host_id: nextHost.user_id,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", partyId);
+
+      await admin
+        .from("game_party_members")
+        .update({
+          role: "host",
+          updated_at: new Date().toISOString(),
+        })
+        .eq("party_id", partyId)
+        .eq("user_id", nextHost.user_id);
+
+      await admin
+        .from("game_party_members")
+        .update({
+          role: "member",
+          status: "left",
+          in_voice: false,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("party_id", partyId)
+        .eq("user_id", userId);
+
+      if (party.discord_channel_id) {
+        try {
+          await refreshChannelAccess(partyId, party.discord_channel_id);
+        } catch {
+          /* ignore */
+        }
+      }
+      return;
+    }
+
+    // Host was alone — end party
+    await forceEndParty(partyId);
+    return;
+  }
+
+  await admin
+    .from("game_party_members")
+    .update({
+      status: "left",
+      in_voice: false,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("party_id", partyId)
+    .eq("user_id", userId);
+
+  if (party.discord_channel_id) {
+    try {
+      await refreshChannelAccess(partyId, party.discord_channel_id);
+    } catch {
+      /* ignore */
+    }
+  }
+
+  await endPartyIfNoJoinedMembers(partyId);
+}
+
+/**
+ * Leave other active parties before joining/creating a new one.
+ * Hosts transfer ownership when friends remain; empty parties end.
+ */
+async function leaveOtherActiveParties(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  userId: string,
+  exceptPartyId?: string,
+) {
+  const { data: joinedRows } = await supabase
+    .from("game_party_members")
+    .select("party_id")
+    .eq("user_id", userId)
+    .eq("status", "joined");
+
+  if (!joinedRows?.length) return;
+
+  const { data: activeParties } = await supabase
+    .from("game_parties")
+    .select("id, host_id")
+    .in(
+      "id",
+      joinedRows.map((r) => r.party_id),
+    )
+    .eq("status", "active");
+
+  for (const row of activeParties ?? []) {
+    if (exceptPartyId && row.id === exceptPartyId) continue;
+    await leavePartyMembership(row.id, userId);
+  }
+}
+
 export async function createGameParty(formData: FormData) {
   const { supabase, userId } = await requireUser();
   if (!userId) return { ok: false as const, error: "Sign in required." };
@@ -83,27 +268,18 @@ export async function createGameParty(formData: FormData) {
     };
   }
 
-  // One active party at a time
-  const { data: existingRows } = await supabase
-    .from("game_party_members")
-    .select("party_id")
-    .eq("user_id", userId)
-    .eq("status", "joined");
+  // Clear any current membership / orphaned hosted party before creating
+  await leaveOtherActiveParties(supabase, userId);
 
-  if (existingRows?.length) {
-    const partyIds = existingRows.map((r) => r.party_id);
-    const { data: activeParties } = await supabase
-      .from("game_parties")
-      .select("id")
-      .in("id", partyIds)
-      .eq("status", "active")
-      .limit(1);
-    if (activeParties?.length) {
-      return {
-        ok: false as const,
-        error: "Leave your current party before creating a new one.",
-      };
-    }
+  // Also end active parties this user still hosts with no joined seat (zombies)
+  const { data: hostedZombies } = await supabase
+    .from("game_parties")
+    .select("id")
+    .eq("host_id", userId)
+    .eq("status", "active");
+
+  for (const zombie of hostedZombies ?? []) {
+    await endPartyIfNoJoinedMembers(zombie.id);
   }
 
   const { data: party, error: partyError } = await supabase
@@ -263,32 +439,8 @@ export async function acceptPartyInvite(partyId: string) {
     return { ok: false as const, error: "Invite not found." };
   }
 
-  // Leave any other active party first
-  const { data: joinedRows } = await supabase
-    .from("game_party_members")
-    .select("party_id")
-    .eq("user_id", userId)
-    .eq("status", "joined");
-
-  if (joinedRows?.length) {
-    const { data: activeParties } = await supabase
-      .from("game_parties")
-      .select("id")
-      .in(
-        "id",
-        joinedRows.map((r) => r.party_id),
-      )
-      .eq("status", "active");
-
-    for (const row of activeParties ?? []) {
-      if (row.id === partyId) continue;
-      await supabase
-        .from("game_party_members")
-        .update({ status: "left", updated_at: new Date().toISOString() })
-        .eq("party_id", row.id)
-        .eq("user_id", userId);
-    }
-  }
+  // Leave / end any other active party first (hosts must end, not orphan)
+  await leaveOtherActiveParties(supabase, userId, partyId);
 
   const { error } = await supabase
     .from("game_party_members")
@@ -337,12 +489,13 @@ export async function declinePartyInvite(partyId: string) {
 }
 
 export async function leaveGameParty(partyId: string) {
-  const { supabase, userId } = await requireUser();
+  const { userId } = await requireUser();
   if (!userId) return { ok: false as const, error: "Sign in required." };
 
-  const { data: party } = await supabase
+  const admin = createAdminClient();
+  const { data: party } = await admin
     .from("game_parties")
-    .select("id, host_id, status, discord_channel_id")
+    .select("id, status")
     .eq("id", partyId)
     .maybeSingle();
 
@@ -350,29 +503,19 @@ export async function leaveGameParty(partyId: string) {
     return { ok: false as const, error: "Party not found." };
   }
 
-  if (party.host_id === userId) {
-    return endGameParty(partyId);
-  }
-
-  const { error } = await supabase
+  const { data: membership } = await admin
     .from("game_party_members")
-    .update({
-      status: "left",
-      in_voice: false,
-      updated_at: new Date().toISOString(),
-    })
+    .select("user_id")
     .eq("party_id", partyId)
-    .eq("user_id", userId);
+    .eq("user_id", userId)
+    .eq("status", "joined")
+    .maybeSingle();
 
-  if (error) return { ok: false as const, error: error.message };
-
-  if (party.discord_channel_id) {
-    try {
-      await refreshChannelAccess(partyId, party.discord_channel_id);
-    } catch {
-      /* ignore */
-    }
+  if (!membership) {
+    return { ok: false as const, error: "You're not in this party." };
   }
+
+  await leavePartyMembership(partyId, userId);
 
   revalidateParties();
   return { ok: true as const };
@@ -392,37 +535,7 @@ export async function endGameParty(partyId: string) {
     return { ok: false as const, error: "Only the host can end the party." };
   }
 
-  const channelId = party.discord_channel_id;
-
-  const { error } = await supabase
-    .from("game_parties")
-    .update({
-      status: "ended",
-      ended_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", partyId)
-    .eq("host_id", userId);
-
-  if (error) return { ok: false as const, error: error.message };
-
-  await supabase
-    .from("game_party_members")
-    .update({
-      status: "left",
-      in_voice: false,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("party_id", partyId)
-    .neq("status", "left");
-
-  if (channelId) {
-    try {
-      await deletePartyVoiceChannel(channelId);
-    } catch (err) {
-      console.error("Failed to delete party VC", err);
-    }
-  }
+  await forceEndParty(partyId);
 
   revalidateParties();
   return { ok: true as const };

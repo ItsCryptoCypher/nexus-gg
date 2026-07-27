@@ -6,7 +6,6 @@ import { PartiesTabs } from "@/components/parties/PartiesTabs";
 import {
   friendsInParties,
   liveNowItems,
-  liveRooms,
   openParties,
   partyInvites,
   partyStats,
@@ -50,14 +49,13 @@ export default function DemoPartiesPage() {
     >
       <TopBar
         title="Parties"
-        subtitle="Create, join, and discover live game parties and rooms."
+        subtitle="Create, join, and discover live game parties."
       />
       <PartiesTabs>
         <PartiesHome
           stats={partyStats}
           yourParty={liveYourParty}
           openParties={openParties}
-          liveRooms={liveRooms}
           friendOptions={[]}
         />
       </PartiesTabs>

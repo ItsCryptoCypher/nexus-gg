@@ -223,19 +223,35 @@ export function YourParty({ party, friendOptions = [] }: YourPartyProps) {
             variant="outline"
             fullWidth
             disabled={isPending}
-            className="border-red-500/40 text-red-400 hover:bg-red-500/10 hover:text-red-300"
             onClick={() => {
               setError(null);
               startTransition(async () => {
-                const result = party.isHost
-                  ? await endGameParty(party.id)
-                  : await leaveGameParty(party.id);
+                const result = await leaveGameParty(party.id);
                 if (!result.ok) setError(result.error);
               });
             }}
           >
-            {party.isHost ? "End Party" : "Leave Party"}
+            Leave Party
           </Button>
+
+          {party.isHost ? (
+            <Button
+              size="sm"
+              variant="outline"
+              fullWidth
+              disabled={isPending}
+              className="border-red-500/40 text-red-400 hover:bg-red-500/10 hover:text-red-300"
+              onClick={() => {
+                setError(null);
+                startTransition(async () => {
+                  const result = await endGameParty(party.id);
+                  if (!result.ok) setError(result.error);
+                });
+              }}
+            >
+              End Party
+            </Button>
+          ) : null}
         </div>
       </div>
     </SectionCard>

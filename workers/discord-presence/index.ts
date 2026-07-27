@@ -211,6 +211,72 @@ async function handleVoiceStateUpdate(oldState: VoiceState, newState: VoiceState
   }
 }
 
+async function deletePartyChannel(channelId: string, reason: string) {
+  const guild = await client.guilds.fetch(guildId!);
+  try {
+    const channel = await guild.channels.fetch(channelId).catch(() => null);
+    if (channel && channel.type === ChannelType.GuildVoice) {
+      await channel.delete(reason);
+      console.log(`Deleted party VC ${channelId} (${reason})`);
+    }
+  } catch (err) {
+    console.error("Failed deleting party VC", channelId, err);
+  }
+}
+
+/** End active parties that have zero joined members (orphaned hosts). */
+async function cleanupOrphanActiveParties() {
+  const { data: active } = await supabase
+    .from("game_parties")
+    .select("id, discord_channel_id")
+    .eq("status", "active")
+    .limit(50);
+
+  for (const party of active ?? []) {
+    const { count } = await supabase
+      .from("game_party_members")
+      .select("user_id", { count: "exact", head: true })
+      .eq("party_id", party.id)
+      .eq("status", "joined");
+
+    if ((count ?? 0) > 0) continue;
+
+    console.log(`Ending orphan active party ${party.id}`);
+    await supabase
+      .from("game_parties")
+      .update({
+        status: "ended",
+        ended_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", party.id);
+
+    await supabase
+      .from("game_party_members")
+      .update({
+        status: "left",
+        in_voice: false,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("party_id", party.id)
+      .neq("status", "left");
+
+    if (party.discord_channel_id) {
+      await deletePartyChannel(
+        party.discord_channel_id,
+        "Nexus orphan party cleanup",
+      );
+      await supabase
+        .from("game_parties")
+        .update({
+          discord_channel_id: null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", party.id);
+    }
+  }
+}
+
 /** Delete Discord VCs for ended parties; clear stale channel ids. */
 async function cleanupEndedPartyChannels() {
   const { data: ended } = await supabase
@@ -222,20 +288,10 @@ async function cleanupEndedPartyChannels() {
 
   if (!ended?.length) return;
 
-  const guild = await client.guilds.fetch(guildId!);
-
   for (const party of ended) {
     const channelId = party.discord_channel_id;
     if (!channelId) continue;
-    try {
-      const channel = await guild.channels.fetch(channelId).catch(() => null);
-      if (channel && channel.type === ChannelType.GuildVoice) {
-        await channel.delete("Nexus party ended");
-        console.log(`Deleted ended party VC ${channelId}`);
-      }
-    } catch (err) {
-      console.error("Failed deleting party VC", channelId, err);
-    }
+    await deletePartyChannel(channelId, "Nexus party ended");
 
     await supabase
       .from("game_parties")
@@ -251,14 +307,15 @@ client.once("clientReady", async () => {
   console.log(`Logged in as ${client.user?.tag}`);
   try {
     await syncGuildSnapshot();
+    await cleanupOrphanActiveParties();
     await cleanupEndedPartyChannels();
   } catch (err) {
     console.error("Initial sync failed", err);
   }
 
   setInterval(() => {
-    cleanupEndedPartyChannels().catch((err) =>
-      console.error("Party cleanup failed", err),
+    Promise.all([cleanupOrphanActiveParties(), cleanupEndedPartyChannels()]).catch(
+      (err) => console.error("Party cleanup failed", err),
     );
   }, 60_000);
 });

@@ -1,8 +1,10 @@
 import {
   Activity,
+  Calendar,
   Gamepad2,
   Headphones,
   Mail,
+  Mic,
   PartyPopper,
   Radio,
   UserPlus,
@@ -20,6 +22,8 @@ const iconMap: Record<StatItem["icon"], LucideIcon> = {
   radio: Radio,
   mail: Mail,
   "user-plus": UserPlus,
+  mic: Mic,
+  calendar: Calendar,
 };
 
 const toneStyles: Record<

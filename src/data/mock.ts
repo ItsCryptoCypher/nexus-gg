@@ -34,7 +34,7 @@ export type CurrentUser = {
 export type StatItem = {
   id: string;
   label: string;
-  value: number;
+  value: number | string;
   tone: "green" | "purple" | "blue" | "orange";
   icon:
     | "activity"
@@ -44,7 +44,9 @@ export type StatItem = {
     | "party"
     | "radio"
     | "mail"
-    | "user-plus";
+    | "user-plus"
+    | "mic"
+    | "calendar";
   hint?: string;
 };
 
@@ -208,10 +210,51 @@ export type OpenParty = {
 export type LiveRoom = {
   id: string;
   title: string;
-  host: { username: string; avatarUrl: string };
+  gameTitle: string;
+  coverUrl: string;
+  host: { username: string; avatarUrl: string; verified?: boolean };
   listenersLabel: string;
   listeners: { id: string; username: string; avatarUrl: string }[];
   action: "listen" | "request-speak";
+};
+
+export type RoomTopic = {
+  id: string;
+  label: string;
+  icon: "strategy" | "ranked" | "esports" | "chill" | "news" | "coaching";
+  activeRooms: number;
+};
+
+export type UpcomingRoom = {
+  id: string;
+  title: string;
+  gameTitle: string;
+  coverUrl: string;
+  host: { username: string; avatarUrl: string; verified?: boolean };
+  whenLabel: string;
+};
+
+export type TrendingLiveRoom = {
+  id: string;
+  title: string;
+  hostUsername: string;
+  coverUrl: string;
+  viewersLabel: string;
+};
+
+export type PopularHost = {
+  id: string;
+  username: string;
+  avatarUrl: string;
+  followersLabel: string;
+};
+
+export type LiveNowByGame = {
+  id: string;
+  gameTitle: string;
+  iconUrl: string;
+  roomsLabel: string;
+  growthLabel: string;
 };
 
 export type PartyInvite = {
@@ -253,6 +296,7 @@ export const navGroups: NavGroup[] = [
       { id: "play-now", label: "Play Now", icon: "zap", href: "/play" },
       { id: "friends", label: "Friends", icon: "users", href: "/friends" },
       { id: "parties", label: "Parties", icon: "party-popper", href: "/parties" },
+      { id: "rooms", label: "Rooms", icon: "radio", href: "/rooms" },
       {
         id: "messages",
         label: "Messages",
@@ -267,7 +311,6 @@ export const navGroups: NavGroup[] = [
     label: "EXPLORE",
     items: [
       { id: "game-hubs", label: "Game Hubs", icon: "layout-grid", href: "#" },
-      { id: "communities", label: "Communities", icon: "globe", href: "#" },
       { id: "events", label: "Events", icon: "calendar", href: "#" },
     ],
   },
@@ -582,12 +625,12 @@ export const partyStats: StatItem[] = [
     hint: "Parties open",
   },
   {
-    id: "live-rooms",
-    label: "Live Rooms",
-    value: 186,
+    id: "friends-in-parties",
+    label: "Friends in Parties",
+    value: 14,
     tone: "blue",
-    icon: "radio",
-    hint: "Live now",
+    icon: "users",
+    hint: "Playing now",
   },
   {
     id: "invites",
@@ -596,6 +639,41 @@ export const partyStats: StatItem[] = [
     tone: "orange",
     icon: "mail",
     hint: "Pending",
+  },
+];
+
+export const roomStats: StatItem[] = [
+  {
+    id: "live-rooms",
+    label: "Live Rooms",
+    value: 186,
+    tone: "purple",
+    icon: "radio",
+    hint: "Right now",
+  },
+  {
+    id: "active-listeners",
+    label: "Active Listeners",
+    value: "12.4K",
+    tone: "green",
+    icon: "headset",
+    hint: "Across all rooms",
+  },
+  {
+    id: "active-hosts",
+    label: "Active Hosts",
+    value: 342,
+    tone: "blue",
+    icon: "mic",
+    hint: "Speaking live",
+  },
+  {
+    id: "upcoming-rooms",
+    label: "Upcoming Rooms",
+    value: 57,
+    tone: "orange",
+    icon: "calendar",
+    hint: "Next 7 days",
   },
 ];
 
@@ -693,10 +771,14 @@ export const openParties: OpenParty[] = [
 export const liveRooms: LiveRoom[] = [
   {
     id: "lr1",
-    title: "Chill & Chat",
+    title: "Elden Ring Boss Strategies",
+    gameTitle: "Elden Ring",
+    coverUrl:
+      "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=500&fit=crop",
     host: {
-      username: "LoFiNova",
-      avatarUrl: "https://i.pravatar.cc/150?img=9",
+      username: "MiraQuest",
+      avatarUrl: "https://i.pravatar.cc/150?img=16",
+      verified: true,
     },
     listenersLabel: "1.2K",
     listeners: [
@@ -709,10 +791,14 @@ export const liveRooms: LiveRoom[] = [
   },
   {
     id: "lr2",
-    title: "Warzone Strategy Lounge",
+    title: "Apex Legends Ranked Mentality",
+    gameTitle: "Apex Legends",
+    coverUrl:
+      "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=800&h=500&fit=crop",
     host: {
-      username: "Tactician",
-      avatarUrl: "https://i.pravatar.cc/150?img=18",
+      username: "DriftKing",
+      avatarUrl: "https://i.pravatar.cc/150?img=15",
+      verified: true,
     },
     listenersLabel: "864",
     listeners: [
@@ -724,12 +810,16 @@ export const liveRooms: LiveRoom[] = [
   },
   {
     id: "lr3",
-    title: "Late Night Ranked Talk",
+    title: "Warzone Meta Discussion",
+    gameTitle: "Call of Duty: Warzone",
+    coverUrl:
+      "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=800&h=500&fit=crop",
     host: {
-      username: "NightOwl",
-      avatarUrl: "https://i.pravatar.cc/150?img=21",
+      username: "HexRunner",
+      avatarUrl: "https://i.pravatar.cc/150?img=20",
+      verified: true,
     },
-    listenersLabel: "532",
+    listenersLabel: "2.1K",
     listeners: [
       { id: "l8", username: "H", avatarUrl: "https://i.pravatar.cc/150?img=17" },
       { id: "l9", username: "I", avatarUrl: "https://i.pravatar.cc/150?img=19" },
@@ -740,18 +830,183 @@ export const liveRooms: LiveRoom[] = [
   },
   {
     id: "lr4",
-    title: "Cozy Duo Finder",
+    title: "Valorant Agent Guide Live",
+    gameTitle: "Valorant",
+    coverUrl:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&h=500&fit=crop",
     host: {
       username: "SoftAim",
       avatarUrl: "https://i.pravatar.cc/150?img=29",
+      verified: true,
     },
-    listenersLabel: "318",
+    listenersLabel: "532",
     listeners: [
       { id: "l12", username: "L", avatarUrl: "https://i.pravatar.cc/150?img=30" },
       { id: "l13", username: "M", avatarUrl: "https://i.pravatar.cc/150?img=31" },
       { id: "l14", username: "N", avatarUrl: "https://i.pravatar.cc/150?img=34" },
     ],
     action: "request-speak",
+  },
+];
+
+export const roomTopics: RoomTopic[] = [
+  { id: "rt1", label: "Strategy & Tactics", icon: "strategy", activeRooms: 42 },
+  { id: "rt2", label: "Ranked Play", icon: "ranked", activeRooms: 38 },
+  { id: "rt3", label: "Esports", icon: "esports", activeRooms: 21 },
+  { id: "rt4", label: "Chill & Hangout", icon: "chill", activeRooms: 56 },
+  { id: "rt5", label: "Game News", icon: "news", activeRooms: 17 },
+  { id: "rt6", label: "Coaching & Tips", icon: "coaching", activeRooms: 29 },
+];
+
+export const upcomingRooms: UpcomingRoom[] = [
+  {
+    id: "ur1",
+    title: "Season Reset Prep Talk",
+    gameTitle: "Apex Legends",
+    coverUrl:
+      "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=600&h=400&fit=crop",
+    host: {
+      username: "MiraQuest",
+      avatarUrl: "https://i.pravatar.cc/150?img=16",
+      verified: true,
+    },
+    whenLabel: "Today · 3:00 PM",
+  },
+  {
+    id: "ur2",
+    title: "Patch Notes Deep Dive",
+    gameTitle: "Valorant",
+    coverUrl:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=400&fit=crop",
+    host: {
+      username: "NightOwl",
+      avatarUrl: "https://i.pravatar.cc/150?img=21",
+      verified: true,
+    },
+    whenLabel: "Today · 7:30 PM",
+  },
+  {
+    id: "ur3",
+    title: "Raid Strategy Workshop",
+    gameTitle: "Destiny 2",
+    coverUrl:
+      "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&h=400&fit=crop",
+    host: {
+      username: "Tactician",
+      avatarUrl: "https://i.pravatar.cc/150?img=18",
+      verified: true,
+    },
+    whenLabel: "Tomorrow · 5:00 PM",
+  },
+  {
+    id: "ur4",
+    title: "Pro Watch Party",
+    gameTitle: "League of Legends",
+    coverUrl:
+      "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=600&h=400&fit=crop",
+    host: {
+      username: "JonStream",
+      avatarUrl: "https://i.pravatar.cc/150?img=22",
+      verified: true,
+    },
+    whenLabel: "Sat · 2:00 PM",
+  },
+];
+
+export const trendingLiveRooms: TrendingLiveRoom[] = [
+  {
+    id: "tl1",
+    title: "Warzone News & Updates",
+    hostUsername: "HexRunner",
+    coverUrl:
+      "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=200&h=200&fit=crop",
+    viewersLabel: "2.1K",
+  },
+  {
+    id: "tl2",
+    title: "Elden Ring Boss Strategies",
+    hostUsername: "MiraQuest",
+    coverUrl:
+      "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=200&h=200&fit=crop",
+    viewersLabel: "1.2K",
+  },
+  {
+    id: "tl3",
+    title: "Apex Ranked Mentality",
+    hostUsername: "DriftKing",
+    coverUrl:
+      "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=200&h=200&fit=crop",
+    viewersLabel: "864",
+  },
+  {
+    id: "tl4",
+    title: "Late Night Chill Lounge",
+    hostUsername: "LoFiNova",
+    coverUrl:
+      "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=200&h=200&fit=crop",
+    viewersLabel: "640",
+  },
+];
+
+export const popularHosts: PopularHost[] = [
+  {
+    id: "ph1",
+    username: "MiraQuest",
+    avatarUrl: "https://i.pravatar.cc/150?img=16",
+    followersLabel: "48.2K",
+  },
+  {
+    id: "ph2",
+    username: "DriftKing",
+    avatarUrl: "https://i.pravatar.cc/150?img=15",
+    followersLabel: "36.8K",
+  },
+  {
+    id: "ph3",
+    username: "HexRunner",
+    avatarUrl: "https://i.pravatar.cc/150?img=20",
+    followersLabel: "29.1K",
+  },
+  {
+    id: "ph4",
+    username: "SoftAim",
+    avatarUrl: "https://i.pravatar.cc/150?img=29",
+    followersLabel: "22.4K",
+  },
+];
+
+export const liveNowByGame: LiveNowByGame[] = [
+  {
+    id: "lg1",
+    gameTitle: "Call of Duty: Warzone",
+    iconUrl:
+      "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=100&h=100&fit=crop",
+    roomsLabel: "2.3K",
+    growthLabel: "+12%",
+  },
+  {
+    id: "lg2",
+    gameTitle: "Apex Legends",
+    iconUrl:
+      "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=100&h=100&fit=crop",
+    roomsLabel: "1.8K",
+    growthLabel: "+8%",
+  },
+  {
+    id: "lg3",
+    gameTitle: "Valorant",
+    iconUrl:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=100&h=100&fit=crop",
+    roomsLabel: "1.4K",
+    growthLabel: "+15%",
+  },
+  {
+    id: "lg4",
+    gameTitle: "Elden Ring",
+    iconUrl:
+      "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100&h=100&fit=crop",
+    roomsLabel: "920",
+    growthLabel: "+6%",
   },
 ];
 

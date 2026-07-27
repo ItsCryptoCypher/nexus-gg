@@ -48,7 +48,7 @@ export function PartiesTabs({ children }: PartiesTabsProps) {
               {activeTab === "friends" ? "Friends" : "Public"} tab coming soon
             </p>
             <p className="mt-1 text-sm text-muted">
-              For now, explore parties and live rooms on the Home tab.
+              For now, create and join game parties on the Home tab.
             </p>
           </div>
         </div>
