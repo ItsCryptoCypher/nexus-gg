@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import {
-  Check,
+  CheckCheck,
   ChevronLeft,
   ImagePlus,
   MoreVertical,
@@ -120,7 +120,6 @@ export function ChatPanel({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      {/* Header */}
       <div className="flex items-center gap-3 border-b border-[#221e2c] px-4 py-3.5">
         <Link
           href="/messages"
@@ -133,6 +132,7 @@ export function ChatPanel({
           src={conversation.friend.avatarUrl}
           alt={conversation.friend.username}
           size="md"
+          status="online"
         />
         <div className="min-w-0 flex-1">
           <p className="flex items-center gap-1.5 truncate text-sm font-semibold text-white">
@@ -167,7 +167,6 @@ export function ChatPanel({
         </div>
       </div>
 
-      {/* Messages */}
       <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-5 py-5 scrollbar-thin">
         {messages.length === 0 ? (
           <div className="flex h-full items-center justify-center">
@@ -183,12 +182,10 @@ export function ChatPanel({
             return (
               <div key={message.id}>
                 {showDay ? (
-                  <div className="mb-5 flex items-center gap-3">
-                    <div className="h-px flex-1 bg-[#221e2c]" />
-                    <span className="text-[11px] font-medium text-[#6b7280]">
+                  <div className="mb-5 flex justify-center">
+                    <span className="rounded-full bg-[#1a1825] px-3 py-1 text-[11px] font-medium text-[#6b7280]">
                       {dayLabel(message.createdAt)}
                     </span>
-                    <div className="h-px flex-1 bg-[#221e2c]" />
                   </div>
                 ) : null}
                 <MessageBubble
@@ -203,7 +200,6 @@ export function ChatPanel({
         <div ref={endRef} />
       </div>
 
-      {/* Composer */}
       <div className="border-t border-[#221e2c] px-4 py-3.5">
         <div className="flex items-center gap-3">
           <div className="flex min-w-0 flex-1 items-center gap-1 rounded-2xl border border-[#221e2c] bg-[#12101a] px-3 py-1.5">
@@ -237,7 +233,7 @@ export function ChatPanel({
             onClick={send}
             disabled={pending || !body.trim()}
             aria-label="Send"
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#7c3aed] text-white shadow-[0_0_20px_rgba(124,58,237,0.4)] transition hover:bg-[#8b5cf6] disabled:opacity-40"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#7c3aed] text-white shadow-[0_0_20px_rgba(124,58,237,0.45)] transition hover:bg-[#8b5cf6] disabled:opacity-40"
           >
             <Send className="h-4 w-4" />
           </button>
@@ -266,12 +262,12 @@ function MessageBubble({
             {clockTime(message.createdAt)}
           </span>
         </div>
-        <div className="max-w-[min(70%,420px)] rounded-2xl rounded-tr-md bg-[#7c3aed] px-4 py-2.5 text-white">
+        <div className="max-w-[min(70%,420px)] rounded-2xl rounded-tr-md bg-[#6d28d9] px-4 py-2.5 text-white shadow-[0_0_0_1px_rgba(139,92,246,0.55),0_0_18px_rgba(124,58,237,0.28)]">
           <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">
             {message.body}
           </p>
         </div>
-        <Check className="mr-0.5 h-3.5 w-3.5 text-[#7c3aed]" />
+        <CheckCheck className="mr-0.5 h-3.5 w-3.5 text-[#8b5cf6]" />
       </div>
     );
   }
@@ -286,7 +282,9 @@ function MessageBubble({
       />
       <div className="max-w-[min(70%,420px)]">
         <div className="mb-1 flex items-baseline gap-2 px-0.5">
-          <span className="text-xs font-semibold text-white">{friendName}</span>
+          <span className="text-xs font-semibold text-[#a78bfa]">
+            {friendName}
+          </span>
           <span className="text-[10px] text-[#6b7280]">
             {clockTime(message.createdAt)}
           </span>

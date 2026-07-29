@@ -63,7 +63,7 @@ export function InboxPanel({
 
   return (
     <div className="relative flex h-full min-h-0 w-full flex-col">
-      <div className="flex items-center gap-2 px-4 pb-3 pt-4">
+      <div className="flex items-center gap-2.5 px-3.5 pb-3 pt-3.5">
         <label className="relative min-w-0 flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6b7280]" />
           <input
@@ -76,7 +76,7 @@ export function InboxPanel({
         <button
           type="button"
           onClick={() => setComposing(true)}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#7c3aed] text-white shadow-[0_0_20px_rgba(124,58,237,0.35)] transition hover:bg-[#8b5cf6]"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#7c3aed] text-white shadow-[0_0_18px_rgba(124,58,237,0.4)] transition hover:bg-[#8b5cf6]"
           aria-label="New message"
         >
           <PenSquare className="h-4 w-4" />
@@ -93,7 +93,7 @@ export function InboxPanel({
             </p>
           </div>
         ) : (
-          <ul className="space-y-1">
+          <ul className="space-y-1.5">
             {filteredConversations.map((conversation) => {
               const selected = conversation.id === activeId;
               return (
@@ -103,7 +103,7 @@ export function InboxPanel({
                     className={[
                       "flex items-center gap-3 rounded-xl px-3 py-3 transition",
                       selected
-                        ? "bg-[rgba(124,58,237,0.14)] shadow-[0_0_0_1px_#7c3aed,0_0_24px_rgba(124,58,237,0.2)]"
+                        ? "bg-[rgba(124,58,237,0.12)] shadow-[0_0_0_1px_#7c3aed,0_0_20px_rgba(124,58,237,0.22)]"
                         : "hover:bg-white/[0.03]",
                     ].join(" ")}
                   >
@@ -111,25 +111,29 @@ export function InboxPanel({
                       src={conversation.friend.avatarUrl}
                       alt={conversation.friend.username}
                       size="md"
+                      status="online"
                     />
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-2">
-                        <p className="truncate text-[13px] font-semibold text-white">
-                          {conversation.friend.username}
-                        </p>
-                        <span className="shrink-0 text-[11px] text-[#6b7280]">
-                          {relativeTime(conversation.lastMessageAt)}
-                        </span>
-                      </div>
-                      <div className="mt-0.5 flex items-center gap-2">
-                        <p className="truncate text-xs text-[#9ca3af]">
-                          {conversation.lastMessagePreview || "No messages yet"}
-                        </p>
-                        {conversation.unread ? (
-                          <span className="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-[#7c3aed] px-1.5 text-[10px] font-semibold text-white">
-                            1
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-[13px] font-semibold text-white">
+                            {conversation.friend.username}
+                          </p>
+                          <p className="mt-0.5 truncate text-xs text-[#9ca3af]">
+                            {conversation.lastMessagePreview ||
+                              "No messages yet"}
+                          </p>
+                        </div>
+                        <div className="flex shrink-0 flex-col items-end gap-1.5 pt-0.5">
+                          <span className="text-[11px] text-[#6b7280]">
+                            {relativeTime(conversation.lastMessageAt)}
                           </span>
-                        ) : null}
+                          {conversation.unread ? (
+                            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#7c3aed] px-1.5 text-[10px] font-semibold text-white">
+                              1
+                            </span>
+                          ) : null}
+                        </div>
                       </div>
                     </div>
                   </Link>
@@ -141,7 +145,7 @@ export function InboxPanel({
       </div>
 
       {composing ? (
-        <div className="absolute inset-0 z-20 flex flex-col bg-[#12101a]">
+        <div className="absolute inset-0 z-20 flex flex-col rounded-2xl bg-[#12101a]">
           <div className="flex items-center justify-between px-4 py-3">
             <p className="text-sm font-semibold text-white">New message</p>
             <button

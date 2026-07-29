@@ -18,16 +18,17 @@ export function DetailsPanel({ friend, onClose }: DetailsPanelProps) {
           <span className="truncate">{friend.username}</span>
           <Star className="h-3.5 w-3.5 shrink-0 text-[#6b7280]" />
         </p>
-        {onClose ? (
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-[#9ca3af] hover:bg-white/[0.04] hover:text-white"
-            aria-label="Close"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        ) : null}
+        <button
+          type="button"
+          onClick={onClose}
+          className={`flex h-8 w-8 items-center justify-center rounded-lg text-[#9ca3af] hover:bg-white/[0.04] hover:text-white ${
+            onClose ? "" : "invisible"
+          }`}
+          aria-label="Close"
+          tabIndex={onClose ? 0 : -1}
+        >
+          <X className="h-4 w-4" />
+        </button>
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-5 scrollbar-thin">
@@ -43,10 +44,7 @@ export function DetailsPanel({ friend, onClose }: DetailsPanelProps) {
               <Pencil className="h-3 w-3" />
             </span>
           </div>
-          <p className="mt-3 text-base font-semibold text-white">
-            {friend.username}
-          </p>
-          <p className="mt-1 text-xs text-[#9ca3af]">
+          <p className="mt-3 text-xs text-[#9ca3af]">
             1 member · Direct message
           </p>
         </div>
@@ -120,10 +118,10 @@ function Action({
     <button
       type="button"
       disabled
-      className="flex flex-col items-center gap-2 rounded-xl border border-[#7c3aed]/40 bg-[rgba(124,58,237,0.1)] px-1 py-3 text-center opacity-70"
+      className="flex flex-col items-center gap-2 rounded-xl border border-[#2a2540] bg-[#0a090f] px-1 py-3 text-center transition hover:border-[#7c3aed]/40 disabled:opacity-80"
     >
       <Icon className="h-4 w-4 text-[#8b5cf6]" />
-      <span className="text-[10px] font-medium leading-tight text-white">
+      <span className="text-[10px] font-medium leading-tight text-[#e5e7eb]">
         {label}
       </span>
     </button>

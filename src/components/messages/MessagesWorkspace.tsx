@@ -18,6 +18,9 @@ type MessagesWorkspaceProps = {
   active: ActiveConversation | null;
 };
 
+const card =
+  "min-h-0 overflow-hidden rounded-2xl border border-[#221e2c] bg-[#12101a]";
+
 export function MessagesWorkspace({
   meId,
   conversations,
@@ -27,12 +30,12 @@ export function MessagesWorkspace({
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   return (
-    <div className="flex min-h-0 flex-1 overflow-hidden rounded-2xl border border-[#221e2c] bg-[#0a090f]">
+    <div className="flex min-h-0 flex-1 gap-3">
       <section
         className={[
-          "min-h-0 w-full shrink-0 border-r border-[#221e2c] bg-[#12101a]",
-          "lg:flex lg:w-[300px] xl:w-[320px]",
-          active ? "hidden lg:flex" : "flex",
+          card,
+          "w-full shrink-0 lg:w-[290px] xl:w-[310px]",
+          active ? "hidden lg:flex lg:flex-col" : "flex flex-col",
         ].join(" ")}
       >
         <InboxPanel
@@ -44,8 +47,9 @@ export function MessagesWorkspace({
 
       <section
         className={[
-          "min-h-0 min-w-0 flex-1 bg-[#0a090f]",
-          active ? "flex" : "hidden lg:flex",
+          card,
+          "min-w-0 flex-1 bg-[#0e0d14]",
+          active ? "flex flex-col" : "hidden lg:flex lg:flex-col",
         ].join(" ")}
       >
         {active ? (
@@ -71,7 +75,12 @@ export function MessagesWorkspace({
 
       {active ? (
         <>
-          <section className="hidden min-h-0 w-[280px] shrink-0 border-l border-[#221e2c] bg-[#12101a] xl:flex 2xl:w-[300px]">
+          <section
+            className={[
+              card,
+              "hidden w-[270px] shrink-0 xl:flex xl:flex-col 2xl:w-[290px]",
+            ].join(" ")}
+          >
             <DetailsPanel friend={active.friend} />
           </section>
 
