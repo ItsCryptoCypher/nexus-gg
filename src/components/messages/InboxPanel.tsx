@@ -63,7 +63,7 @@ export function InboxPanel({
 
   return (
     <div className="relative flex h-full min-h-0 w-full flex-col">
-      <div className="flex items-center gap-2.5 px-3.5 pb-3 pt-3.5">
+      <div className="flex items-center gap-2.5 px-3.5 pb-2 pt-3.5">
         <label className="relative min-w-0 flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6b7280]" />
           <input
@@ -83,7 +83,7 @@ export function InboxPanel({
         </button>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-2 pb-3 scrollbar-thin">
+      <div className="min-h-0 flex-1 overflow-y-auto px-2 pb-3 pt-3 scrollbar-thin">
         {filteredConversations.length === 0 ? (
           <div className="flex h-full items-center justify-center px-4 py-12 text-center">
             <p className="text-sm text-[#9ca3af]">
@@ -103,7 +103,7 @@ export function InboxPanel({
                     className={[
                       "flex items-center gap-3 rounded-xl px-3 py-3 transition",
                       selected
-                        ? "bg-[rgba(124,58,237,0.12)] shadow-[0_0_0_1px_#7c3aed,0_0_20px_rgba(124,58,237,0.22)]"
+                        ? "bg-[rgba(124,58,237,0.12)] ring-1 ring-[#7c3aed] shadow-[0_0_16px_rgba(124,58,237,0.18)]"
                         : "hover:bg-white/[0.03]",
                     ].join(" ")}
                   >
