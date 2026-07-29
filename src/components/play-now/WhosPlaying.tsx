@@ -14,7 +14,7 @@ export function WhosPlaying({ sessions }: WhosPlayingProps) {
         <div>
           <h2 className="text-base font-semibold text-foreground">Who&apos;s Playing</h2>
           <p className="mt-0.5 text-xs text-muted">
-            Friends online and ready to jump in
+            Friends currently in a game
           </p>
         </div>
         <button
@@ -27,9 +27,8 @@ export function WhosPlaying({ sessions }: WhosPlayingProps) {
       </div>
       {sessions.length === 0 ? (
         <p className="rounded-xl border border-border-subtle bg-surface px-4 py-6 text-sm text-muted">
-          No live Discord activity yet. Join the Nexus Discord server, keep the
-          presence bot running, and start a game with Discord activity display
-          on.
+          No one in a game right now. When friends launch a title with Discord
+          activity on, they&apos;ll show up here.
         </p>
       ) : (
         <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-thin">

@@ -3,28 +3,33 @@ import { PlatformIcon } from "@/components/ui/PlatformIcon";
 import { SectionCard } from "@/components/ui/SectionCard";
 import type { OnlineFriend } from "@/data/mock";
 
-type OnlineNowPanelProps = {
+type WhosOnlineProps = {
   friends: OnlineFriend[];
-  totalCount: number;
 };
 
-export function OnlineNowPanel({ friends, totalCount }: OnlineNowPanelProps) {
+export function WhosOnline({ friends }: WhosOnlineProps) {
   return (
-    <SectionCard>
-      <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-foreground">
-          Online Now
-          <span className="ml-1.5 text-muted">({totalCount})</span>
+    <SectionCard className="mb-6" padding="lg">
+      <div className="mb-4">
+        <h2 className="text-base font-semibold text-foreground">
+          Who&apos;s Online
         </h2>
+        <p className="mt-0.5 text-xs text-muted">
+          On Nexus, Discord, or a console — not in a game yet
+        </p>
       </div>
       {friends.length === 0 ? (
-        <p className="text-xs text-muted">
-          Online Nexus friends will show up here.
+        <p className="rounded-xl border border-border-subtle bg-surface px-4 py-6 text-sm text-muted">
+          Nobody online right now. Open Nexus or Discord and you&apos;ll show up
+          here.
         </p>
       ) : (
-        <ul className="space-y-3">
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {friends.map((friend) => (
-            <li key={friend.id} className="flex items-center gap-2.5">
+            <li
+              key={friend.id}
+              className="flex items-center gap-2.5 rounded-xl border border-border-subtle bg-surface px-3 py-2.5"
+            >
               <Avatar
                 src={friend.avatarUrl}
                 alt={friend.username}

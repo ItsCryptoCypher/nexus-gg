@@ -9,12 +9,13 @@ import type {
 } from "@/data/mock";
 import type { DiscordConnection } from "@/lib/discord/connections";
 import {
+  mapFriendOnlineLabel,
+  mapFriendOnlinePlatform,
   mapFriendPlatforms,
   mapFriendPresence,
   mapConnectionPlatform,
   type PresenceSnippet,
 } from "@/lib/friends/map-presence";
-import { resolvePlayingPlatform } from "@/lib/presence/resolve-platform";
 import { createClient } from "@/lib/supabase/server";
 
 type FriendshipRow = {
@@ -30,6 +31,7 @@ type ProfileRow = {
   avatar_url: string | null;
   discord_id: string | null;
   discord_connections: DiscordConnection[] | null;
+  nexus_last_seen_at: string | null;
 };
 
 type PresenceRow = PresenceSnippet & {
@@ -162,7 +164,9 @@ export async function getFriendsPageData(): Promise<FriendsPageData> {
     await Promise.all([
       supabase
         .from("profiles")
-        .select("id, display_name, avatar_url, discord_id, discord_connections")
+        .select(
+          "id, display_name, avatar_url, discord_id, discord_connections, nexus_last_seen_at",
+        )
         .eq("id", me)
         .maybeSingle(),
       supabase
@@ -171,7 +175,9 @@ export async function getFriendsPageData(): Promise<FriendsPageData> {
         .or(`requester_id.eq.${me},addressee_id.eq.${me}`),
       supabase
         .from("profiles")
-        .select("id, display_name, avatar_url, discord_id, discord_connections")
+        .select(
+          "id, display_name, avatar_url, discord_id, discord_connections, nexus_last_seen_at",
+        )
         .neq("id", me)
         .not("discord_id", "is", null)
         .limit(80),
@@ -200,7 +206,9 @@ export async function getFriendsPageData(): Promise<FriendsPageData> {
   if (missingFriendIds.length) {
     const { data: extra } = await supabase
       .from("profiles")
-      .select("id, display_name, avatar_url, discord_id, discord_connections")
+      .select(
+        "id, display_name, avatar_url, discord_id, discord_connections, nexus_last_seen_at",
+      )
       .in("id", missingFriendIds);
     for (const row of (extra ?? []) as ProfileRow[]) {
       profileById.set(row.id, row);
@@ -237,12 +245,16 @@ export async function getFriendsPageData(): Promise<FriendsPageData> {
       id: friendId,
       username: displayName(profile, presence),
       avatarUrl: avatarUrl(profile, presence),
-      status: mapFriendPresence(presence),
-      gameTitle: presence?.activity_name ?? null,
+      status: mapFriendPresence(presence, profile.nexus_last_seen_at),
+      gameTitle: mapFriendOnlineLabel({
+        presence,
+        nexusLastSeenAt: profile.nexus_last_seen_at,
+      }),
       gameIconUrl: null,
       platforms: mapFriendPlatforms({
         presence,
         connections: profile.discord_connections,
+        nexusLastSeenAt: profile.nexus_last_seen_at,
       }),
     });
   }
@@ -269,8 +281,11 @@ export async function getFriendsPageData(): Promise<FriendsPageData> {
       username: displayName(profile, presence),
       avatarUrl: avatarUrl(profile, presence),
       sourcePlatform: "discord",
-      status: mapFriendPresence(presence),
-      gameTitle: presence?.activity_name ?? null,
+      status: mapFriendPresence(presence, profile.nexus_last_seen_at),
+      gameTitle: mapFriendOnlineLabel({
+        presence,
+        nexusLastSeenAt: profile.nexus_last_seen_at,
+      }),
       mutualFriends: mutuals.map((m) => ({
         id: m.id,
         username: m.display_name || "Friend",
@@ -310,7 +325,9 @@ export async function getFriendsPageData(): Promise<FriendsPageData> {
     if (!profile) {
       const { data: requester } = await supabase
         .from("profiles")
-        .select("id, display_name, avatar_url, discord_id, discord_connections")
+        .select(
+          "id, display_name, avatar_url, discord_id, discord_connections, nexus_last_seen_at",
+        )
         .eq("id", row.requester_id)
         .maybeSingle();
       if (!requester) continue;
@@ -338,18 +355,16 @@ export async function getFriendsPageData(): Promise<FriendsPageData> {
       const presence = profile?.discord_id
         ? presenceByDiscord.get(profile.discord_id)
         : null;
-      const platform = resolvePlayingPlatform({
-        inGame: Boolean(presence?.activity_name),
-        activityPlatform: presence?.activity_platform,
-        clientStatus: presence?.client_status,
-        connections: profile?.discord_connections,
-      });
       return {
         id: f.id,
         username: f.username,
         avatarUrl: f.avatarUrl,
         gameTitle: f.gameTitle,
-        platform,
+        platform: mapFriendOnlinePlatform({
+          presence,
+          nexusLastSeenAt: profile?.nexus_last_seen_at,
+          connections: profile?.discord_connections,
+        }),
       };
     });
 

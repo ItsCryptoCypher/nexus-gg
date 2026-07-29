@@ -4,7 +4,8 @@ export type Platform =
   | "steam"
   | "epic"
   | "nintendo"
-  | "discord";
+  | "discord"
+  | "nexus";
 
 export type PlayerStatus = "online" | "in-game" | "in-party" | "looking";
 
@@ -1279,40 +1280,41 @@ export const friendRequests: FriendRequest[] = [
   },
 ];
 
+/** Online but not in a game — used by Who's Online / Friends Online Now demos. */
 export const onlineFriends: OnlineFriend[] = [
   {
     id: "of1",
     username: "ChiefNova",
     avatarUrl: "https://i.pravatar.cc/150?img=33",
-    gameTitle: "Apex Legends",
+    gameTitle: "Online on Xbox",
     platform: "xbox",
   },
   {
     id: "of2",
     username: "DriftKing",
     avatarUrl: "https://i.pravatar.cc/150?img=15",
-    gameTitle: "Gran Turismo 7",
+    gameTitle: "Online on PlayStation",
     platform: "playstation",
   },
   {
     id: "of3",
     username: "PixelQueen",
     avatarUrl: "https://i.pravatar.cc/150?img=47",
-    gameTitle: "Minecraft",
-    platform: "xbox",
+    gameTitle: "Online on Nexus",
+    platform: "nexus",
   },
   {
     id: "of4",
     username: "NeonBlade",
     avatarUrl: "https://i.pravatar.cc/150?img=26",
-    gameTitle: "Call of Duty",
-    platform: "steam",
+    gameTitle: "Online on Discord",
+    platform: "discord",
   },
   {
     id: "of5",
     username: "AceViper",
     avatarUrl: "https://i.pravatar.cc/150?img=11",
-    gameTitle: null,
+    gameTitle: "Online on Discord",
     platform: "discord",
   },
 ];

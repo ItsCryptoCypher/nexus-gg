@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { LeftSidebar } from "@/components/layout/LeftSidebar";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { RightSidebar } from "@/components/layout/RightSidebar";
+import { PresenceHeartbeat } from "@/components/presence/PresenceHeartbeat";
 import { currentUser, type CurrentUser } from "@/data/mock";
 import { getUnreadMessageCount } from "@/lib/messages/get-messages-page";
 
@@ -34,6 +35,7 @@ export async function AppShell({
 
   return (
     <div className="flex h-screen overflow-hidden bg-background text-foreground">
+      {basePath !== "/demo" ? <PresenceHeartbeat /> : null}
       <div className="hidden md:block">
         <LeftSidebar
           activeNavId={activeNavId}

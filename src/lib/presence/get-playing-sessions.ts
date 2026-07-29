@@ -1,15 +1,11 @@
 import type { PlayingSession } from "@/data/mock";
 import type { DiscordConnection } from "@/lib/discord/connections";
 import { createClient } from "@/lib/supabase/server";
+import { PRESENCE_EXCLUDED_DISCORD_IDS } from "@/lib/presence/online-source";
 import { resolvePlayingPlatform } from "@/lib/presence/resolve-platform";
 
 const FALLBACK_COVER =
   "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=240&fit=crop";
-
-/** Company / system Discord accounts — hide from Who's Playing only. */
-const WHOS_PLAYING_EXCLUDED_DISCORD_IDS = new Set([
-  "1520508465926115329", // Apex Labs
-]);
 
 type PresenceRow = {
   discord_id: string;
@@ -30,7 +26,7 @@ type ProfileRow = {
   discord_connections: DiscordConnection[] | null;
 };
 
-/** Map Discord presence rows into Who's Playing cards. */
+/** Map in-game Discord presence rows into Who's Playing cards. */
 export async function getPlayingSessions(): Promise<PlayingSession[]> {
   const supabase = await createClient();
   const { data: claims } = await supabase.auth.getClaims();
@@ -44,6 +40,7 @@ export async function getPlayingSessions(): Promise<PlayingSession[]> {
       "discord_id, status, activity_name, activity_platform, client_status, display_name, avatar_url, updated_at",
     )
     .neq("status", "offline")
+    .not("activity_name", "is", null)
     .order("updated_at", { ascending: false })
     .limit(24);
 
@@ -52,7 +49,9 @@ export async function getPlayingSessions(): Promise<PlayingSession[]> {
   }
 
   const rows = (presenceRows as PresenceRow[]).filter(
-    (row) => !WHOS_PLAYING_EXCLUDED_DISCORD_IDS.has(row.discord_id),
+    (row) =>
+      Boolean(row.activity_name) &&
+      !PRESENCE_EXCLUDED_DISCORD_IDS.has(row.discord_id),
   );
   if (!rows.length) {
     return [];
@@ -80,9 +79,8 @@ export async function getPlayingSessions(): Promise<PlayingSession[]> {
       profile?.avatar_url ||
       row.avatar_url ||
       `https://cdn.discordapp.com/embed/avatars/${Number(row.discord_id.slice(-2)) % 6}.png`;
-    const inGame = Boolean(row.activity_name);
     const platform = resolvePlayingPlatform({
-      inGame,
+      inGame: true,
       activityPlatform: row.activity_platform,
       clientStatus: row.client_status,
       connections: profile?.discord_connections ?? [],
@@ -92,11 +90,11 @@ export async function getPlayingSessions(): Promise<PlayingSession[]> {
       id: row.discord_id,
       username,
       avatarUrl,
-      gameTitle: row.activity_name || "Online on Discord",
+      gameTitle: row.activity_name!,
       coverUrl: FALLBACK_COVER,
       platform,
-      status: inGame ? "in-game" : "looking",
-      action: inGame ? "join-game" : "invite",
+      status: "in-game",
+      action: "join-game",
     };
   });
 }

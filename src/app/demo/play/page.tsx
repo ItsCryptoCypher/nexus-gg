@@ -4,10 +4,12 @@ import { JumpBackIn } from "@/components/play-now/JumpBackIn";
 import { LookingForPlayers } from "@/components/play-now/LookingForPlayers";
 import { SmartMatch } from "@/components/play-now/SmartMatch";
 import { StatsRow } from "@/components/play-now/StatsRow";
+import { WhosOnline } from "@/components/play-now/WhosOnline";
 import { WhosPlaying } from "@/components/play-now/WhosPlaying";
 import {
   currentUser,
   lfgPlayers,
+  onlineFriends,
   playingSessions,
   recentGames,
   smartMatchSuggestions,
@@ -28,6 +30,7 @@ export default function DemoPlayNowPage() {
       <TopBar />
       <StatsRow items={stats} />
       <WhosPlaying sessions={playingSessions} />
+      <WhosOnline friends={onlineFriends} />
       <div className="mb-6 flex flex-col gap-6 lg:flex-row">
         <JumpBackIn games={recentGames} />
         <LookingForPlayers players={lfgPlayers} />

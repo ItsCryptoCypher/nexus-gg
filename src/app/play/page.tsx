@@ -4,6 +4,7 @@ import { JumpBackIn } from "@/components/play-now/JumpBackIn";
 import { LookingForPlayers } from "@/components/play-now/LookingForPlayers";
 import { SmartMatch } from "@/components/play-now/SmartMatch";
 import { StatsRow } from "@/components/play-now/StatsRow";
+import { WhosOnline } from "@/components/play-now/WhosOnline";
 import { WhosPlaying } from "@/components/play-now/WhosPlaying";
 import {
   lfgPlayers,
@@ -13,6 +14,7 @@ import {
   stats,
 } from "@/data/mock";
 import { getAppUser } from "@/lib/auth/get-app-user";
+import { getOnlineSessions } from "@/lib/presence/get-online-sessions";
 import { getPlayingSessions } from "@/lib/presence/get-playing-sessions";
 
 export const metadata = {
@@ -22,9 +24,10 @@ export const metadata = {
 };
 
 export default async function PlayNowPage() {
-  const [user, playingSessions] = await Promise.all([
+  const [user, playingSessions, onlineSessions] = await Promise.all([
     getAppUser(),
     getPlayingSessions(),
+    getOnlineSessions(),
   ]);
 
   return (
@@ -32,6 +35,7 @@ export default async function PlayNowPage() {
       <TopBar user={user} />
       <StatsRow items={stats} />
       <WhosPlaying sessions={playingSessions} />
+      <WhosOnline friends={onlineSessions} />
       <div className="mb-6 flex flex-col gap-6 lg:flex-row">
         <JumpBackIn games={recentGames} />
         <LookingForPlayers players={lfgPlayers} />

@@ -1,3 +1,4 @@
+import { Hexagon } from "lucide-react";
 import { FaXbox } from "react-icons/fa";
 import { BsNintendoSwitch } from "react-icons/bs";
 import { SiDiscord, SiEpicgames, SiPlaystation, SiSteam } from "react-icons/si";
@@ -16,6 +17,7 @@ const icons: Record<Platform, IconType> = {
   epic: SiEpicgames,
   nintendo: BsNintendoSwitch,
   discord: SiDiscord,
+  nexus: Hexagon,
 };
 
 const labels: Record<Platform, string> = {
@@ -25,6 +27,7 @@ const labels: Record<Platform, string> = {
   epic: "Epic Games",
   nintendo: "Nintendo",
   discord: "Discord",
+  nexus: "Nexus",
 };
 
 export function platformLabel(platform: Platform) {
