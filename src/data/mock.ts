@@ -47,7 +47,10 @@ export type StatItem = {
     | "mail"
     | "user-plus"
     | "mic"
-    | "calendar";
+    | "calendar"
+    | "layout-grid"
+    | "trending-up"
+    | "message-square";
   hint?: string;
 };
 
@@ -165,6 +168,64 @@ export type ActivityItem = {
 };
 
 export type GameHub = {
+  id: string;
+  title: string;
+  iconUrl: string;
+  membersLabel: string;
+};
+
+export type HubCard = {
+  id: string;
+  title: string;
+  coverUrl: string;
+  membersLabel: string;
+  tags: [string, string];
+  following?: boolean;
+};
+
+export type HubActivityPost = {
+  id: string;
+  type: "clip" | "screenshot" | "discussion" | "help";
+  title: string;
+  username: string;
+  avatarUrl: string;
+  gameTitle: string;
+  gameIconUrl: string;
+  timeAgo: string;
+  likesLabel: string;
+  commentsLabel: string;
+  mediaUrl?: string;
+  body?: string;
+};
+
+export type TrendingHub = {
+  id: string;
+  rank: number;
+  title: string;
+  iconUrl: string;
+  membersLabel: string;
+  activeLabel: string;
+};
+
+export type HubLiveStream = {
+  id: string;
+  title: string;
+  gameTitle: string;
+  coverUrl: string;
+  viewersLabel: string;
+};
+
+export type HubRecentPost = {
+  id: string;
+  username: string;
+  avatarUrl: string;
+  gameTitle: string;
+  gameIconUrl: string;
+  snippet: string;
+  timeAgo: string;
+};
+
+export type SuggestedHub = {
   id: string;
   title: string;
   iconUrl: string;
@@ -310,7 +371,7 @@ export const navGroups: NavGroup[] = [
     label: "EXPLORE",
     items: [
       { id: "rooms", label: "Rooms", icon: "radio", href: "/rooms" },
-      { id: "game-hubs", label: "Game Hubs", icon: "layout-grid", href: "#" },
+      { id: "game-hubs", label: "Game Hubs", icon: "layout-grid", href: "/hubs" },
       { id: "events", label: "Events", icon: "calendar", href: "#" },
     ],
   },
@@ -1328,5 +1389,364 @@ export const importedPlatforms: ImportedPlatform[] = [
     label: "PlayStation Network",
     platform: "playstation",
     connected: true,
+  },
+];
+
+export const hubStats: StatItem[] = [
+  {
+    id: "hubs-followed",
+    label: "Hubs Followed",
+    value: 18,
+    tone: "purple",
+    icon: "layout-grid",
+    hint: "Your communities",
+  },
+  {
+    id: "trending-hubs",
+    label: "Trending Hubs",
+    value: 12,
+    tone: "green",
+    icon: "trending-up",
+    hint: "Popular right now",
+  },
+  {
+    id: "new-posts",
+    label: "New Posts Today",
+    value: 247,
+    tone: "blue",
+    icon: "message-square",
+    hint: "Across your hubs",
+  },
+  {
+    id: "hub-live-rooms",
+    label: "Live Rooms",
+    value: 86,
+    tone: "orange",
+    icon: "radio",
+    hint: "Happening now",
+  },
+];
+
+export const featuredHubs: HubCard[] = [
+  {
+    id: "fh1",
+    title: "Call of Duty",
+    coverUrl:
+      "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=600&h=400&fit=crop",
+    membersLabel: "124K Members",
+    tags: ["FPS", "Shooter"],
+  },
+  {
+    id: "fh2",
+    title: "Minecraft",
+    coverUrl:
+      "https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?w=600&h=400&fit=crop",
+    membersLabel: "98K Members",
+    tags: ["Sandbox", "Creative"],
+  },
+  {
+    id: "fh3",
+    title: "Apex Legends",
+    coverUrl:
+      "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=600&h=400&fit=crop",
+    membersLabel: "87K Members",
+    tags: ["Battle Royale", "FPS"],
+  },
+  {
+    id: "fh4",
+    title: "Valorant",
+    coverUrl:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=400&fit=crop",
+    membersLabel: "76K Members",
+    tags: ["Tactical", "FPS"],
+  },
+  {
+    id: "fh5",
+    title: "Elden Ring",
+    coverUrl:
+      "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&h=400&fit=crop",
+    membersLabel: "64K Members",
+    tags: ["RPG", "Souls"],
+  },
+  {
+    id: "fh6",
+    title: "Fortnite",
+    coverUrl:
+      "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=600&h=400&fit=crop",
+    membersLabel: "112K Members",
+    tags: ["Battle Royale", "Builder"],
+  },
+];
+
+export const browseHubs: HubCard[] = [
+  {
+    id: "bh1",
+    title: "Call of Duty",
+    coverUrl:
+      "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=500&h=340&fit=crop",
+    membersLabel: "124K Members",
+    tags: ["FPS", "Shooter"],
+    following: true,
+  },
+  {
+    id: "bh2",
+    title: "Minecraft",
+    coverUrl:
+      "https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?w=500&h=340&fit=crop",
+    membersLabel: "98K Members",
+    tags: ["Sandbox", "Creative"],
+  },
+  {
+    id: "bh3",
+    title: "Apex Legends",
+    coverUrl:
+      "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500&h=340&fit=crop",
+    membersLabel: "87K Members",
+    tags: ["Battle Royale", "FPS"],
+    following: true,
+  },
+  {
+    id: "bh4",
+    title: "Valorant",
+    coverUrl:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&h=340&fit=crop",
+    membersLabel: "76K Members",
+    tags: ["Tactical", "FPS"],
+  },
+  {
+    id: "bh5",
+    title: "Elden Ring",
+    coverUrl:
+      "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500&h=340&fit=crop",
+    membersLabel: "64K Members",
+    tags: ["RPG", "Souls"],
+  },
+  {
+    id: "bh6",
+    title: "Fortnite",
+    coverUrl:
+      "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=500&h=340&fit=crop",
+    membersLabel: "112K Members",
+    tags: ["Battle Royale", "Builder"],
+    following: true,
+  },
+  {
+    id: "bh7",
+    title: "Rocket League",
+    coverUrl:
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=500&h=340&fit=crop",
+    membersLabel: "54K Members",
+    tags: ["Sports", "Competitive"],
+  },
+  {
+    id: "bh8",
+    title: "GTA V",
+    coverUrl:
+      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&h=340&fit=crop",
+    membersLabel: "91K Members",
+    tags: ["Open World", "Action"],
+  },
+];
+
+export const hubActivityPosts: HubActivityPost[] = [
+  {
+    id: "hap1",
+    type: "clip",
+    title: "Insane 1v4 clutch in Ranked",
+    username: "AceViper",
+    avatarUrl: "https://i.pravatar.cc/150?img=11",
+    gameTitle: "Valorant",
+    gameIconUrl:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=100&h=100&fit=crop",
+    timeAgo: "12m",
+    likesLabel: "248",
+    commentsLabel: "36",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=640&h=360&fit=crop",
+  },
+  {
+    id: "hap2",
+    type: "screenshot",
+    title: "Sunset base overlooking the mesa",
+    username: "PixelQueen",
+    avatarUrl: "https://i.pravatar.cc/150?img=47",
+    gameTitle: "Minecraft",
+    gameIconUrl:
+      "https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?w=100&h=100&fit=crop",
+    timeAgo: "28m",
+    likesLabel: "182",
+    commentsLabel: "21",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?w=640&h=360&fit=crop",
+  },
+  {
+    id: "hap3",
+    type: "discussion",
+    title: "What's the best loadout for Warzone ranked?",
+    username: "DriftKing",
+    avatarUrl: "https://i.pravatar.cc/150?img=15",
+    gameTitle: "Call of Duty",
+    gameIconUrl:
+      "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=100&h=100&fit=crop",
+    timeAgo: "41m",
+    likesLabel: "94",
+    commentsLabel: "67",
+    body: "Looking for meta AR + SMG setups that still feel good in close range fights. What are you running this season?",
+  },
+  {
+    id: "hap4",
+    type: "help",
+    title: "Need tips for Malenia phase 2",
+    username: "QuietStorm",
+    avatarUrl: "https://i.pravatar.cc/150?img=44",
+    gameTitle: "Elden Ring",
+    gameIconUrl:
+      "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100&h=100&fit=crop",
+    timeAgo: "1h",
+    likesLabel: "57",
+    commentsLabel: "42",
+    body: "I keep getting wiped by Waterfowl Dance. Any summons, ashes, or weapon arts that make this fight more consistent?",
+  },
+];
+
+export const trendingHubs: TrendingHub[] = [
+  {
+    id: "th1",
+    rank: 1,
+    title: "Call of Duty",
+    iconUrl:
+      "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=100&h=100&fit=crop",
+    membersLabel: "124K",
+    activeLabel: "2.1K",
+  },
+  {
+    id: "th2",
+    rank: 2,
+    title: "Fortnite",
+    iconUrl:
+      "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=100&h=100&fit=crop",
+    membersLabel: "112K",
+    activeLabel: "1.8K",
+  },
+  {
+    id: "th3",
+    rank: 3,
+    title: "Minecraft",
+    iconUrl:
+      "https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?w=100&h=100&fit=crop",
+    membersLabel: "98K",
+    activeLabel: "1.4K",
+  },
+  {
+    id: "th4",
+    rank: 4,
+    title: "Apex Legends",
+    iconUrl:
+      "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=100&h=100&fit=crop",
+    membersLabel: "87K",
+    activeLabel: "1.1K",
+  },
+  {
+    id: "th5",
+    rank: 5,
+    title: "Valorant",
+    iconUrl:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=100&h=100&fit=crop",
+    membersLabel: "76K",
+    activeLabel: "980",
+  },
+];
+
+export const hubLiveStreams: HubLiveStream[] = [
+  {
+    id: "hls1",
+    title: "Warzone Ranked Grind",
+    gameTitle: "Call of Duty",
+    coverUrl:
+      "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=200&h=120&fit=crop",
+    viewersLabel: "4.2K",
+  },
+  {
+    id: "hls2",
+    title: "Apex Pred Lobby",
+    gameTitle: "Apex Legends",
+    coverUrl:
+      "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=200&h=120&fit=crop",
+    viewersLabel: "2.8K",
+  },
+  {
+    id: "hls3",
+    title: "Valorant Scrims",
+    gameTitle: "Valorant",
+    coverUrl:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=200&h=120&fit=crop",
+    viewersLabel: "1.9K",
+  },
+];
+
+export const hubRecentPosts: HubRecentPost[] = [
+  {
+    id: "hrp1",
+    username: "NeoSpark",
+    avatarUrl: "https://i.pravatar.cc/150?img=32",
+    gameTitle: "Call of Duty",
+    gameIconUrl:
+      "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=100&h=100&fit=crop",
+    snippet: "New update patch notes",
+    timeAgo: "5m",
+  },
+  {
+    id: "hrp2",
+    username: "BlockBuilder",
+    avatarUrl: "https://i.pravatar.cc/150?img=47",
+    gameTitle: "Minecraft",
+    gameIconUrl:
+      "https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?w=100&h=100&fit=crop",
+    snippet: "Shared a mega base tour",
+    timeAgo: "18m",
+  },
+  {
+    id: "hrp3",
+    username: "SoftAim",
+    avatarUrl: "https://i.pravatar.cc/150?img=29",
+    gameTitle: "Valorant",
+    gameIconUrl:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=100&h=100&fit=crop",
+    snippet: "Agent tier list discussion",
+    timeAgo: "32m",
+  },
+  {
+    id: "hrp4",
+    username: "HexRunner",
+    avatarUrl: "https://i.pravatar.cc/150?img=20",
+    gameTitle: "Apex Legends",
+    gameIconUrl:
+      "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=100&h=100&fit=crop",
+    snippet: "Looking for ranked trio",
+    timeAgo: "47m",
+  },
+];
+
+export const suggestedHubs: SuggestedHub[] = [
+  {
+    id: "sh1",
+    title: "Destiny 2",
+    iconUrl:
+      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=100&h=100&fit=crop",
+    membersLabel: "48K Members",
+  },
+  {
+    id: "sh2",
+    title: "Diablo IV",
+    iconUrl:
+      "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100&h=100&fit=crop",
+    membersLabel: "36K Members",
+  },
+  {
+    id: "sh3",
+    title: "Overwatch 2",
+    iconUrl:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=100&h=100&fit=crop",
+    membersLabel: "41K Members",
   },
 ];

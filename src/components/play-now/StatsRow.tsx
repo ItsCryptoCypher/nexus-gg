@@ -3,10 +3,13 @@ import {
   Calendar,
   Gamepad2,
   Headphones,
+  LayoutGrid,
   Mail,
+  MessageSquare,
   Mic,
   PartyPopper,
   Radio,
+  TrendingUp,
   UserPlus,
   Users,
   type LucideIcon,
@@ -24,6 +27,9 @@ const iconMap: Record<StatItem["icon"], LucideIcon> = {
   "user-plus": UserPlus,
   mic: Mic,
   calendar: Calendar,
+  "layout-grid": LayoutGrid,
+  "trending-up": TrendingUp,
+  "message-square": MessageSquare,
 };
 
 const toneStyles: Record<
