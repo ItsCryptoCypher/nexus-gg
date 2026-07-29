@@ -70,7 +70,7 @@ export function InboxPanel({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search messages..."
-            className="h-10 w-full rounded-xl border border-[#221e2c] bg-[#0a090f] pl-9 pr-3 text-sm text-white outline-none placeholder:text-[#6b7280] focus:border-[#7c3aed]/50"
+            className="h-10 w-full rounded-xl border border-border-subtle bg-background pl-9 pr-3 text-sm text-foreground outline-none placeholder:text-muted-dark focus:border-accent/50"
           />
         </label>
         <button
@@ -145,7 +145,7 @@ export function InboxPanel({
       </div>
 
       {composing ? (
-        <div className="absolute inset-0 z-20 flex flex-col rounded-2xl bg-[#12101a]">
+        <div className="absolute inset-0 z-20 flex flex-col rounded-2xl bg-surface">
           <div className="flex items-center justify-between px-4 py-3">
             <p className="text-sm font-semibold text-white">New message</p>
             <button
@@ -165,7 +165,7 @@ export function InboxPanel({
               onChange={(e) => setFriendQuery(e.target.value)}
               placeholder="Search friends..."
               autoFocus
-              className="h-10 w-full rounded-xl border border-[#221e2c] bg-[#0a090f] px-3 text-sm text-white outline-none placeholder:text-[#6b7280] focus:border-[#7c3aed]/50"
+              className="h-10 w-full rounded-xl border border-border-subtle bg-background px-3 text-sm text-foreground outline-none placeholder:text-muted-dark focus:border-accent/50"
             />
           </div>
           {error ? (

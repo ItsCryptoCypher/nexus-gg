@@ -120,7 +120,7 @@ export function ChatPanel({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex items-center gap-3 border-b border-[#221e2c] px-4 py-3.5">
+      <div className="flex items-center gap-3 border-b border-border-subtle px-4 py-3.5">
         <Link
           href="/messages"
           className="flex h-9 w-9 items-center justify-center rounded-lg text-[#9ca3af] hover:bg-white/[0.04] hover:text-white lg:hidden"
@@ -183,7 +183,7 @@ export function ChatPanel({
               <div key={message.id}>
                 {showDay ? (
                   <div className="mb-5 flex justify-center">
-                    <span className="rounded-full bg-[#1a1825] px-3 py-1 text-[11px] font-medium text-[#6b7280]">
+                    <span className="rounded-full bg-surface-elevated px-3 py-1 text-[11px] font-medium text-muted-dark">
                       {dayLabel(message.createdAt)}
                     </span>
                   </div>
@@ -200,9 +200,9 @@ export function ChatPanel({
         <div ref={endRef} />
       </div>
 
-      <div className="border-t border-[#221e2c] px-4 py-3.5">
+      <div className="border-t border-border-subtle px-4 py-3.5">
         <div className="flex items-center gap-3">
-          <div className="flex min-w-0 flex-1 items-center gap-1 rounded-2xl border border-[#221e2c] bg-[#12101a] px-3 py-1.5">
+          <div className="flex min-w-0 flex-1 items-center gap-1 rounded-2xl border border-border-subtle bg-background px-3 py-1.5">
             <textarea
               value={body}
               onChange={(e) => setBody(e.target.value)}
@@ -216,7 +216,7 @@ export function ChatPanel({
               maxLength={4000}
               placeholder={`Message ${conversation.friend.username}...`}
               disabled={pending}
-              className="max-h-28 min-h-9 flex-1 resize-none bg-transparent py-1.5 text-sm text-white outline-none placeholder:text-[#6b7280]"
+              className="max-h-28 min-h-9 flex-1 resize-none bg-transparent py-1.5 text-sm text-foreground outline-none placeholder:text-muted-dark"
             />
             <IconBtn label="Emoji" disabled>
               <Smile className="h-4 w-4" />
@@ -289,8 +289,8 @@ function MessageBubble({
             {clockTime(message.createdAt)}
           </span>
         </div>
-        <div className="rounded-2xl rounded-tl-md bg-[#1a1825] px-4 py-2.5">
-          <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-white">
+        <div className="rounded-2xl rounded-tl-md bg-surface-elevated px-4 py-2.5">
+          <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-foreground">
             {message.body}
           </p>
         </div>

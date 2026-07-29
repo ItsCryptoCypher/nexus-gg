@@ -40,7 +40,7 @@ export function DetailsPanel({ friend, onClose }: DetailsPanelProps) {
               size="2xl"
               status="online"
             />
-            <span className="absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#12101a] bg-[#1a1825] text-[#9ca3af]">
+            <span className="absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full border-2 border-surface bg-surface-elevated text-muted">
               <Pencil className="h-3 w-3" />
             </span>
           </div>
@@ -91,13 +91,13 @@ export function DetailsPanel({ friend, onClose }: DetailsPanelProps) {
             {Array.from({ length: 3 }).map((_, i) => (
               <div
                 key={i}
-                className="aspect-square rounded-lg border border-[#221e2c] bg-[#0a090f]"
+                className="aspect-square rounded-lg border border-border-subtle bg-background"
               />
             ))}
           </div>
           <button
             type="button"
-            className="mt-3 text-xs font-medium text-[#8b5cf6] hover:text-[#a78bfa]"
+            className="mt-3 text-xs font-medium text-accent-hover hover:text-[#a78bfa]"
           >
             View All Media
           </button>
@@ -118,10 +118,10 @@ function Action({
     <button
       type="button"
       disabled
-      className="flex flex-col items-center gap-2 rounded-xl border border-[#2a2540] bg-[#0a090f] px-1 py-3 text-center transition hover:border-[#7c3aed]/40 disabled:opacity-80"
+      className="flex flex-col items-center gap-2 rounded-xl border border-border-subtle bg-background px-1 py-3 text-center transition hover:border-accent/40 disabled:opacity-80"
     >
-      <Icon className="h-4 w-4 text-[#8b5cf6]" />
-      <span className="text-[10px] font-medium leading-tight text-[#e5e7eb]">
+      <Icon className="h-4 w-4 text-accent-hover" />
+      <span className="text-[10px] font-medium leading-tight text-foreground">
         {label}
       </span>
     </button>

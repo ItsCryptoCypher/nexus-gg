@@ -19,7 +19,7 @@ type MessagesWorkspaceProps = {
 };
 
 const card =
-  "min-h-0 overflow-hidden rounded-2xl border border-[#221e2c] bg-[#12101a]";
+  "min-h-0 overflow-hidden rounded-2xl border border-border-subtle bg-surface";
 
 export function MessagesWorkspace({
   meId,
@@ -48,7 +48,7 @@ export function MessagesWorkspace({
       <section
         className={[
           card,
-          "min-w-0 flex-1 bg-[#0e0d14]",
+          "min-w-0 flex-1",
           active ? "flex flex-col" : "hidden lg:flex lg:flex-col",
         ].join(" ")}
       >
@@ -92,7 +92,7 @@ export function MessagesWorkspace({
                 aria-label="Close details"
                 onClick={() => setDetailsOpen(false)}
               />
-              <div className="absolute inset-y-0 right-0 w-[min(100%,320px)] border-l border-[#221e2c] bg-[#12101a] shadow-2xl">
+              <div className="absolute inset-y-0 right-0 w-[min(100%,320px)] border-l border-border-subtle bg-surface shadow-2xl">
                 <DetailsPanel
                   friend={active.friend}
                   onClose={() => setDetailsOpen(false)}
