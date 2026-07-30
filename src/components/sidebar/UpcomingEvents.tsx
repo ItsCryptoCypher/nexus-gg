@@ -20,7 +20,7 @@ export function UpcomingEvents({ events }: UpcomingEventsProps) {
           <li key={event.id}>
             <a
               href="#"
-              className="flex gap-3 rounded-xl border border-accent/20 bg-black/25 p-2 transition-colors hover:border-accent/40 hover:bg-accent/10"
+              className="glass-panel flex gap-3 rounded-xl p-2 transition-opacity hover:opacity-95"
             >
               <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg">
                 <Image

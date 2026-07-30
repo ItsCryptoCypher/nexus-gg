@@ -26,7 +26,7 @@ export function WhosPlaying({ sessions }: WhosPlayingProps) {
         </button>
       </div>
       {sessions.length === 0 ? (
-        <p className="rounded-xl border border-accent/20 bg-black/25 px-4 py-6 text-sm text-muted">
+        <p className="glass-panel rounded-xl px-4 py-6 text-sm text-muted">
           No one in a game right now. When friends launch a title with Discord
           activity on, they&apos;ll show up here.
         </p>

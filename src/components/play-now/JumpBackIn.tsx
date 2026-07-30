@@ -18,7 +18,7 @@ export function JumpBackIn({ games }: JumpBackInProps) {
       <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-5">
         {games.map((game) => (
           <a key={game.id} href="#" className="group min-w-0">
-            <div className="relative mb-2 aspect-[3/4] overflow-hidden rounded-xl border border-accent/25 shadow-[0_0_16px_rgba(124,58,237,0.12)] transition-shadow group-hover:border-accent/45 group-hover:shadow-[0_0_22px_rgba(124,58,237,0.28)]">
+            <div className="glass-panel relative mb-2 aspect-[3/4] overflow-hidden rounded-xl">
               <Image
                 src={game.coverUrl}
                 alt={game.title}

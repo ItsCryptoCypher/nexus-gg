@@ -26,7 +26,7 @@ export function PlayingCard({ session }: PlayingCardProps) {
   const isOutline = session.action === "invite";
 
   return (
-    <article className="glass-panel-elevated w-[200px] shrink-0 overflow-hidden rounded-xl transition-colors hover:border-accent/45">
+    <article className="glass-panel-elevated w-[200px] shrink-0 overflow-hidden rounded-xl">
       <div className="relative h-[110px] w-full">
         <Image
           src={session.coverUrl}

@@ -21,8 +21,24 @@
   --accent: #7c3aed;
   --accent-hover: #8b5cf6;
   --accent-soft: rgba(124, 58, 237, 0.22);
-  --glow-purple: 0 0 24px rgba(124, 58, 237, 0.22);
-  --glow-purple-strong: 0 0 28px rgba(124, 58, 237, 0.45);
+  /* Tight neon edge — not a wide ambient bloom */
+  --glow-purple: 0 0 4px rgba(167, 139, 250, 0.45), 0 0 1px rgba(221, 214, 254, 0.35);
+  --glow-purple-strong: 0 0 8px rgba(167, 139, 250, 0.55), 0 0 2px rgba(237, 233, 254, 0.4);
+  --glass-fill: linear-gradient(
+    180deg,
+    rgba(20, 14, 36, 0.78),
+    rgba(12, 10, 22, 0.72)
+  );
+  --glass-border-shine: linear-gradient(
+    135deg,
+    rgba(245, 243, 255, 0.95) 0%,
+    rgba(196, 181, 253, 0.75) 14%,
+    rgba(124, 58, 237, 0.38) 38%,
+    rgba(109, 40, 217, 0.28) 50%,
+    rgba(124, 58, 237, 0.38) 62%,
+    rgba(196, 181, 253, 0.7) 86%,
+    rgba(245, 243, 255, 0.9) 100%
+  );
   --status-online: #22c55e;
   --status-in-game: #3b82f6;
   --status-in-party: #22c55e;
@@ -68,23 +84,32 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-/* Glass panels used across the app shell / Play Now */
+/*
+ * Glass panels: dark fill + thin purple border with corner shines
+ * (bright top-left / bottom-right) and a tight neon edge glow.
+ */
 .glass-panel {
-  border: 1px solid var(--border-subtle);
-  background: var(--surface);
-  backdrop-filter: blur(16px);
-  box-shadow:
-    var(--glow-purple),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  border: 1px solid transparent;
+  background-image: var(--glass-fill), var(--glass-border-shine);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  backdrop-filter: blur(14px);
+  box-shadow: var(--glow-purple);
 }
 
 .glass-panel-elevated {
-  border: 1px solid var(--border);
-  background: var(--surface-elevated);
-  backdrop-filter: blur(18px);
-  box-shadow:
-    var(--glow-purple),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid transparent;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(26, 18, 48, 0.88),
+      rgba(14, 11, 26, 0.82)
+    ),
+    var(--glass-border-shine);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  backdrop-filter: blur(14px);
+  box-shadow: var(--glow-purple);
 }
 
 /* Subtle scrollbar for carousels */

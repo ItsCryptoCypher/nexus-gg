@@ -41,8 +41,8 @@ const toneStyles: Record<
     icon: "text-status-online",
   },
   purple: {
-    iconWrap: "bg-accent-soft",
-    icon: "text-accent-hover",
+    iconWrap: "bg-[rgba(76,29,149,0.55)]",
+    icon: "text-violet-300",
   },
   blue: {
     iconWrap: "bg-status-in-game/15",
@@ -68,12 +68,12 @@ export function StatsRow({ items }: StatsRowProps) {
         return (
           <div
             key={item.id}
-            className="glass-panel flex items-center gap-3 rounded-xl px-4 py-3.5 transition-colors hover:bg-surface-hover"
+            className="glass-panel flex items-center gap-3 rounded-xl px-4 py-3.5"
           >
             <div
-              className={`flex h-10 w-10 items-center justify-center rounded-full ${tone.iconWrap}`}
+              className={`flex h-10 w-10 items-center justify-center rounded-full border border-accent/25 ${tone.iconWrap}`}
             >
-              <Icon className={`h-4 w-4 ${tone.icon}`} />
+              <Icon className={`h-4 w-4 ${tone.icon} drop-shadow-[0_0_6px_currentColor]`} />
             </div>
             <div>
               <p className="text-xl font-bold leading-none text-foreground">
