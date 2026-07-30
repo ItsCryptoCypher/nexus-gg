@@ -2,6 +2,7 @@ import Image from "next/image";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { LandingHeader } from "@/components/landing/LandingHeader";
+import { ProductShot } from "@/components/landing/ProductShot";
 
 export default function LandingPage() {
   return (
@@ -22,6 +23,7 @@ export default function LandingPage() {
         <HeroSection />
       </div>
 
+      <ProductShot />
       <HowItWorks />
     </div>
   );
