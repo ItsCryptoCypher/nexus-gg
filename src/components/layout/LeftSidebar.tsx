@@ -34,7 +34,7 @@ export async function LeftSidebar({
   }));
 
   return (
-    <aside className="relative z-10 flex h-full w-[240px] shrink-0 flex-col border-r border-accent/15 bg-black/20 backdrop-blur-md">
+    <aside className="relative z-10 flex h-full w-[240px] shrink-0 flex-col border-r border-accent/15 bg-background">
       <div className="flex items-center gap-2.5 px-5 py-5">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-sm font-bold text-white shadow-[0_0_16px_rgba(124,58,237,0.45)]">
           N

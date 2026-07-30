@@ -9,11 +9,12 @@
      --border: #25252b;
      --border-subtle: #1c1c21;
   */
-  --background: #09080d;
+  /* Match left-rail depth (#050508 + black wash) */
+  --background: #050508;
   --foreground: #ffffff;
-  --surface: rgba(10, 9, 16, 0.85);
-  --surface-elevated: rgba(14, 12, 22, 0.9);
-  --surface-hover: rgba(22, 18, 36, 0.75);
+  --surface: rgba(10, 8, 18, 0.55);
+  --surface-elevated: rgba(14, 11, 24, 0.62);
+  --surface-hover: rgba(22, 16, 40, 0.45);
   --border: rgba(88, 48, 168, 0.55);
   --border-subtle: rgba(72, 40, 140, 0.45);
   --muted: #9ca3af;
@@ -24,11 +25,16 @@
   /* Tiny neon edge — deep purple, not bright lavender */
   --glow-purple: 0 0 3px rgba(109, 40, 217, 0.4);
   --glow-purple-strong: 0 0 6px rgba(124, 58, 237, 0.45);
+  /* Subtle purple glaze over a dark glass body */
   --glass-fill: linear-gradient(
-    180deg,
-    rgba(12, 10, 18, 0.94),
-    rgba(8, 7, 14, 0.92)
+    155deg,
+    rgba(88, 28, 135, 0.16) 0%,
+    rgba(40, 20, 72, 0.1) 28%,
+    rgba(8, 7, 14, 0.62) 62%,
+    rgba(6, 5, 12, 0.72) 100%
   );
+  --glass-glaze: inset 0 1px 0 rgba(196, 181, 253, 0.07),
+    inset 0 0 28px rgba(88, 28, 135, 0.1);
   /* Mostly deep purple stroke; brief sparks only at TL / BR corners */
   --glass-border-shine: linear-gradient(
     135deg,
@@ -94,23 +100,25 @@ body {
   background-image: var(--glass-fill), var(--glass-border-shine);
   background-origin: border-box;
   background-clip: padding-box, border-box;
-  backdrop-filter: blur(10px);
-  box-shadow: var(--glow-purple);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--glow-purple), var(--glass-glaze);
 }
 
 .glass-panel-elevated {
   border: 1px solid transparent;
   background-image:
     linear-gradient(
-      180deg,
-      rgba(14, 12, 22, 0.96),
-      rgba(9, 8, 16, 0.94)
+      155deg,
+      rgba(88, 28, 135, 0.18) 0%,
+      rgba(40, 20, 72, 0.12) 30%,
+      rgba(10, 8, 18, 0.7) 65%,
+      rgba(7, 6, 14, 0.8) 100%
     ),
     var(--glass-border-shine);
   background-origin: border-box;
   background-clip: padding-box, border-box;
-  backdrop-filter: blur(10px);
-  box-shadow: var(--glow-purple);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--glow-purple), var(--glass-glaze);
 }
 
 /* Subtle scrollbar for carousels */
