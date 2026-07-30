@@ -11,33 +11,34 @@
   */
   --background: #09080d;
   --foreground: #ffffff;
-  --surface: rgba(16, 12, 28, 0.55);
-  --surface-elevated: rgba(22, 16, 40, 0.72);
-  --surface-hover: rgba(36, 24, 64, 0.55);
-  --border: rgba(139, 92, 246, 0.28);
-  --border-subtle: rgba(139, 92, 246, 0.22);
+  --surface: rgba(10, 9, 16, 0.85);
+  --surface-elevated: rgba(14, 12, 22, 0.9);
+  --surface-hover: rgba(22, 18, 36, 0.75);
+  --border: rgba(88, 48, 168, 0.55);
+  --border-subtle: rgba(72, 40, 140, 0.45);
   --muted: #9ca3af;
   --muted-dark: #6b7280;
   --accent: #7c3aed;
   --accent-hover: #8b5cf6;
-  --accent-soft: rgba(124, 58, 237, 0.22);
-  /* Tight neon edge — not a wide ambient bloom */
-  --glow-purple: 0 0 4px rgba(167, 139, 250, 0.45), 0 0 1px rgba(221, 214, 254, 0.35);
-  --glow-purple-strong: 0 0 8px rgba(167, 139, 250, 0.55), 0 0 2px rgba(237, 233, 254, 0.4);
+  --accent-soft: rgba(124, 58, 237, 0.18);
+  /* Tiny neon edge — deep purple, not bright lavender */
+  --glow-purple: 0 0 3px rgba(109, 40, 217, 0.4);
+  --glow-purple-strong: 0 0 6px rgba(124, 58, 237, 0.45);
   --glass-fill: linear-gradient(
     180deg,
-    rgba(20, 14, 36, 0.78),
-    rgba(12, 10, 22, 0.72)
+    rgba(12, 10, 18, 0.94),
+    rgba(8, 7, 14, 0.92)
   );
+  /* Mostly deep purple stroke; brief sparks only at TL / BR corners */
   --glass-border-shine: linear-gradient(
     135deg,
-    rgba(245, 243, 255, 0.95) 0%,
-    rgba(196, 181, 253, 0.75) 14%,
-    rgba(124, 58, 237, 0.38) 38%,
-    rgba(109, 40, 217, 0.28) 50%,
-    rgba(124, 58, 237, 0.38) 62%,
-    rgba(196, 181, 253, 0.7) 86%,
-    rgba(245, 243, 255, 0.9) 100%
+    rgba(233, 213, 255, 0.75) 0%,
+    rgba(109, 40, 217, 0.7) 5%,
+    rgba(67, 28, 130, 0.55) 22%,
+    rgba(49, 20, 96, 0.5) 50%,
+    rgba(67, 28, 130, 0.55) 78%,
+    rgba(109, 40, 217, 0.7) 95%,
+    rgba(233, 213, 255, 0.7) 100%
   );
   --status-online: #22c55e;
   --status-in-game: #3b82f6;
@@ -93,7 +94,7 @@ body {
   background-image: var(--glass-fill), var(--glass-border-shine);
   background-origin: border-box;
   background-clip: padding-box, border-box;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(10px);
   box-shadow: var(--glow-purple);
 }
 
@@ -102,13 +103,13 @@ body {
   background-image:
     linear-gradient(
       180deg,
-      rgba(26, 18, 48, 0.88),
-      rgba(14, 11, 26, 0.82)
+      rgba(14, 12, 22, 0.96),
+      rgba(9, 8, 16, 0.94)
     ),
     var(--glass-border-shine);
   background-origin: border-box;
   background-clip: padding-box, border-box;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(10px);
   box-shadow: var(--glow-purple);
 }
 

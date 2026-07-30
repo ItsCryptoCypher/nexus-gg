@@ -34,7 +34,7 @@ export async function AppShell({
     (basePath === "/demo" ? 0 : await getUnreadMessageCount());
 
   return (
-    <div className="relative flex h-screen overflow-hidden bg-background text-foreground before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(ellipse_at_top,_rgba(124,58,237,0.16),_transparent_55%)] before:content-['']">
+    <div className="relative flex h-screen overflow-hidden bg-background text-foreground before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(ellipse_at_top,_rgba(88,28,135,0.08),_transparent_50%)] before:content-['']">
       {basePath !== "/demo" ? <PresenceHeartbeat /> : null}
       <div className="hidden md:block">
         <LeftSidebar

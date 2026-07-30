@@ -37,20 +37,20 @@ const toneStyles: Record<
   { iconWrap: string; icon: string }
 > = {
   green: {
-    iconWrap: "bg-status-online/15",
-    icon: "text-status-online",
+    iconWrap: "bg-black/35",
+    icon: "text-status-online drop-shadow-[0_0_4px_rgba(34,197,94,0.45)]",
   },
   purple: {
-    iconWrap: "bg-[rgba(76,29,149,0.55)]",
-    icon: "text-violet-300",
+    iconWrap: "bg-black/35",
+    icon: "text-[#a855f7] drop-shadow-[0_0_4px_rgba(168,85,247,0.55)]",
   },
   blue: {
-    iconWrap: "bg-status-in-game/15",
-    icon: "text-status-in-game",
+    iconWrap: "bg-black/35",
+    icon: "text-status-in-game drop-shadow-[0_0_4px_rgba(59,130,246,0.45)]",
   },
   orange: {
-    iconWrap: "bg-status-looking/15",
-    icon: "text-status-looking",
+    iconWrap: "bg-black/35",
+    icon: "text-status-looking drop-shadow-[0_0_4px_rgba(249,115,22,0.45)]",
   },
 };
 
@@ -71,15 +71,15 @@ export function StatsRow({ items }: StatsRowProps) {
             className="glass-panel flex items-center gap-3 rounded-xl px-4 py-3.5"
           >
             <div
-              className={`flex h-10 w-10 items-center justify-center rounded-full border border-accent/25 ${tone.iconWrap}`}
+              className={`flex h-10 w-10 items-center justify-center rounded-full ${tone.iconWrap}`}
             >
-              <Icon className={`h-4 w-4 ${tone.icon} drop-shadow-[0_0_6px_currentColor]`} />
+              <Icon className={`h-4 w-4 ${tone.icon}`} />
             </div>
             <div>
               <p className="text-xl font-bold leading-none text-foreground">
                 {item.value}
               </p>
-              <p className="mt-1 text-xs text-muted">
+              <p className="mt-1 text-xs text-[#9a9aad]">
                 {item.label}
                 {item.hint ? (
                   <span className="text-muted-dark"> · {item.hint}</span>
