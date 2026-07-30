@@ -40,12 +40,7 @@ export function PlayingCard({ session }: PlayingCardProps) {
           <PlatformIcon platform={session.platform} className="h-3 w-3" />
         </div>
         <div className="absolute -bottom-4 left-3">
-          <Avatar
-            src={session.avatarUrl}
-            alt={session.username}
-            size="md"
-            className="ring-2 ring-accent/60 ring-offset-2 ring-offset-[#0d0b12]"
-          />
+          <Avatar src={session.avatarUrl} alt={session.username} size="md" />
         </div>
       </div>
 

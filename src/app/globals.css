@@ -26,6 +26,13 @@
   --accent-soft: rgba(124, 58, 237, 0.14);
   --glass-glaze: inset 0 1px 0 rgba(139, 92, 246, 0.035),
     inset 0 0 22px rgba(58, 24, 96, 0.05);
+  /* Fill: top-left a touch lighter → bottom-right stays base */
+  --glass-fill-gradient: linear-gradient(
+    135deg,
+    #0a0c1a 0%,
+    var(--surface) 55%,
+    var(--surface) 100%
+  );
   --glass-border-gradient: linear-gradient(
     90deg,
     var(--border-left) 0%,
@@ -80,8 +87,7 @@ body {
 /* Cards: fill + left-to-right border gradient + quiet purple glaze */
 .glass-panel {
   border: 1px solid transparent;
-  background-image: linear-gradient(var(--surface), var(--surface)),
-    var(--glass-border-gradient);
+  background-image: var(--glass-fill-gradient), var(--glass-border-gradient);
   background-origin: border-box;
   background-clip: padding-box, border-box;
   box-shadow: var(--glass-glaze);
@@ -89,8 +95,7 @@ body {
 
 .glass-panel-elevated {
   border: 1px solid transparent;
-  background-image: linear-gradient(var(--surface-elevated), var(--surface-elevated)),
-    var(--glass-border-gradient);
+  background-image: var(--glass-fill-gradient), var(--glass-border-gradient);
   background-origin: border-box;
   background-clip: padding-box, border-box;
   box-shadow: var(--glass-glaze);
