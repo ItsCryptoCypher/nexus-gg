@@ -12,39 +12,39 @@
   /* Match left-rail depth (#050508 + black wash) */
   --background: #050508;
   --foreground: #ffffff;
-  --surface: rgba(10, 8, 18, 0.55);
-  --surface-elevated: rgba(14, 11, 24, 0.62);
-  --surface-hover: rgba(22, 16, 40, 0.45);
-  --border: rgba(88, 48, 168, 0.55);
-  --border-subtle: rgba(72, 40, 140, 0.45);
+  --surface: rgba(8, 7, 14, 0.72);
+  --surface-elevated: rgba(10, 9, 16, 0.78);
+  --surface-hover: rgba(16, 12, 28, 0.55);
+  --border: rgba(58, 32, 110, 0.45);
+  --border-subtle: rgba(48, 28, 90, 0.4);
   --muted: #9ca3af;
   --muted-dark: #6b7280;
   --accent: #7c3aed;
   --accent-hover: #8b5cf6;
-  --accent-soft: rgba(124, 58, 237, 0.18);
-  /* Tiny neon edge — deep purple, not bright lavender */
-  --glow-purple: 0 0 3px rgba(109, 40, 217, 0.4);
-  --glow-purple-strong: 0 0 6px rgba(124, 58, 237, 0.45);
-  /* Subtle purple glaze over a dark glass body */
+  --accent-soft: rgba(124, 58, 237, 0.14);
+  /* Dim neon edge — just enough to lift the card */
+  --glow-purple: 0 0 2px rgba(76, 29, 149, 0.28);
+  --glow-purple-strong: 0 0 4px rgba(91, 33, 182, 0.35);
+  /* Dark body with a quiet purple glaze */
   --glass-fill: linear-gradient(
     155deg,
-    rgba(88, 28, 135, 0.16) 0%,
-    rgba(40, 20, 72, 0.1) 28%,
-    rgba(8, 7, 14, 0.62) 62%,
-    rgba(6, 5, 12, 0.72) 100%
+    rgba(58, 24, 96, 0.08) 0%,
+    rgba(24, 14, 44, 0.06) 30%,
+    rgba(7, 6, 12, 0.82) 68%,
+    rgba(5, 5, 10, 0.88) 100%
   );
-  --glass-glaze: inset 0 1px 0 rgba(196, 181, 253, 0.07),
-    inset 0 0 28px rgba(88, 28, 135, 0.1);
-  /* Mostly deep purple stroke; brief sparks only at TL / BR corners */
+  --glass-glaze: inset 0 1px 0 rgba(139, 92, 246, 0.04),
+    inset 0 0 24px rgba(58, 24, 96, 0.06);
+  /* Deep purple stroke; muted corner sparks */
   --glass-border-shine: linear-gradient(
     135deg,
-    rgba(233, 213, 255, 0.75) 0%,
-    rgba(109, 40, 217, 0.7) 5%,
-    rgba(67, 28, 130, 0.55) 22%,
-    rgba(49, 20, 96, 0.5) 50%,
-    rgba(67, 28, 130, 0.55) 78%,
-    rgba(109, 40, 217, 0.7) 95%,
-    rgba(233, 213, 255, 0.7) 100%
+    rgba(180, 160, 220, 0.4) 0%,
+    rgba(76, 29, 149, 0.45) 6%,
+    rgba(42, 20, 80, 0.4) 24%,
+    rgba(30, 16, 58, 0.38) 50%,
+    rgba(42, 20, 80, 0.4) 76%,
+    rgba(76, 29, 149, 0.45) 94%,
+    rgba(180, 160, 220, 0.35) 100%
   );
   --status-online: #22c55e;
   --status-in-game: #3b82f6;
@@ -109,10 +109,10 @@ body {
   background-image:
     linear-gradient(
       155deg,
-      rgba(88, 28, 135, 0.18) 0%,
-      rgba(40, 20, 72, 0.12) 30%,
-      rgba(10, 8, 18, 0.7) 65%,
-      rgba(7, 6, 14, 0.8) 100%
+      rgba(58, 24, 96, 0.1) 0%,
+      rgba(24, 14, 44, 0.07) 30%,
+      rgba(8, 7, 14, 0.86) 68%,
+      rgba(6, 5, 12, 0.9) 100%
     ),
     var(--glass-border-shine);
   background-origin: border-box;
