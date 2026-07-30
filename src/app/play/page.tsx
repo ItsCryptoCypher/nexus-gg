@@ -36,7 +36,7 @@ export default async function PlayNowPage() {
       <StatsRow items={stats} />
       <WhosPlaying sessions={playingSessions} />
       <WhosOnline friends={onlineSessions} />
-      <div className="mb-6 flex flex-col gap-6 lg:flex-row">
+      <div className="mb-3 flex flex-col gap-3 lg:flex-row">
         <JumpBackIn games={recentGames} />
         <LookingForPlayers players={lfgPlayers} />
       </div>

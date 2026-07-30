@@ -9,29 +9,29 @@ type WhosPlayingProps = {
 
 export function WhosPlaying({ sessions }: WhosPlayingProps) {
   return (
-    <SectionCard className="mb-6" padding="lg">
-      <div className="mb-4 flex items-center justify-between gap-3">
+    <SectionCard className="mb-3" padding="md">
+      <div className="mb-2 flex items-center justify-between gap-3">
         <div>
-          <h2 className="text-base font-semibold text-foreground">Who&apos;s Playing</h2>
-          <p className="mt-0.5 text-xs text-muted">
+          <h2 className="text-sm font-semibold text-foreground">Who&apos;s Playing</h2>
+          <p className="mt-0.5 text-[11px] text-muted">
             Friends currently in a game
           </p>
         </div>
         <button
           type="button"
-          className="inline-flex shrink-0 items-center gap-0.5 text-xs text-muted transition-colors hover:text-foreground"
+          className="inline-flex shrink-0 items-center gap-0.5 text-[11px] text-muted transition-colors hover:text-foreground"
         >
           View All Friends
           <ChevronRight className="h-3.5 w-3.5" />
         </button>
       </div>
       {sessions.length === 0 ? (
-        <p className="glass-panel rounded-xl px-4 py-6 text-sm text-muted">
+        <p className="glass-panel rounded-xl px-3 py-3 text-xs text-muted">
           No one in a game right now. When friends launch a title with Discord
           activity on, they&apos;ll show up here.
         </p>
       ) : (
-        <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-thin">
+        <div className="flex gap-2.5 overflow-x-auto pb-0.5 scrollbar-thin">
           {sessions.map((session) => (
             <PlayingCard key={session.id} session={session} />
           ))}

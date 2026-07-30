@@ -8,21 +8,21 @@ type UpcomingEventsProps = {
 
 export function UpcomingEvents({ events }: UpcomingEventsProps) {
   return (
-    <SectionCard>
-      <div className="mb-3 flex items-center justify-between">
+    <SectionCard padding="sm">
+      <div className="mb-2 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-foreground">Upcoming Events</h2>
         <button type="button" className="text-xs text-muted hover:text-foreground">
           View all
         </button>
       </div>
-      <ul className="space-y-2.5">
+      <ul className="space-y-2">
         {events.map((event) => (
           <li key={event.id}>
             <a
               href="#"
-              className="glass-panel flex gap-3 rounded-xl p-2 transition-opacity hover:opacity-95"
+              className="glass-panel flex gap-2.5 rounded-xl p-1.5 transition-opacity hover:opacity-95"
             >
-              <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg">
+              <div className="relative h-11 w-16 shrink-0 overflow-hidden rounded-lg">
                 <Image
                   src={event.imageUrl}
                   alt={event.title}

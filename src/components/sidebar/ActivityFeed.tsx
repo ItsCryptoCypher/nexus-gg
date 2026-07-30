@@ -32,14 +32,14 @@ type ActivityFeedProps = {
 
 export function ActivityFeed({ items }: ActivityFeedProps) {
   return (
-    <SectionCard>
-      <div className="mb-3 flex items-center justify-between">
+    <SectionCard padding="sm">
+      <div className="mb-2 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-foreground">Activity Feed</h2>
         <button type="button" className="text-xs text-muted hover:text-foreground">
           See all
         </button>
       </div>
-      <ul className="space-y-3">
+      <ul className="space-y-2">
         {items.map((item) => {
           const Icon = typeIcon[item.type];
           return (
