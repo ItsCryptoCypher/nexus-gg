@@ -13,6 +13,7 @@ export default function LandingPage() {
           alt=""
           fill
           priority
+          quality={100}
           className="object-cover object-right"
           sizes="100vw"
         />
