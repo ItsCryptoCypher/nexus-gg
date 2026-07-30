@@ -14,9 +14,6 @@ export function WhosOnline({ friends }: WhosOnlineProps) {
         <h2 className="text-base font-semibold text-foreground">
           Who&apos;s Online
         </h2>
-        <p className="mt-0.5 text-xs text-muted">
-          On Nexus, Discord, or a console — not in a game yet
-        </p>
       </div>
       {friends.length === 0 ? (
         <p className="glass-panel rounded-xl px-4 py-6 text-sm text-muted">
