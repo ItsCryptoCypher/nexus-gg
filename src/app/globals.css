@@ -11,14 +11,14 @@
   */
   --background: #02040d;
   --foreground: #ffffff;
-  --surface: #070915;
-  --surface-elevated: #070915;
-  --surface-hover: #0a0e1c;
-  /* Slightly lighter than card fill #070915 */
-  --border: #0c1120;
-  --border-subtle: #0c1120;
+  --surface: #050712;
+  --surface-elevated: #050712;
+  --surface-hover: #080a18;
+  /* Same brightness as before, shifted toward purple */
+  --border: #120e24;
+  --border-subtle: #120e24;
   /* Left edge of card border is a touch brighter */
-  --border-left: #141b30;
+  --border-left: #1c1535;
   --muted: #9ca3af;
   --muted-dark: #6b7280;
   --accent: #7c3aed;
