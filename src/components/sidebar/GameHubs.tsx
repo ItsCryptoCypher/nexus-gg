@@ -8,14 +8,14 @@ type GameHubsProps = {
 
 export function GameHubs({ hubs }: GameHubsProps) {
   return (
-    <SectionCard padding="sm">
-      <div className="mb-2 flex items-center justify-between">
+    <SectionCard>
+      <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-foreground">Game Hubs</h2>
         <button type="button" className="text-xs text-muted hover:text-foreground">
           Browse
         </button>
       </div>
-      <ul className="space-y-1.5">
+      <ul className="space-y-2.5">
         {hubs.map((hub) => (
           <li key={hub.id}>
             <a

@@ -60,7 +60,7 @@ type StatsRowProps = {
 
 export function StatsRow({ items }: StatsRowProps) {
   return (
-    <div className="mb-3 grid grid-cols-2 gap-2 lg:grid-cols-4">
+    <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
       {items.map((item) => {
         const Icon = iconMap[item.icon];
         const tone = toneStyles[item.tone];
@@ -68,18 +68,18 @@ export function StatsRow({ items }: StatsRowProps) {
         return (
           <div
             key={item.id}
-            className="glass-panel flex items-center gap-2.5 rounded-xl px-3 py-2"
+            className="glass-panel flex items-center gap-3 rounded-xl px-4 py-3.5"
           >
             <div
-              className={`flex h-8 w-8 items-center justify-center rounded-full ${tone.iconWrap}`}
+              className={`flex h-10 w-10 items-center justify-center rounded-full ${tone.iconWrap}`}
             >
-              <Icon className={`h-3.5 w-3.5 ${tone.icon}`} />
+              <Icon className={`h-4 w-4 ${tone.icon}`} />
             </div>
             <div>
-              <p className="text-lg font-bold leading-none text-foreground">
+              <p className="text-xl font-bold leading-none text-foreground">
                 {item.value}
               </p>
-              <p className="mt-0.5 text-[11px] text-[#9a9aad]">
+              <p className="mt-1 text-xs text-[#9a9aad]">
                 {item.label}
                 {item.hint ? (
                   <span className="text-muted-dark"> · {item.hint}</span>

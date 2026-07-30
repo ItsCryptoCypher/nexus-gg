@@ -26,41 +26,41 @@ export function PlayingCard({ session }: PlayingCardProps) {
   const isOutline = session.action === "invite";
 
   return (
-    <article className="glass-panel-elevated w-[168px] shrink-0 overflow-hidden rounded-xl">
-      <div className="relative h-[72px] w-full">
+    <article className="glass-panel-elevated w-[200px] shrink-0 overflow-hidden rounded-xl">
+      <div className="relative h-[110px] w-full">
         <Image
           src={session.coverUrl}
           alt={session.gameTitle}
           fill
           className="object-cover"
-          sizes="168px"
+          sizes="200px"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0b12] via-transparent to-black/20" />
-        <div className="absolute right-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full border border-accent/30 bg-black/55 text-white backdrop-blur-sm">
-          <PlatformIcon platform={session.platform} className="h-3 w-3" />
+        <div className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border border-accent/30 bg-black/55 text-white backdrop-blur-sm">
+          <PlatformIcon platform={session.platform} className="h-3.5 w-3.5" />
         </div>
-        <div className="absolute -bottom-3 left-2.5">
+        <div className="absolute -bottom-4 left-3">
           <Avatar
             src={session.avatarUrl}
             alt={session.username}
-            size="sm"
-            className="ring-2 ring-accent/60 ring-offset-1 ring-offset-[#0d0b12]"
+            size="md"
+            className="ring-2 ring-accent/60 ring-offset-2 ring-offset-[#0d0b12]"
           />
         </div>
       </div>
 
-      <div className="space-y-1.5 px-2.5 pb-2.5 pt-4">
+      <div className="space-y-2.5 px-3 pb-3 pt-6">
         <div>
-          <p className="truncate text-xs font-semibold text-foreground">
+          <p className="truncate text-sm font-semibold text-foreground">
             {session.username}
           </p>
-          <p className="truncate text-[11px] text-muted">{session.gameTitle}</p>
+          <p className="truncate text-xs text-muted">{session.gameTitle}</p>
         </div>
 
         <div className="flex items-center justify-between gap-2">
           <Badge tone={status.tone}>{status.label}</Badge>
           {session.partySize != null && session.partyMax != null ? (
-            <span className="text-[10px] text-muted">
+            <span className="text-[11px] text-muted">
               {session.partySize} / {session.partyMax}
             </span>
           ) : null}
@@ -70,7 +70,6 @@ export function PlayingCard({ session }: PlayingCardProps) {
           variant={isOutline ? "outline" : "primary"}
           size="sm"
           fullWidth
-          className="h-7 text-[11px]"
         >
           {actionLabel[session.action]}
         </Button>

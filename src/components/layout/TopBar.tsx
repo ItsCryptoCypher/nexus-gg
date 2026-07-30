@@ -18,23 +18,23 @@ export function TopBar({
 }: TopBarProps) {
   return (
     <header
-      className={`mb-3 flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between ${className}`}
+      className={`mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between ${className}`}
     >
       <div className="min-w-0">
-        <h1 className="font-display text-xl font-extrabold tracking-tight text-foreground md:text-2xl">
+        <h1 className="font-display text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
           {title}
         </h1>
-        <p className="mt-0.5 text-xs text-muted">{subtitle}</p>
+        <p className="mt-1 text-sm text-muted">{subtitle}</p>
       </div>
 
-      <div className="flex items-center gap-2.5 lg:max-w-xl lg:flex-1 lg:justify-end">
+      <div className="flex items-center gap-3 lg:max-w-xl lg:flex-1 lg:justify-end">
         <SearchInput
           placeholder="Search for games, friends, or players..."
-          className="h-9 min-w-0 flex-1 lg:max-w-md"
+          className="min-w-0 flex-1 lg:max-w-md"
         />
         <button
           type="button"
-          className="glass-panel relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-muted transition-colors hover:text-foreground"
+          className="glass-panel relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-muted transition-colors hover:text-foreground"
           aria-label="Notifications"
         >
           <Bell className="h-4 w-4" />
