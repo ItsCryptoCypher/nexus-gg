@@ -42,7 +42,7 @@ export function HowItWorks() {
   return (
     <section id="how-it-works" className="relative z-10 border-t border-white/10 py-14 md:py-16">
       <LandingContainer>
-        <h2 className="mb-6 text-2xl font-bold tracking-tight text-foreground md:mb-8 md:text-3xl">
+        <h2 className="font-display mb-6 text-2xl font-extrabold uppercase tracking-tight text-foreground md:mb-8 md:text-3xl">
           How It Works
         </h2>
 
@@ -56,7 +56,7 @@ export function HowItWorks() {
                   </span>
                   {step.icons}
                 </div>
-                <h3 className="mb-2 text-lg font-semibold leading-snug text-foreground">
+                <h3 className="font-display mb-2 text-lg font-extrabold leading-snug tracking-tight text-foreground">
                   {step.title}
                 </h3>
                 <p className="text-sm leading-relaxed text-muted">

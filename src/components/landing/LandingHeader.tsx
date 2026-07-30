@@ -19,7 +19,7 @@ export async function LandingHeader() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-sm font-bold text-white">
               N
             </div>
-            <span className="text-sm font-bold tracking-[0.08em] text-foreground">
+            <span className="font-display text-sm font-extrabold tracking-[0.08em] text-foreground">
               NEXUS.GG
             </span>
           </Link>

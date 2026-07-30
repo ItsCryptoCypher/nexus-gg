@@ -13,7 +13,7 @@ export function HeroSection() {
     <section className="relative z-10 flex min-h-[calc(100svh-5.5rem)] flex-col justify-center">
       <LandingContainer className="flex flex-1 flex-col justify-center py-12 lg:py-16">
         <div className="flex w-full max-w-lg flex-col justify-center">
-          <h1 className="text-5xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-6xl xl:text-[4.25rem]">
+          <h1 className="font-display text-5xl font-extrabold uppercase leading-[1.05] tracking-tight text-foreground sm:text-6xl xl:text-[4.25rem]">
             Your Gaming
             <br />
             World
