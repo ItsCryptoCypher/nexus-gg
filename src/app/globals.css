@@ -79,7 +79,7 @@ body {
 
 /* Cards: fill + left-to-right border gradient + quiet purple glaze */
 .glass-panel {
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   background-image: linear-gradient(var(--surface), var(--surface)),
     var(--glass-border-gradient);
   background-origin: border-box;
@@ -88,7 +88,7 @@ body {
 }
 
 .glass-panel-elevated {
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   background-image: linear-gradient(var(--surface-elevated), var(--surface-elevated)),
     var(--glass-border-gradient);
   background-origin: border-box;
