@@ -9,43 +9,21 @@
      --border: #25252b;
      --border-subtle: #1c1c21;
   */
-  /* Match left-rail depth (#050508 + black wash) */
-  --background: #050508;
+  --background: #02040d;
   --foreground: #ffffff;
-  --surface: rgba(8, 7, 14, 0.72);
-  --surface-elevated: rgba(10, 9, 16, 0.78);
-  --surface-hover: rgba(16, 12, 28, 0.55);
-  --border: rgba(58, 32, 110, 0.45);
-  --border-subtle: rgba(48, 28, 90, 0.4);
+  --surface: #070915;
+  --surface-elevated: #070915;
+  --surface-hover: #0a0e1c;
+  /* Slightly lighter than card fill #070915 */
+  --border: #0c1120;
+  --border-subtle: #0c1120;
   --muted: #9ca3af;
   --muted-dark: #6b7280;
   --accent: #7c3aed;
   --accent-hover: #8b5cf6;
   --accent-soft: rgba(124, 58, 237, 0.14);
-  /* Dim neon edge — just enough to lift the card */
-  --glow-purple: 0 0 2px rgba(76, 29, 149, 0.28);
-  --glow-purple-strong: 0 0 4px rgba(91, 33, 182, 0.35);
-  /* Dark body with a quiet purple glaze */
-  --glass-fill: linear-gradient(
-    155deg,
-    rgba(58, 24, 96, 0.08) 0%,
-    rgba(24, 14, 44, 0.06) 30%,
-    rgba(7, 6, 12, 0.82) 68%,
-    rgba(5, 5, 10, 0.88) 100%
-  );
-  --glass-glaze: inset 0 1px 0 rgba(139, 92, 246, 0.04),
-    inset 0 0 24px rgba(58, 24, 96, 0.06);
-  /* Deep purple stroke; muted corner sparks */
-  --glass-border-shine: linear-gradient(
-    135deg,
-    rgba(180, 160, 220, 0.4) 0%,
-    rgba(76, 29, 149, 0.45) 6%,
-    rgba(42, 20, 80, 0.4) 24%,
-    rgba(30, 16, 58, 0.38) 50%,
-    rgba(42, 20, 80, 0.4) 76%,
-    rgba(76, 29, 149, 0.45) 94%,
-    rgba(180, 160, 220, 0.35) 100%
-  );
+  --glass-glaze: inset 0 1px 0 rgba(139, 92, 246, 0.035),
+    inset 0 0 22px rgba(58, 24, 96, 0.05);
   --status-online: #22c55e;
   --status-in-game: #3b82f6;
   --status-in-party: #22c55e;
@@ -91,34 +69,17 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-/*
- * Glass panels: dark fill + thin purple border with corner shines
- * (bright top-left / bottom-right) and a tight neon edge glow.
- */
+/* Cards: exact fill + slightly lighter border + quiet purple glaze */
 .glass-panel {
-  border: 1px solid transparent;
-  background-image: var(--glass-fill), var(--glass-border-shine);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  backdrop-filter: blur(14px);
-  box-shadow: var(--glow-purple), var(--glass-glaze);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface);
+  box-shadow: var(--glass-glaze);
 }
 
 .glass-panel-elevated {
-  border: 1px solid transparent;
-  background-image:
-    linear-gradient(
-      155deg,
-      rgba(58, 24, 96, 0.1) 0%,
-      rgba(24, 14, 44, 0.07) 30%,
-      rgba(8, 7, 14, 0.86) 68%,
-      rgba(6, 5, 12, 0.9) 100%
-    ),
-    var(--glass-border-shine);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  backdrop-filter: blur(14px);
-  box-shadow: var(--glow-purple), var(--glass-glaze);
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  box-shadow: var(--glass-glaze);
 }
 
 /* Subtle scrollbar for carousels */
