@@ -8,7 +8,7 @@ type UserProfileCardProps = {
 
 export function UserProfileCard({ user }: UserProfileCardProps) {
   return (
-    <div className="rounded-xl border border-border-subtle bg-surface-elevated p-3">
+    <div className="glass-panel-elevated rounded-xl p-3">
       <div className="mb-3 flex items-center gap-3">
         <Avatar src={user.avatarUrl} alt={user.username} size="md" status="online" />
         <div className="min-w-0">

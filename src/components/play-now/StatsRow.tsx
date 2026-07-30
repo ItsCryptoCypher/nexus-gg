@@ -68,7 +68,7 @@ export function StatsRow({ items }: StatsRowProps) {
         return (
           <div
             key={item.id}
-            className="flex items-center gap-3 rounded-xl border border-border-subtle bg-surface px-4 py-3.5 transition-colors hover:bg-surface-hover"
+            className="glass-panel flex items-center gap-3 rounded-xl px-4 py-3.5 transition-colors hover:bg-surface-hover"
           >
             <div
               className={`flex h-10 w-10 items-center justify-center rounded-full ${tone.iconWrap}`}

@@ -11,16 +11,18 @@
   */
   --background: #09080d;
   --foreground: #ffffff;
-  --surface: #0d0b12;
-  --surface-elevated: #12101a;
-  --surface-hover: #16131f;
-  --border: #221e2c;
-  --border-subtle: #18151f;
+  --surface: rgba(16, 12, 28, 0.55);
+  --surface-elevated: rgba(22, 16, 40, 0.72);
+  --surface-hover: rgba(36, 24, 64, 0.55);
+  --border: rgba(139, 92, 246, 0.28);
+  --border-subtle: rgba(139, 92, 246, 0.22);
   --muted: #9ca3af;
   --muted-dark: #6b7280;
   --accent: #7c3aed;
   --accent-hover: #8b5cf6;
-  --accent-soft: rgba(124, 58, 237, 0.18);
+  --accent-soft: rgba(124, 58, 237, 0.22);
+  --glow-purple: 0 0 24px rgba(124, 58, 237, 0.22);
+  --glow-purple-strong: 0 0 28px rgba(124, 58, 237, 0.45);
   --status-online: #22c55e;
   --status-in-game: #3b82f6;
   --status-in-party: #22c55e;
@@ -64,6 +66,25 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Glass panels used across the app shell / Play Now */
+.glass-panel {
+  border: 1px solid var(--border-subtle);
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    var(--glow-purple),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.glass-panel-elevated {
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    var(--glow-purple),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 /* Subtle scrollbar for carousels */

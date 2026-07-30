@@ -19,7 +19,7 @@ export function SectionCard({
 }: SectionCardProps) {
   return (
     <section
-      className={`rounded-2xl border border-border-subtle bg-surface ${paddingMap[padding]} ${className}`}
+      className={`glass-panel rounded-2xl ${paddingMap[padding]} ${className}`}
     >
       {children}
     </section>

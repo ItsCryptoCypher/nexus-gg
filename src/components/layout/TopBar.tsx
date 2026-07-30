@@ -21,7 +21,7 @@ export function TopBar({
       className={`mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between ${className}`}
     >
       <div className="min-w-0">
-        <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+        <h1 className="font-display text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
           {title}
         </h1>
         <p className="mt-1 text-sm text-muted">{subtitle}</p>
@@ -34,7 +34,7 @@ export function TopBar({
         />
         <button
           type="button"
-          className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-surface text-muted transition-colors hover:bg-surface-hover hover:text-foreground"
+          className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-accent/25 bg-black/35 text-muted shadow-[0_0_14px_rgba(124,58,237,0.12)] backdrop-blur-md transition-colors hover:border-accent/45 hover:bg-accent/10 hover:text-foreground"
           aria-label="Notifications"
         >
           <Bell className="h-4 w-4" />

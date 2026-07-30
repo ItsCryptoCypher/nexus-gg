@@ -34,7 +34,7 @@ export async function AppShell({
     (basePath === "/demo" ? 0 : await getUnreadMessageCount());
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background text-foreground">
+    <div className="relative flex h-screen overflow-hidden bg-background text-foreground before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(ellipse_at_top,_rgba(124,58,237,0.16),_transparent_55%)] before:content-['']">
       {basePath !== "/demo" ? <PresenceHeartbeat /> : null}
       <div className="hidden md:block">
         <LeftSidebar
@@ -45,7 +45,7 @@ export async function AppShell({
         />
       </div>
       <main
-        className={`min-w-0 flex-1 ${
+        className={`relative z-10 min-w-0 flex-1 ${
           flush ? "flex flex-col overflow-hidden" : "overflow-y-auto scrollbar-thin"
         }`}
       >

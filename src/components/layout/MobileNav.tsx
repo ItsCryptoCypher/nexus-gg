@@ -145,20 +145,20 @@ export function MobileNav({
                             <a
                               href={resolveNavHref(item.href, basePath)}
                               onClick={() => setOpen(false)}
-                              className={`relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
+                              className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all ${
                                 active
-                                  ? "bg-accent-soft font-medium text-foreground before:absolute before:left-0 before:top-1.5 before:bottom-1.5 before:w-0.5 before:rounded-full before:bg-accent"
-                                  : "text-muted hover:bg-surface-hover hover:text-foreground"
+                                  ? "border border-accent/40 bg-gradient-to-r from-accent/35 to-accent/10 font-medium text-white shadow-[0_0_18px_rgba(124,58,237,0.35)]"
+                                  : "border border-transparent text-muted hover:border-accent/15 hover:bg-white/5 hover:text-foreground"
                               }`}
                             >
                               <Icon
                                 className={`h-4 w-4 ${
-                                  active ? "text-accent" : "text-muted"
+                                  active ? "text-violet-200" : "text-muted"
                                 }`}
                               />
                               <span className="flex-1">{item.label}</span>
                               {item.badge ? (
-                                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-[10px] font-semibold text-white">
+                                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-[10px] font-semibold text-white shadow-[0_0_10px_rgba(124,58,237,0.45)]">
                                   {item.badge}
                                 </span>
                               ) : null}

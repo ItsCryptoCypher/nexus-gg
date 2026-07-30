@@ -26,7 +26,7 @@ export function PlayingCard({ session }: PlayingCardProps) {
   const isOutline = session.action === "invite";
 
   return (
-    <article className="w-[200px] shrink-0 overflow-hidden rounded-xl border border-border-subtle bg-surface-elevated transition-colors hover:bg-surface-hover">
+    <article className="glass-panel-elevated w-[200px] shrink-0 overflow-hidden rounded-xl transition-colors hover:border-accent/45">
       <div className="relative h-[110px] w-full">
         <Image
           src={session.coverUrl}
@@ -35,8 +35,8 @@ export function PlayingCard({ session }: PlayingCardProps) {
           className="object-cover"
           sizes="200px"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-black/20" />
-        <div className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur-sm">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0b12] via-transparent to-black/20" />
+        <div className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border border-accent/30 bg-black/55 text-white backdrop-blur-sm">
           <PlatformIcon platform={session.platform} className="h-3.5 w-3.5" />
         </div>
         <div className="absolute -bottom-4 left-3">
@@ -44,7 +44,7 @@ export function PlayingCard({ session }: PlayingCardProps) {
             src={session.avatarUrl}
             alt={session.username}
             size="md"
-            className="ring-2 ring-surface"
+            className="ring-2 ring-accent/60 ring-offset-2 ring-offset-[#0d0b12]"
           />
         </div>
       </div>
