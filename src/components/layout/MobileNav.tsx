@@ -71,27 +71,17 @@ export function MobileNav({
 
   return (
     <>
-      <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border-subtle bg-background/95 px-4 py-3 backdrop-blur md:hidden">
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          className="flex h-9 w-9 items-center justify-center rounded-lg border border-border-subtle text-muted transition-colors hover:bg-surface-hover hover:text-foreground"
-          aria-label="Open navigation menu"
-        >
-          <Menu className="h-4 w-4" />
-        </button>
-        <div className="flex min-w-0 items-center gap-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent text-xs font-bold text-white">
-            N
-          </div>
-          <div className="min-w-0">
-            <span className="text-sm font-bold tracking-[0.08em]">NEXUS.GG</span>
-            {basePath === "/demo" ? (
-              <p className="text-[10px] font-medium tracking-wide text-accent">
-                Demo preview
-              </p>
-            ) : null}
-          </div>
+      <header className="sticky top-0 z-30 flex items-center gap-2.5 border-b border-border-subtle bg-background/95 px-4 py-3 backdrop-blur md:hidden">
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent text-xs font-bold text-white">
+          N
+        </div>
+        <div className="min-w-0">
+          <span className="text-sm font-bold tracking-[0.08em]">NEXUS.GG</span>
+          {basePath === "/demo" ? (
+            <p className="text-[10px] font-medium tracking-wide text-accent">
+              Demo preview
+            </p>
+          ) : null}
         </div>
       </header>
 
