@@ -11,10 +11,13 @@ import {
   recentGames,
   smartMatchSuggestions,
   smartMatchTags,
-  stats,
 } from "@/data/mock";
 import { getAppUser } from "@/lib/auth/get-app-user";
 import { getOnlineSessions } from "@/lib/presence/get-online-sessions";
+import {
+  buildPlayNowStats,
+  countPeopleInParties,
+} from "@/lib/presence/get-play-now-stats";
 import { getPlayingSessions } from "@/lib/presence/get-playing-sessions";
 
 export const metadata = {
@@ -24,11 +27,18 @@ export const metadata = {
 };
 
 export default async function PlayNowPage() {
-  const [user, playingSessions, onlineSessions] = await Promise.all([
-    getAppUser(),
-    getPlayingSessions(),
-    getOnlineSessions(),
-  ]);
+  const [user, playingSessions, onlineSessions, inPartyCount] =
+    await Promise.all([
+      getAppUser(),
+      getPlayingSessions(),
+      getOnlineSessions(),
+      countPeopleInParties(),
+    ]);
+  const stats = buildPlayNowStats({
+    onlineCount: onlineSessions.length,
+    inGameCount: playingSessions.length,
+    inPartyCount,
+  });
 
   return (
     <AppShell user={user}>
