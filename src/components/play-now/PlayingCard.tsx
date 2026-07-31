@@ -1,9 +1,15 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { PlatformIcon } from "@/components/ui/PlatformIcon";
 import type { PlayingSession } from "@/data/mock";
+
+const playingCardFill = {
+  "--glass-fill-gradient":
+    "linear-gradient(135deg, #0e1122 0%, #090b18 55%, #090b18 100%)",
+} as CSSProperties;
 
 type PlayingCardProps = {
   session: PlayingSession;
@@ -26,7 +32,10 @@ export function PlayingCard({ session }: PlayingCardProps) {
   const isOutline = session.action === "invite";
 
   return (
-    <article className="glass-panel w-[200px] shrink-0 overflow-hidden rounded-xl">
+    <article
+      className="glass-panel w-[200px] shrink-0 overflow-hidden rounded-xl"
+      style={playingCardFill}
+    >
       <div className="relative h-[55px] w-full">
         <Image
           src={session.coverUrl}
@@ -35,7 +44,7 @@ export function PlayingCard({ session }: PlayingCardProps) {
           className="object-cover"
           sizes="200px"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c1a] via-transparent to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0e1122] via-transparent to-black/20" />
         <div className="absolute right-2 top-1.5 flex h-6 w-6 items-center justify-center rounded-full border border-accent/30 bg-black/55 text-white backdrop-blur-sm">
           <PlatformIcon platform={session.platform} className="h-3 w-3" />
         </div>
