@@ -11,7 +11,7 @@ export function WhosPlaying({ sessions }: WhosPlayingProps) {
   return (
     <section className="glass-panel relative mb-6 overflow-hidden rounded-2xl">
       <Image
-        src="/Play Now Card BG 2.png"
+        src="/Play Now Card BG 3.png"
         alt=""
         fill
         className="pointer-events-none object-cover object-right"
