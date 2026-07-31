@@ -34,6 +34,7 @@ export default async function RoomsPage() {
     <AppShell
       user={user}
       activeNavId="rooms"
+      comingSoon
       rightSidebar={
         <RoomsRightSidebar
           trending={trendingLiveRooms}

@@ -372,7 +372,7 @@ export const navGroups: NavGroup[] = [
     items: [
       { id: "rooms", label: "Rooms", icon: "radio", href: "/rooms" },
       { id: "game-hubs", label: "Game Hubs", icon: "layout-grid", href: "/hubs" },
-      { id: "events", label: "Events", icon: "calendar", href: "#" },
+      { id: "events", label: "Events", icon: "calendar", href: "/events" },
     ],
   },
   {

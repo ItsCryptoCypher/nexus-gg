@@ -35,6 +35,7 @@ export default async function HubsPage() {
     <AppShell
       user={user}
       activeNavId="game-hubs"
+      comingSoon
       rightSidebar={
         <HubsRightSidebar
           trending={trendingHubs}

@@ -24,6 +24,7 @@ export default function DemoRoomsPage() {
     <AppShell
       basePath="/demo"
       activeNavId="rooms"
+      comingSoon
       rightSidebar={
         <RoomsRightSidebar
           trending={trendingLiveRooms}

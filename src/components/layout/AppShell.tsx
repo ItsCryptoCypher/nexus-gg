@@ -3,6 +3,7 @@ import { LeftSidebar } from "@/components/layout/LeftSidebar";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { RightSidebar } from "@/components/layout/RightSidebar";
 import { PresenceHeartbeat } from "@/components/presence/PresenceHeartbeat";
+import { ComingSoonOverlay } from "@/components/ui/ComingSoonOverlay";
 import { currentUser, type CurrentUser } from "@/data/mock";
 import { getUnreadMessageCount } from "@/lib/messages/get-messages-page";
 
@@ -18,6 +19,8 @@ type AppShellProps = {
   unreadMessages?: number;
   /** Full-bleed main content (e.g. Messages three-panel layout). */
   flush?: boolean;
+  /** Dim the page mockup and show a Coming Soon label. */
+  comingSoon?: boolean;
 };
 
 export async function AppShell({
@@ -28,6 +31,7 @@ export async function AppShell({
   user = currentUser,
   unreadMessages,
   flush = false,
+  comingSoon = false,
 }: AppShellProps) {
   const unread =
     unreadMessages ??
@@ -58,11 +62,14 @@ export async function AppShell({
         <div
           className={
             flush
-              ? "flex min-h-0 flex-1 flex-col px-3 pb-24 pt-3 sm:px-4 md:pb-4 md:pt-4 lg:px-5"
-              : "mx-auto max-w-[1200px] px-4 py-5 pb-24 sm:px-6 lg:px-8 md:pb-5"
+              ? "relative flex min-h-0 flex-1 flex-col px-3 pb-24 pt-3 sm:px-4 md:pb-4 md:pt-4 lg:px-5"
+              : `relative mx-auto max-w-[1200px] px-4 py-5 pb-24 sm:px-6 lg:px-8 md:pb-5 ${
+                  comingSoon ? "min-h-[calc(100dvh-5rem)]" : ""
+                }`
           }
         >
           {children}
+          {comingSoon ? <ComingSoonOverlay /> : null}
         </div>
       </main>
       {rightSidebar === undefined ? <RightSidebar /> : rightSidebar}

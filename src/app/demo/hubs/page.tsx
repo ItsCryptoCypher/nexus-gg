@@ -25,6 +25,7 @@ export default function DemoHubsPage() {
     <AppShell
       basePath="/demo"
       activeNavId="game-hubs"
+      comingSoon
       rightSidebar={
         <HubsRightSidebar
           trending={trendingHubs}
