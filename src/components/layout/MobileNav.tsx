@@ -147,7 +147,7 @@ export function MobileNav({
                               onClick={() => setOpen(false)}
                               className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all ${
                                 active
-                                  ? "border border-accent/40 bg-gradient-to-r from-accent/35 to-accent/10 font-medium text-white shadow-[0_0_18px_rgba(124,58,237,0.35)]"
+                                  ? "border border-accent/40 bg-gradient-to-r from-accent/35 to-accent/10 font-medium text-white"
                                   : "border border-transparent text-muted hover:border-accent/15 hover:bg-white/5 hover:text-foreground"
                               }`}
                             >
