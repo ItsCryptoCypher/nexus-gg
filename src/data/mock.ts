@@ -67,6 +67,8 @@ export type NexusFriend = {
   avatarUrl: string;
   status: FriendPresence;
   gameTitle: string | null;
+  /** Discord Rich Presence line under the game title when available. */
+  activityDetail?: string | null;
   gameIconUrl: string | null;
   platforms: Platform[];
 };
@@ -106,6 +108,7 @@ export type OnlineFriend = {
   username: string;
   avatarUrl: string;
   gameTitle: string | null;
+  activityDetail?: string | null;
   platform: Platform;
 };
 
@@ -121,6 +124,8 @@ export type PlayingSession = {
   username: string;
   avatarUrl: string;
   gameTitle: string;
+  /** Discord Rich Presence line: state · details · elapsed · party. */
+  activityDetail?: string | null;
   coverUrl: string;
   platform: Platform;
   status: "in-party" | "in-game" | "looking";
@@ -406,6 +411,7 @@ export const playingSessions: PlayingSession[] = [
     username: "ChiefNova",
     avatarUrl: "https://i.pravatar.cc/150?img=33",
     gameTitle: "Halo Infinite",
+    activityDetail: "In a Match · Ranked Arena · 18m",
     coverUrl:
       "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=400&fit=crop",
     platform: "xbox",
@@ -419,6 +425,7 @@ export const playingSessions: PlayingSession[] = [
     username: "DriftKing",
     avatarUrl: "https://i.pravatar.cc/150?img=15",
     gameTitle: "Gran Turismo 7",
+    activityDetail: "In a Race · Sport Mode · 6m",
     coverUrl:
       "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&h=400&fit=crop",
     platform: "playstation",
@@ -430,6 +437,7 @@ export const playingSessions: PlayingSession[] = [
     username: "BlockBuilder",
     avatarUrl: "https://i.pravatar.cc/150?img=47",
     gameTitle: "Minecraft",
+    activityDetail: "In a World · Survival · 1h 12m",
     coverUrl:
       "https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?w=600&h=400&fit=crop",
     platform: "xbox",

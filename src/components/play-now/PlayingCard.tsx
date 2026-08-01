@@ -59,6 +59,11 @@ export function PlayingCard({ session }: PlayingCardProps) {
             {session.username}
           </p>
           <p className="truncate text-xs text-muted">{session.gameTitle}</p>
+          {session.activityDetail ? (
+            <p className="truncate text-[11px] text-muted-dark">
+              {session.activityDetail}
+            </p>
+          ) : null}
         </div>
 
         <div className="flex items-center justify-between gap-2">

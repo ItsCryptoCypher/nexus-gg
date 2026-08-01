@@ -1,6 +1,7 @@
 import type { PlayingSession } from "@/data/mock";
 import type { DiscordConnection } from "@/lib/discord/connections";
 import { createClient } from "@/lib/supabase/server";
+import { formatActivityDetailLine } from "@/lib/presence/format-activity-detail";
 import { PRESENCE_EXCLUDED_DISCORD_IDS } from "@/lib/presence/online-source";
 import { resolvePlayingPlatform } from "@/lib/presence/resolve-platform";
 
@@ -11,6 +12,11 @@ type PresenceRow = {
   discord_id: string;
   status: string;
   activity_name: string | null;
+  activity_state: string | null;
+  activity_details: string | null;
+  activity_started_at: string | null;
+  party_size: number | null;
+  party_max: number | null;
   activity_platform: string | null;
   client_status: Record<string, string> | null;
   display_name: string | null;
@@ -37,7 +43,7 @@ export async function getPlayingSessions(): Promise<PlayingSession[]> {
   const { data: presenceRows, error } = await supabase
     .from("player_presence")
     .select(
-      "discord_id, status, activity_name, activity_platform, client_status, display_name, avatar_url, updated_at",
+      "discord_id, status, activity_name, activity_state, activity_details, activity_started_at, party_size, party_max, activity_platform, client_status, display_name, avatar_url, updated_at",
     )
     .neq("status", "offline")
     .not("activity_name", "is", null)
@@ -86,14 +92,30 @@ export async function getPlayingSessions(): Promise<PlayingSession[]> {
       connections: profile?.discord_connections ?? [],
     });
 
+    const partySize =
+      typeof row.party_size === "number" ? row.party_size : undefined;
+    const partyMax =
+      typeof row.party_max === "number" ? row.party_max : undefined;
+    const activityDetail = formatActivityDetailLine({
+      state: row.activity_state,
+      details: row.activity_details,
+      startedAt: row.activity_started_at,
+      // Party is shown on its own in the card badge row.
+      partySize: null,
+      partyMax: null,
+    });
+
     return {
       id: row.discord_id,
       username,
       avatarUrl,
       gameTitle: row.activity_name!,
+      activityDetail,
       coverUrl: FALLBACK_COVER,
       platform,
       status: "in-game",
+      partySize,
+      partyMax,
       action: "join-game",
     };
   });

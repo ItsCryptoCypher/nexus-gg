@@ -1,5 +1,6 @@
 import type { FriendPresence, Platform } from "@/data/mock";
 import type { DiscordConnection } from "@/lib/discord/connections";
+import { formatActivityDetailLine } from "@/lib/presence/format-activity-detail";
 import {
   isDiscordOnline,
   isNexusOnline,
@@ -10,6 +11,11 @@ import { resolvePlayingPlatform } from "@/lib/presence/resolve-platform";
 export type PresenceSnippet = {
   status: string | null;
   activity_name: string | null;
+  activity_state?: string | null;
+  activity_details?: string | null;
+  activity_started_at?: string | null;
+  party_size?: number | null;
+  party_max?: number | null;
   activity_platform: string | null;
   client_status: Record<string, string> | null;
 };
@@ -51,6 +57,20 @@ export function mapFriendOnlineLabel(options: {
   });
 
   return source?.label ?? null;
+}
+
+/** Rich Presence secondary line for in-game friends. */
+export function mapFriendActivityDetail(
+  presence: PresenceSnippet | null | undefined,
+): string | null {
+  if (!presence?.activity_name) return null;
+  return formatActivityDetailLine({
+    state: presence.activity_state,
+    details: presence.activity_details,
+    startedAt: presence.activity_started_at,
+    partySize: presence.party_size,
+    partyMax: presence.party_max,
+  });
 }
 
 export function mapFriendOnlinePlatform(options: {

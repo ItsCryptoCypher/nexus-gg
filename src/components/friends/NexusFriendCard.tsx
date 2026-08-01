@@ -45,14 +45,21 @@ export function NexusFriendCard({ friend }: NexusFriendCardProps) {
         </p>
       </div>
 
-      <div className="mb-3 flex min-h-[28px] items-center gap-2">
+      <div className="mb-3 min-h-[28px]">
         {friend.gameTitle ? (
-          <>
+          <div className="flex items-start gap-2">
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-accent-soft text-[10px] font-bold text-accent-hover">
               {friend.gameTitle.charAt(0)}
             </span>
-            <p className="truncate text-xs text-muted">{friend.gameTitle}</p>
-          </>
+            <div className="min-w-0">
+              <p className="truncate text-xs text-muted">{friend.gameTitle}</p>
+              {friend.activityDetail ? (
+                <p className="truncate text-[11px] text-muted-dark">
+                  {friend.activityDetail}
+                </p>
+              ) : null}
+            </div>
+          </div>
         ) : (
           <p className="text-xs text-muted-dark">Not in a game</p>
         )}

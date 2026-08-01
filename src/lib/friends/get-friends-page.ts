@@ -9,6 +9,7 @@ import type {
 } from "@/data/mock";
 import type { DiscordConnection } from "@/lib/discord/connections";
 import {
+  mapFriendActivityDetail,
   mapFriendOnlineLabel,
   mapFriendOnlinePlatform,
   mapFriendPlatforms,
@@ -224,7 +225,7 @@ export async function getFriendsPageData(): Promise<FriendsPageData> {
     ? await supabase
         .from("player_presence")
         .select(
-          "discord_id, user_id, status, activity_name, activity_platform, client_status, display_name, avatar_url",
+          "discord_id, user_id, status, activity_name, activity_state, activity_details, activity_started_at, party_size, party_max, activity_platform, client_status, display_name, avatar_url",
         )
         .in("discord_id", discordIds)
     : { data: [] as PresenceRow[] };
@@ -250,6 +251,7 @@ export async function getFriendsPageData(): Promise<FriendsPageData> {
         presence,
         nexusLastSeenAt: profile.nexus_last_seen_at,
       }),
+      activityDetail: mapFriendActivityDetail(presence),
       gameIconUrl: null,
       platforms: mapFriendPlatforms({
         presence,
@@ -360,6 +362,7 @@ export async function getFriendsPageData(): Promise<FriendsPageData> {
         username: f.username,
         avatarUrl: f.avatarUrl,
         gameTitle: f.gameTitle,
+        activityDetail: f.activityDetail,
         platform: mapFriendOnlinePlatform({
           presence,
           nexusLastSeenAt: profile?.nexus_last_seen_at,

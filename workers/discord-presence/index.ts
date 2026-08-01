@@ -60,6 +60,33 @@ function getActivityPlatform(activity: Activity | null): string | null {
     : null;
 }
 
+function getActivityStartedAt(activity: Activity | null): string | null {
+  const start = activity?.timestamps?.start;
+  if (!start) return null;
+  const date = start instanceof Date ? start : new Date(start);
+  return Number.isFinite(date.getTime()) ? date.toISOString() : null;
+}
+
+function getPartyCounts(activity: Activity | null): {
+  partySize: number | null;
+  partyMax: number | null;
+} {
+  const size = activity?.party?.size;
+  if (!size || size.length < 2) {
+    return { partySize: null, partyMax: null };
+  }
+  const [current, max] = size;
+  if (
+    typeof current !== "number" ||
+    typeof max !== "number" ||
+    !Number.isFinite(current) ||
+    !Number.isFinite(max)
+  ) {
+    return { partySize: null, partyMax: null };
+  }
+  return { partySize: current, partyMax: max };
+}
+
 async function upsertPresence(presence: Presence) {
   const discordId = presence.userId;
   if (!discordId) return;
@@ -80,6 +107,8 @@ async function upsertPresence(presence: Presence) {
   const avatarUrl = user?.displayAvatarURL({ size: 128 }) ?? null;
 
   const activityPlatform = getActivityPlatform(activity);
+  const activityStartedAt = getActivityStartedAt(activity);
+  const { partySize, partyMax } = getPartyCounts(activity);
 
   if (!activity && presence.activities?.length) {
     console.log(
@@ -108,6 +137,10 @@ async function upsertPresence(presence: Presence) {
       activity_name: activity?.name ?? null,
       activity_type: activity?.type ?? null,
       activity_state: activity?.state ?? null,
+      activity_details: activity?.details ?? null,
+      activity_started_at: activityStartedAt,
+      party_size: partySize,
+      party_max: partyMax,
       activity_platform: activityPlatform,
       client_status: presence.clientStatus ?? null,
       updated_at: new Date().toISOString(),
@@ -144,6 +177,10 @@ async function syncGuildSnapshot() {
           activity_name: null,
           activity_type: null,
           activity_state: null,
+          activity_details: null,
+          activity_started_at: null,
+          party_size: null,
+          party_max: null,
           activity_platform: null,
           client_status: null,
           updated_at: new Date().toISOString(),

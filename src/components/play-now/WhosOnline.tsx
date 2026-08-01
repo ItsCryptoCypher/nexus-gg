@@ -40,6 +40,11 @@ export function WhosOnline({ friends }: WhosOnlineProps) {
                 <p className="truncate text-xs text-muted">
                   {friend.gameTitle ?? "Online"}
                 </p>
+                {friend.activityDetail ? (
+                  <p className="truncate text-[11px] text-muted-dark">
+                    {friend.activityDetail}
+                  </p>
+                ) : null}
               </div>
               <PlatformIcon
                 platform={friend.platform}
